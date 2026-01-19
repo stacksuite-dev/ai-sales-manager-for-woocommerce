@@ -5,18 +5,18 @@
  * Displays current balance and allows purchasing more tokens.
  * Included on both chat page and settings page.
  *
- * @package WooAI_Sales_Manager
+ * @package AISales_Sales_Manager
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // Get current balance - passed from parent template or fetch fresh
-$current_balance = isset( $balance ) ? $balance : 0;
-$is_low_balance  = $current_balance < 1000;
+$aisales_current_balance = isset( $balance ) ? $balance : 0;
+$aisales_is_low_balance  = $aisales_current_balance < 1000;
 
 // Plan data - single plan for now (fetched from API at runtime via JS)
 // Default fallback shown before JS loads
-$default_plan = array(
+$aisales_default_plan = array(
 	'id'          => 'standard_plan',
 	'name'        => 'Standard Plan',
 	'tokens'      => 10000,
@@ -26,116 +26,116 @@ $default_plan = array(
 ?>
 
 <!-- Balance Modal Overlay -->
-<div class="wooai-modal-overlay wooai-balance-modal-overlay" id="wooai-balance-modal-overlay"></div>
+<div class="aisales-modal-overlay aisales-balance-modal-overlay" id="aisales-balance-modal-overlay"></div>
 
 <!-- Balance Modal -->
-<div class="wooai-modal wooai-balance-modal" id="wooai-balance-modal" role="dialog" aria-modal="true" aria-labelledby="wooai-balance-modal-title">
+<div class="aisales-modal aisales-balance-modal" id="aisales-balance-modal" role="dialog" aria-modal="true" aria-labelledby="aisales-balance-modal-title">
 	<!-- Modal Header -->
-	<div class="wooai-modal__header wooai-balance-modal__header">
-		<h2 class="wooai-modal__title" id="wooai-balance-modal-title">
+	<div class="aisales-modal__header aisales-balance-modal__header">
+		<h2 class="aisales-modal__title" id="aisales-balance-modal-title">
 			<span class="dashicons dashicons-database"></span>
-			<?php esc_html_e( 'Token Balance', 'woo-ai-sales-manager' ); ?>
+			<?php esc_html_e( 'Token Balance', 'ai-sales-manager-for-woocommerce' ); ?>
 		</h2>
-		<button type="button" class="wooai-modal__close" id="wooai-balance-modal-close" aria-label="<?php esc_attr_e( 'Close', 'woo-ai-sales-manager' ); ?>">
+		<button type="button" class="aisales-modal__close" id="aisales-balance-modal-close" aria-label="<?php esc_attr_e( 'Close', 'ai-sales-manager-for-woocommerce' ); ?>">
 			<span class="dashicons dashicons-no-alt"></span>
 		</button>
 	</div>
 
 	<!-- Modal Body -->
-	<div class="wooai-modal__body wooai-balance-modal__body">
+	<div class="aisales-modal__body aisales-balance-modal__body">
 		<!-- Current Balance Display -->
-		<div class="wooai-balance-current <?php echo $is_low_balance ? 'wooai-balance-current--low' : ''; ?>">
-			<div class="wooai-balance-current__label">
-				<?php esc_html_e( 'Current Balance', 'woo-ai-sales-manager' ); ?>
+		<div class="aisales-balance-current <?php echo $aisales_is_low_balance ? 'aisales-balance-current--low' : ''; ?>">
+			<div class="aisales-balance-current__label">
+				<?php esc_html_e( 'Current Balance', 'ai-sales-manager-for-woocommerce' ); ?>
 			</div>
-			<div class="wooai-balance-current__amount">
-				<span class="wooai-balance-current__value" id="wooai-balance-modal-value"><?php echo esc_html( number_format( $current_balance ) ); ?></span>
-				<span class="wooai-balance-current__unit"><?php esc_html_e( 'tokens', 'woo-ai-sales-manager' ); ?></span>
+			<div class="aisales-balance-current__amount">
+				<span class="aisales-balance-current__value" id="aisales-balance-modal-value"><?php echo esc_html( number_format( $aisales_current_balance ) ); ?></span>
+				<span class="aisales-balance-current__unit"><?php esc_html_e( 'tokens', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			</div>
-			<?php if ( $is_low_balance ) : ?>
-			<div class="wooai-balance-current__warning">
+			<?php if ( $aisales_is_low_balance ) : ?>
+			<div class="aisales-balance-current__warning">
 				<span class="dashicons dashicons-warning"></span>
-				<?php esc_html_e( 'Low balance - top up to continue using AI features', 'woo-ai-sales-manager' ); ?>
+				<?php esc_html_e( 'Low balance - top up to continue using AI features', 'ai-sales-manager-for-woocommerce' ); ?>
 			</div>
 			<?php endif; ?>
 			<!-- Progress bar visual -->
-			<div class="wooai-balance-progress">
-				<div class="wooai-balance-progress__bar" id="wooai-balance-progress-bar" style="width: <?php echo esc_attr( min( 100, ( $current_balance / 10000 ) * 100 ) ); ?>%;"></div>
+			<div class="aisales-balance-progress">
+				<div class="aisales-balance-progress__bar" id="aisales-balance-progress-bar" style="width: <?php echo esc_attr( min( 100, ( $aisales_current_balance / 10000 ) * 100 ) ); ?>%;"></div>
 			</div>
-			<div class="wooai-balance-progress__labels">
+			<div class="aisales-balance-progress__labels">
 				<span>0</span>
 				<span>10,000</span>
 			</div>
 		</div>
 
 		<!-- Divider -->
-		<div class="wooai-balance-modal__divider">
-			<span><?php esc_html_e( 'Add More Tokens', 'woo-ai-sales-manager' ); ?></span>
+		<div class="aisales-balance-modal__divider">
+			<span><?php esc_html_e( 'Add More Tokens', 'ai-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 
 		<!-- Token Package -->
-		<div class="wooai-package-grid" id="wooai-package-grid">
-			<button type="button" class="wooai-package-card wooai-package-card--selected" data-plan-id="standard_plan">
-				<div class="wooai-package-card__tokens">
-					<span class="wooai-package-card__amount" id="wooai-plan-tokens">10,000</span>
-					<span class="wooai-package-card__unit"><?php esc_html_e( 'tokens', 'woo-ai-sales-manager' ); ?></span>
+		<div class="aisales-package-grid" id="aisales-package-grid">
+			<button type="button" class="aisales-package-card aisales-package-card--selected" data-plan-id="standard_plan">
+				<div class="aisales-package-card__tokens">
+					<span class="aisales-package-card__amount" id="aisales-plan-tokens">10,000</span>
+					<span class="aisales-package-card__unit"><?php esc_html_e( 'tokens', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				</div>
-				<div class="wooai-package-card__price">
-					<span class="wooai-package-card__currency">$</span>
-					<span class="wooai-package-card__value" id="wooai-plan-price">9</span>
+				<div class="aisales-package-card__price">
+					<span class="aisales-package-card__currency">$</span>
+					<span class="aisales-package-card__value" id="aisales-plan-price">9</span>
 				</div>
-				<div class="wooai-package-card__rate" id="wooai-plan-rate">
-					<?php esc_html_e( '$0.90 per 1,000 tokens', 'woo-ai-sales-manager' ); ?>
+				<div class="aisales-package-card__rate" id="aisales-plan-rate">
+					<?php esc_html_e( '$0.90 per 1,000 tokens', 'ai-sales-manager-for-woocommerce' ); ?>
 				</div>
 			</button>
 		</div>
 
 		<!-- Usage Estimates -->
-		<div class="wooai-usage-estimates" id="wooai-usage-estimates">
-			<div class="wooai-usage-estimates__title">
-				<?php esc_html_e( 'What you can do with 10,000 tokens:', 'woo-ai-sales-manager' ); ?>
+		<div class="aisales-usage-estimates" id="aisales-usage-estimates">
+			<div class="aisales-usage-estimates__title">
+				<?php esc_html_e( 'What you can do with 10,000 tokens:', 'ai-sales-manager-for-woocommerce' ); ?>
 			</div>
-			<div class="wooai-usage-estimates__grid">
-				<div class="wooai-usage-estimate">
+			<div class="aisales-usage-estimates__grid">
+				<div class="aisales-usage-estimate">
 					<span class="dashicons dashicons-text"></span>
-					<span class="wooai-usage-estimate__value" id="wooai-estimate-content">~40</span>
-					<span class="wooai-usage-estimate__label"><?php esc_html_e( 'Content optimizations', 'woo-ai-sales-manager' ); ?></span>
+					<span class="aisales-usage-estimate__value" id="aisales-estimate-content">~40</span>
+					<span class="aisales-usage-estimate__label"><?php esc_html_e( 'Content optimizations', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				</div>
-				<div class="wooai-usage-estimate">
+				<div class="aisales-usage-estimate">
 					<span class="dashicons dashicons-tag"></span>
-					<span class="wooai-usage-estimate__value" id="wooai-estimate-taxonomy">~100</span>
-					<span class="wooai-usage-estimate__label"><?php esc_html_e( 'Tag/category updates', 'woo-ai-sales-manager' ); ?></span>
+					<span class="aisales-usage-estimate__value" id="aisales-estimate-taxonomy">~100</span>
+					<span class="aisales-usage-estimate__label"><?php esc_html_e( 'Tag/category updates', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				</div>
-				<div class="wooai-usage-estimate">
+				<div class="aisales-usage-estimate">
 					<span class="dashicons dashicons-format-image"></span>
-					<span class="wooai-usage-estimate__value" id="wooai-estimate-images">~8</span>
-					<span class="wooai-usage-estimate__label"><?php esc_html_e( 'Image generations', 'woo-ai-sales-manager' ); ?></span>
+					<span class="aisales-usage-estimate__value" id="aisales-estimate-images">~8</span>
+					<span class="aisales-usage-estimate__label"><?php esc_html_e( 'Image generations', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Footer -->
-	<div class="wooai-modal__footer wooai-balance-modal__footer">
-		<div class="wooai-modal__info">
+	<div class="aisales-modal__footer aisales-balance-modal__footer">
+		<div class="aisales-modal__info">
 			<span class="dashicons dashicons-lock"></span>
-			<?php esc_html_e( 'Secure checkout via Stripe', 'woo-ai-sales-manager' ); ?>
+			<?php esc_html_e( 'Secure checkout via Stripe', 'ai-sales-manager-for-woocommerce' ); ?>
 		</div>
-		<div class="wooai-modal__actions">
-			<button type="button" class="wooai-btn wooai-btn--primary wooai-btn--lg" id="wooai-purchase-btn">
-				<span class="wooai-btn__text"><?php esc_html_e( 'Purchase Tokens', 'woo-ai-sales-manager' ); ?></span>
+		<div class="aisales-modal__actions">
+			<button type="button" class="aisales-btn aisales-btn--primary aisales-btn--lg" id="aisales-purchase-btn">
+				<span class="aisales-btn__text"><?php esc_html_e( 'Purchase Tokens', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				<span class="dashicons dashicons-arrow-right-alt"></span>
 			</button>
 		</div>
 	</div>
 
 	<!-- Loading State -->
-	<div class="wooai-balance-modal__loading" id="wooai-balance-modal-loading" style="display: none;">
-		<div class="wooai-balance-modal__spinner">
+	<div class="aisales-balance-modal__loading" id="aisales-balance-modal-loading" style="display: none;">
+		<div class="aisales-balance-modal__spinner">
 			<span class="spinner is-active"></span>
 		</div>
-		<div class="wooai-balance-modal__loading-text">
-			<?php esc_html_e( 'Preparing checkout...', 'woo-ai-sales-manager' ); ?>
+		<div class="aisales-balance-modal__loading-text">
+			<?php esc_html_e( 'Preparing checkout...', 'ai-sales-manager-for-woocommerce' ); ?>
 		</div>
 	</div>
 </div>

@@ -1,14 +1,14 @@
 #!/bin/bash
 #
 # WordPress Plugin Build Script
-# Creates a distributable ZIP file for WooAI Sales Manager
+# Creates a distributable ZIP file for AI Sales Manager for WooCommerce
 #
 
 set -e
 
 # Configuration
-PLUGIN_SLUG="woo-ai-sales-manager"
-PLUGIN_VERSION=$(grep -m1 "Version:" woo-ai-sales-manager.php | sed 's/.*Version: *//' | tr -d ' ')
+PLUGIN_SLUG="ai-sales-manager-for-woocommerce"
+PLUGIN_VERSION=$(grep -m1 "Version:" ai-sales-manager-for-woocommerce.php | sed 's/.*Version: *//' | tr -d ' ')
 BUILD_DIR="./build"
 DIST_DIR="./dist"
 
@@ -19,7 +19,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}  WooAI Sales Manager Build Script${NC}"
+echo -e "${GREEN}  AI Sales Manager Build Script${NC}"
 echo -e "${GREEN}  Version: ${PLUGIN_VERSION}${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
@@ -36,9 +36,10 @@ echo -e "${YELLOW}[2/5]${NC} Copying plugin files..."
 
 # Files and directories to include
 INCLUDE_FILES=(
-    "woo-ai-sales-manager.php"
+    "ai-sales-manager-for-woocommerce.php"
     "uninstall.php"
     "readme.txt"
+    "license.txt"
     "assets"
     "includes"
     "languages"
@@ -72,7 +73,7 @@ echo "  ✓ Removed source maps, SCSS, and OS files"
 echo -e "${YELLOW}[4/5]${NC} Validating build..."
 
 # Check main plugin file exists
-if [ ! -f "${BUILD_DIR}/${PLUGIN_SLUG}/woo-ai-sales-manager.php" ]; then
+if [ ! -f "${BUILD_DIR}/${PLUGIN_SLUG}/ai-sales-manager-for-woocommerce.php" ]; then
     echo -e "${RED}ERROR: Main plugin file missing!${NC}"
     exit 1
 fi

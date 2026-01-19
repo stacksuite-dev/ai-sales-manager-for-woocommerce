@@ -1,8 +1,8 @@
 <?php
 /**
- * API Client for WooAI SaaS
+ * API Client for AI Sales Manager SaaS
  *
- * @package WooAI_Sales_Manager
+ * @package AISales_Sales_Manager
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,12 +10,12 @@ defined( 'ABSPATH' ) || exit;
 /**
  * API Client class
  */
-class WooAI_API_Client {
+class AISales_API_Client {
 
 	/**
 	 * Single instance
 	 *
-	 * @var WooAI_API_Client
+	 * @var AISales_API_Client
 	 */
 	private static $instance = null;
 
@@ -36,7 +36,7 @@ class WooAI_API_Client {
 	/**
 	 * Get instance
 	 *
-	 * @return WooAI_API_Client
+	 * @return AISales_API_Client
 	 */
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
@@ -49,12 +49,12 @@ class WooAI_API_Client {
 	 * Constructor
 	 */
 	private function __construct() {
-		$this->api_url = apply_filters( 'wooai_api_url', WOOAI_API_URL );
+		$this->api_url = apply_filters( 'aisales_api_url', AISALES_API_URL );
 
 		// Mock mode: disabled by default, can be enabled via filter or constant
-		// Use: define('WOOAI_MOCK_MODE', true) in wp-config.php for testing
-		$this->use_mock = defined( 'WOOAI_MOCK_MODE' ) && WOOAI_MOCK_MODE;
-		$this->use_mock = apply_filters( 'wooai_use_mock', $this->use_mock );
+		// Use: define('AISALES_MOCK_MODE', true) in wp-config.php for testing
+		$this->use_mock = defined( 'AISALES_MOCK_MODE' ) && AISALES_MOCK_MODE;
+		$this->use_mock = apply_filters( 'aisales_use_mock', $this->use_mock );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class WooAI_API_Client {
 	 * @return string|false
 	 */
 	public function get_api_key() {
-		return get_option( 'wooai_api_key', false );
+		return get_option( 'aisales_api_key', false );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class WooAI_API_Client {
 
 		$status_code = wp_remote_retrieve_response_code( $response );
 		if ( $status_code >= 400 ) {
-			$error_message = isset( $data['message'] ) ? $data['message'] : __( 'API request failed', 'woo-ai-sales-manager' );
+			$error_message = isset( $data['message'] ) ? $data['message'] : __( 'API request failed', 'ai-sales-manager-for-woocommerce' );
 			return new WP_Error( 'api_error', $error_message, array( 'status' => $status_code ) );
 		}
 
@@ -226,7 +226,7 @@ class WooAI_API_Client {
 			return $this->mock_create_checkout();
 		}
 
-		$admin_url = admin_url( 'admin.php?page=woo-ai-manager' );
+		$admin_url = admin_url( 'admin.php?page=ai-sales-manager' );
 
 		return $this->request( '/billing/checkout', 'POST', array(
 			'plan'        => $plan,
@@ -331,9 +331,9 @@ class WooAI_API_Client {
 	 */
 	private function mock_register( $email ) {
 		$api_key = 'wai_mock_' . wp_generate_password( 32, false );
-		update_option( 'wooai_api_key', $api_key );
-		update_option( 'wooai_user_email', $email );
-		update_option( 'wooai_balance', 1000 ); // Start with 1000 tokens for testing
+		update_option( 'aisales_api_key', $api_key );
+		update_option( 'aisales_user_email', $email );
+		update_option( 'aisales_balance', 1000 ); // Start with 1000 tokens for testing
 
 		return array(
 			'message'        => 'Account created successfully',
@@ -351,14 +351,14 @@ class WooAI_API_Client {
 	 * @return array
 	 */
 	private function mock_login( $email ) {
-		$api_key = get_option( 'wooai_api_key' );
+		$api_key = get_option( 'aisales_api_key' );
 		if ( ! $api_key ) {
 			$api_key = 'wai_mock_' . wp_generate_password( 32, false );
-			update_option( 'wooai_api_key', $api_key );
+			update_option( 'aisales_api_key', $api_key );
 		}
-		update_option( 'wooai_user_email', $email );
+		update_option( 'aisales_user_email', $email );
 
-		$balance = get_option( 'wooai_balance', 7432 );
+		$balance = get_option( 'aisales_balance', 7432 );
 
 		return array(
 			'message'        => 'Login successful',
@@ -377,20 +377,20 @@ class WooAI_API_Client {
 	 * @return array
 	 */
 	private function mock_connect( $email, $domain ) {
-		$api_key = get_option( 'wooai_api_key' );
+		$api_key = get_option( 'aisales_api_key' );
 		$is_new  = false;
 
 		if ( ! $api_key ) {
 			$api_key = 'wai_mock_' . wp_generate_password( 32, false );
 			$is_new  = true;
-			update_option( 'wooai_balance', 1000 );
+			update_option( 'aisales_balance', 1000 );
 		}
 
-		update_option( 'wooai_api_key', $api_key );
-		update_option( 'wooai_user_email', $email );
-		update_option( 'wooai_domain', $domain );
+		update_option( 'aisales_api_key', $api_key );
+		update_option( 'aisales_user_email', $email );
+		update_option( 'aisales_domain', $domain );
 
-		$balance = get_option( 'wooai_balance', 1000 );
+		$balance = get_option( 'aisales_balance', 1000 );
 
 		return array(
 			'message'        => $is_new ? 'Account created successfully' : 'Connected successfully',
@@ -411,8 +411,8 @@ class WooAI_API_Client {
 	private function mock_get_account() {
 		return array(
 			'user_id'        => 1,
-			'email'          => get_option( 'wooai_user_email', 'demo@example.com' ),
-			'balance_tokens' => get_option( 'wooai_balance', 7432 ),
+			'email'          => get_option( 'aisales_user_email', 'demo@example.com' ),
+			'balance_tokens' => get_option( 'aisales_balance', 7432 ),
 		);
 	}
 
@@ -539,11 +539,11 @@ class WooAI_API_Client {
 	 */
 	private function mock_create_checkout() {
 		// In mock mode, just add tokens directly
-		$current_balance = get_option( 'wooai_balance', 0 );
-		update_option( 'wooai_balance', $current_balance + 10000 );
+		$current_balance = get_option( 'aisales_balance', 0 );
+		update_option( 'aisales_balance', $current_balance + 10000 );
 
 		return array(
-			'checkout_url' => admin_url( 'admin.php?page=woo-ai-manager&topup=success' ),
+			'checkout_url' => admin_url( 'admin.php?page=ai-sales-manager&topup=success' ),
 			'session_id'   => 'mock_session_' . time(),
 		);
 	}
@@ -663,8 +663,8 @@ class WooAI_API_Client {
 	 * @param int $tokens Number of tokens to deduct.
 	 */
 	private function deduct_mock_tokens( $tokens ) {
-		$balance = get_option( 'wooai_balance', 7432 );
+		$balance = get_option( 'aisales_balance', 7432 );
 		$new_balance = max( 0, $balance - $tokens );
-		update_option( 'wooai_balance', $new_balance );
+		update_option( 'aisales_balance', $new_balance );
 	}
 }

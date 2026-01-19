@@ -1,20 +1,20 @@
-=== WooAI Sales Manager ===
+=== AI Sales Manager for WooCommerce ===
 Contributors: stacksuite
-Tags: woocommerce, ai, product management, content generation, image generation, chatbot
+Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI-powered product catalog management for WooCommerce. Generate content, suggest tags/categories, create/improve product images, and chat with an AI agent to manage your store.
+AI-powered WooCommerce product management. Generate content, suggest tags, and create product images with AI.
 
 == Description ==
 
-WooAI Sales Manager brings the power of AI to your WooCommerce store. Enhance your product catalog with:
+AI Sales Manager for WooCommerce brings the power of AI to your WooCommerce store. Enhance your product catalog with:
 
 * **AI Agent Chat** - Interactive chat interface to manage products and categories with AI assistance
 * **Content Generation** - Improve product descriptions, generate from titles, or SEO optimize existing content
@@ -43,10 +43,10 @@ WooAI Sales Manager brings the power of AI to your WooCommerce store. Enhance yo
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/woo-ai-sales-manager/`
+1. Upload the plugin files to `/wp-content/plugins/ai-sales-manager-for-woocommerce/`
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Ensure WooCommerce is installed and active
-4. Go to WooAI Manager in the admin menu
+4. Go to AI Sales Manager in the admin menu
 5. Enter your email to connect your store (domain-based authentication)
 6. Top up your token balance
 7. Start using AI tools on your products or try the AI Agent chat!
@@ -72,7 +72,7 @@ Yes, the plugin works with any properly coded WooCommerce theme.
 
 = What happens when I uninstall the plugin? =
 
-When you delete the plugin through WordPress, all plugin data is removed including your API key, balance cache, and store context settings. Your account on the WooAI service remains intact - you can reconnect anytime using the same email.
+When you delete the plugin through WordPress, all plugin data is removed including your API key, balance cache, and store context settings. Your account on the AI Sales Manager service remains intact - you can reconnect anytime using the same email.
 
 = Does it work with Yoast SEO or RankMath? =
 
@@ -88,7 +88,7 @@ This plugin is specifically designed for WooCommerce stores. It integrates with 
 
 == External Services ==
 
-This plugin connects to the WooAI SaaS platform (https://woo-ai-worker.simplebuild.site) for:
+This plugin connects to the AI Sales Manager SaaS platform (https://woo-ai-worker.simplebuild.site) for:
 
 * AI content generation and processing
 * Token balance and account management
@@ -114,6 +114,16 @@ By using the AI features, you agree to these terms.
 
 == Changelog ==
 
+= 1.2.0 =
+* Changed: Renamed all code prefixes from 'wooai' to 'aisales' for WordPress.org trademark compliance
+* Changed: Renamed class files from 'class-wooai-*' to 'class-aisales-*'
+* Removed: Deprecated email/password login and register handlers
+* Improved: Replaced direct database queries with WordPress API functions (WP_Query, delete_metadata)
+* Improved: Tab navigation now uses filter_input() for cleaner superglobal access
+* Improved: Uninstall cleanup now uses WordPress functions instead of direct SQL
+* Fixed: All WordPress Plugin Check warnings resolved
+* Added: GPLv2 license file included in distribution
+
 = 1.1.0 =
 * Added: AI Agent chat interface for interactive product and category management
 * Added: Category content generation (descriptions, SEO meta, subcategory suggestions)
@@ -131,8 +141,11 @@ By using the AI features, you agree to these terms.
 
 == Upgrade Notice ==
 
+= 1.2.0 =
+Code refactoring for WordPress.org compliance. All 'wooai' prefixes renamed to 'aisales'. No functionality changes - existing settings will need to be reconfigured after update.
+
 = 1.1.0 =
 Major update with AI Agent chat interface, category management, and improved code quality. Domain-based authentication is now the recommended connection method.
 
 = 1.0.0 =
-Initial release of WooAI Sales Manager.
+Initial release of AI Sales Manager for WooCommerce.

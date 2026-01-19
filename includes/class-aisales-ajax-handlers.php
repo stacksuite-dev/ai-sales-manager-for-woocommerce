@@ -2,7 +2,7 @@
 /**
  * AJAX Handlers
  *
- * @package WooAI_Sales_Manager
+ * @package AISales_Sales_Manager
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,19 +10,19 @@ defined( 'ABSPATH' ) || exit;
 /**
  * AJAX Handlers class
  */
-class WooAI_Ajax_Handlers {
+class AISales_Ajax_Handlers {
 
 	/**
 	 * Single instance
 	 *
-	 * @var WooAI_Ajax_Handlers
+	 * @var AISales_Ajax_Handlers
 	 */
 	private static $instance = null;
 
 	/**
 	 * Get instance
 	 *
-	 * @return WooAI_Ajax_Handlers
+	 * @return AISales_Ajax_Handlers
 	 */
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
@@ -35,221 +35,87 @@ class WooAI_Ajax_Handlers {
 	 * Constructor
 	 */
 	private function __construct() {
-		// Auth actions (legacy)
-		add_action( 'wp_ajax_wooai_login', array( $this, 'handle_login' ) );
-		add_action( 'wp_ajax_wooai_register', array( $this, 'handle_register' ) );
-
-		// Auth actions (new domain-based)
-		add_action( 'wp_ajax_wooai_connect', array( $this, 'handle_connect' ) );
+		// Auth actions (domain-based)
+		add_action( 'wp_ajax_aisales_connect', array( $this, 'handle_connect' ) );
 
 		// Billing actions
-		add_action( 'wp_ajax_wooai_topup', array( $this, 'handle_topup' ) );
+		add_action( 'wp_ajax_aisales_topup', array( $this, 'handle_topup' ) );
 
 		// AI actions
-		add_action( 'wp_ajax_wooai_generate_content', array( $this, 'handle_generate_content' ) );
-		add_action( 'wp_ajax_wooai_suggest_taxonomy', array( $this, 'handle_suggest_taxonomy' ) );
-		add_action( 'wp_ajax_wooai_generate_image', array( $this, 'handle_generate_image' ) );
-		add_action( 'wp_ajax_wooai_improve_image', array( $this, 'handle_improve_image' ) );
+		add_action( 'wp_ajax_aisales_generate_content', array( $this, 'handle_generate_content' ) );
+		add_action( 'wp_ajax_aisales_suggest_taxonomy', array( $this, 'handle_suggest_taxonomy' ) );
+		add_action( 'wp_ajax_aisales_generate_image', array( $this, 'handle_generate_image' ) );
+		add_action( 'wp_ajax_aisales_improve_image', array( $this, 'handle_improve_image' ) );
 
 		// Account actions
-		add_action( 'wp_ajax_wooai_get_balance', array( $this, 'handle_get_balance' ) );
+		add_action( 'wp_ajax_aisales_get_balance', array( $this, 'handle_get_balance' ) );
 
 		// Chat actions
-		add_action( 'wp_ajax_wooai_update_product_field', array( $this, 'handle_update_product_field' ) );
-		add_action( 'wp_ajax_wooai_update_category_field', array( $this, 'handle_update_category_field' ) );
-		add_action( 'wp_ajax_wooai_get_category', array( $this, 'handle_get_category' ) );
+		add_action( 'wp_ajax_aisales_update_product_field', array( $this, 'handle_update_product_field' ) );
+		add_action( 'wp_ajax_aisales_update_category_field', array( $this, 'handle_update_category_field' ) );
+		add_action( 'wp_ajax_aisales_get_category', array( $this, 'handle_get_category' ) );
 
 		// Store context actions
-		add_action( 'wp_ajax_wooai_save_store_context', array( $this, 'handle_save_store_context' ) );
-		add_action( 'wp_ajax_wooai_sync_store_context', array( $this, 'handle_sync_store_context' ) );
-		add_action( 'wp_ajax_wooai_mark_chat_visited', array( $this, 'handle_mark_chat_visited' ) );
+		add_action( 'wp_ajax_aisales_save_store_context', array( $this, 'handle_save_store_context' ) );
+		add_action( 'wp_ajax_aisales_sync_store_context', array( $this, 'handle_sync_store_context' ) );
+		add_action( 'wp_ajax_aisales_mark_chat_visited', array( $this, 'handle_mark_chat_visited' ) );
 
 		// Balance sync action
-		add_action( 'wp_ajax_wooai_sync_balance', array( $this, 'handle_sync_balance' ) );
+		add_action( 'wp_ajax_aisales_sync_balance', array( $this, 'handle_sync_balance' ) );
 
 		// Agent mode actions
-		add_action( 'wp_ajax_wooai_save_generated_image', array( $this, 'handle_save_generated_image' ) );
-		add_action( 'wp_ajax_wooai_get_store_summary', array( $this, 'handle_get_store_summary' ) );
+		add_action( 'wp_ajax_aisales_save_generated_image', array( $this, 'handle_save_generated_image' ) );
+		add_action( 'wp_ajax_aisales_get_store_summary', array( $this, 'handle_get_store_summary' ) );
 
 		// Tool calling actions (AI Agent data requests)
-		add_action( 'wp_ajax_wooai_fetch_tool_data', array( $this, 'handle_fetch_tool_data' ) );
+		add_action( 'wp_ajax_aisales_fetch_tool_data', array( $this, 'handle_fetch_tool_data' ) );
 	}
 
 	/**
-	 * Verify nonce and capability.
+	 * Get and validate a product by ID.
 	 *
-	 * Note: wp_send_json_error() calls wp_die() internally, so execution halts
-	 * on failure. The return value is only reached on success.
-	 *
-	 * @return void
-	 */
-	private function verify_request() {
-		if ( ! check_ajax_referer( 'wooai_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'woo-ai-sales-manager' ) ) );
-		}
-	}
-
-	/**
-	 * Verify chat nonce and product editing capability.
-	 *
-	 * Note: wp_send_json_error() calls wp_die() internally, so execution halts
-	 * on failure. The return value is only reached on success.
-	 *
-	 * @return void
-	 */
-	private function verify_chat_request() {
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		if ( ! current_user_can( 'edit_products' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'woo-ai-sales-manager' ) ) );
-		}
-	}
-
-	/**
-	 * Verify chat nonce and WooCommerce management capability.
-	 *
-	 * @return void
-	 */
-	private function verify_chat_admin_request() {
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'woo-ai-sales-manager' ) ) );
-		}
-	}
-
-	/**
-	 * Get and validate a product from the POST request.
-	 *
-	 * Retrieves product_id from $_POST, validates it, and returns the WC_Product.
+	 * Validates the product ID and returns the WC_Product.
 	 * Sends JSON error response and halts execution if validation fails.
 	 *
+	 * @param int $product_id The product ID to validate.
 	 * @return WC_Product The validated product object.
 	 */
-	private function get_validated_product() {
-		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-
+	private function get_validated_product( $product_id ) {
 		if ( ! $product_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		$product = wc_get_product( $product_id );
 
 		if ( ! $product ) {
-			wp_send_json_error( array( 'message' => __( 'Product not found.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		return $product;
 	}
 
 	/**
-	 * Handle login (legacy)
-	 *
-	 * @deprecated 1.1.0 Use handle_connect() for domain-based authentication instead.
-	 */
-	public function handle_login() {
-		_doing_it_wrong(
-			__METHOD__,
-			esc_html__( 'Email/password login is deprecated. Use domain-based authentication via handle_connect() instead.', 'woo-ai-sales-manager' ),
-			'1.1.0'
-		);
-
-		$this->verify_request();
-
-		$email    = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$password = isset( $_POST['password'] ) ? $_POST['password'] : '';
-
-		if ( empty( $email ) || empty( $password ) ) {
-			wp_send_json_error( array( 'message' => __( 'Email and password are required.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		$api    = WooAI_API_Client::instance();
-		$result = $api->login( $email, $password );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		// Store API key.
-		update_option( 'wooai_api_key', $result['api_key'] );
-		update_option( 'wooai_user_email', $result['email'] );
-		update_option( 'wooai_balance', $result['balance_tokens'] );
-
-		wp_send_json_success( array(
-			'message'  => __( 'Login successful!', 'woo-ai-sales-manager' ),
-			'redirect' => admin_url( 'admin.php?page=woo-ai-manager' ),
-		) );
-	}
-
-	/**
-	 * Handle register (legacy)
-	 *
-	 * @deprecated 1.1.0 Use handle_connect() for domain-based authentication instead.
-	 */
-	public function handle_register() {
-		_doing_it_wrong(
-			__METHOD__,
-			esc_html__( 'Email/password registration is deprecated. Use domain-based authentication via handle_connect() instead.', 'woo-ai-sales-manager' ),
-			'1.1.0'
-		);
-
-		$this->verify_request();
-
-		$email    = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$password = isset( $_POST['password'] ) ? $_POST['password'] : '';
-
-		if ( empty( $email ) || empty( $password ) ) {
-			wp_send_json_error( array( 'message' => __( 'Email and password are required.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		if ( strlen( $password ) < 8 ) {
-			wp_send_json_error( array( 'message' => __( 'Password must be at least 8 characters.', 'woo-ai-sales-manager' ) ) );
-		}
-
-		$api    = WooAI_API_Client::instance();
-		$result = $api->register( $email, $password );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		// Store API key.
-		update_option( 'wooai_api_key', $result['api_key'] );
-		update_option( 'wooai_user_email', $result['email'] );
-		update_option( 'wooai_balance', $result['balance_tokens'] );
-
-		wp_send_json_success( array(
-			'message'  => __( 'Account created successfully!', 'woo-ai-sales-manager' ),
-			'redirect' => admin_url( 'admin.php?page=woo-ai-manager' ),
-		) );
-	}
-
-	/**
 	 * Handle connect (domain-based auth)
 	 */
 	public function handle_connect() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$email  = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$domain = isset( $_POST['domain'] ) ? sanitize_text_field( $_POST['domain'] ) : '';
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$email  = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+		$domain = isset( $_POST['domain'] ) ? sanitize_text_field( wp_unslash( $_POST['domain'] ) ) : '';
 
 		if ( empty( $email ) ) {
-			wp_send_json_error( array( 'message' => __( 'Email is required.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Email is required.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		if ( empty( $domain ) ) {
-			wp_send_json_error( array( 'message' => __( 'Domain is required.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Domain is required.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
-		$api    = WooAI_API_Client::instance();
+		$api    = AISales_API_Client::instance();
 		$result = $api->connect( $email, $domain );
 
 		if ( is_wp_error( $result ) ) {
@@ -257,19 +123,19 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Store credentials
-		update_option( 'wooai_api_key', $result['api_key'] );
-		update_option( 'wooai_user_email', $result['email'] );
-		update_option( 'wooai_balance', $result['balance_tokens'] );
-		update_option( 'wooai_domain', $result['domain'] );
+		update_option( 'aisales_api_key', $result['api_key'] );
+		update_option( 'aisales_user_email', $result['email'] );
+		update_option( 'aisales_balance', $result['balance_tokens'] );
+		update_option( 'aisales_domain', $result['domain'] );
 
 		$message = isset( $result['is_new'] ) && $result['is_new']
-			? __( 'Account created successfully!', 'woo-ai-sales-manager' )
-			: __( 'Connected successfully!', 'woo-ai-sales-manager' );
+			? __( 'Account created successfully!', 'ai-sales-manager-for-woocommerce' )
+			: __( 'Connected successfully!', 'ai-sales-manager-for-woocommerce' );
 
 		wp_send_json_success( array(
 			'message'  => $message,
 			'is_new'   => isset( $result['is_new'] ) ? $result['is_new'] : false,
-			'redirect' => admin_url( 'admin.php?page=woo-ai-manager' ),
+			'redirect' => admin_url( 'admin.php?page=ai-sales-manager' ),
 		) );
 	}
 
@@ -277,9 +143,13 @@ class WooAI_Ajax_Handlers {
 	 * Handle top-up
 	 */
 	public function handle_topup() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$api    = WooAI_API_Client::instance();
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
 		$result = $api->create_checkout();
 
 		if ( is_wp_error( $result ) ) {
@@ -295,12 +165,17 @@ class WooAI_Ajax_Handlers {
 	 * Handle generate content
 	 */
 	public function handle_generate_content() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$product = $this->get_validated_product();
-		$action  = isset( $_POST['ai_action'] ) ? sanitize_key( $_POST['ai_action'] ) : 'improve';
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
-		$api    = WooAI_API_Client::instance();
+		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
+		$product    = $this->get_validated_product( $product_id );
+		$action     = isset( $_POST['ai_action'] ) ? sanitize_key( wp_unslash( $_POST['ai_action'] ) ) : 'improve';
+
+		$api    = AISales_API_Client::instance();
 		$result = $api->generate_content( array(
 			'product_title'       => $product->get_name(),
 			'product_description' => $product->get_description(),
@@ -312,7 +187,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Use balance from API response, fallback to stored option for mock mode.
-		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'wooai_balance', 0 );
+		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'aisales_balance', 0 );
 
 		wp_send_json_success( array(
 			'result'      => $result['result'],
@@ -325,11 +200,16 @@ class WooAI_Ajax_Handlers {
 	 * Handle suggest taxonomy
 	 */
 	public function handle_suggest_taxonomy() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$product = $this->get_validated_product();
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
-		$api    = WooAI_API_Client::instance();
+		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
+		$product    = $this->get_validated_product( $product_id );
+
+		$api    = AISales_API_Client::instance();
 		$result = $api->suggest_taxonomy( array(
 			'product_title'       => $product->get_name(),
 			'product_description' => $product->get_description(),
@@ -340,7 +220,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Use balance from API response, fallback to stored option for mock mode.
-		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'wooai_balance', 0 );
+		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'aisales_balance', 0 );
 
 		wp_send_json_success( array(
 			'categories'  => $result['suggested_categories'],
@@ -355,12 +235,17 @@ class WooAI_Ajax_Handlers {
 	 * Handle generate image
 	 */
 	public function handle_generate_image() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$product = $this->get_validated_product();
-		$style   = isset( $_POST['style'] ) ? sanitize_key( $_POST['style'] ) : 'product_photo';
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
-		$api    = WooAI_API_Client::instance();
+		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
+		$product    = $this->get_validated_product( $product_id );
+		$style      = isset( $_POST['style'] ) ? sanitize_key( wp_unslash( $_POST['style'] ) ) : 'product_photo';
+
+		$api    = AISales_API_Client::instance();
 		$result = $api->generate_image( array(
 			'product_title'       => $product->get_name(),
 			'product_description' => $product->get_description(),
@@ -372,7 +257,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Use balance from API response, fallback to stored option for mock mode.
-		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'wooai_balance', 0 );
+		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'aisales_balance', 0 );
 
 		wp_send_json_success( array(
 			'image_url'   => $result['image_url'],
@@ -385,23 +270,27 @@ class WooAI_Ajax_Handlers {
 	 * Handle improve image
 	 */
 	public function handle_improve_image() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
 		// Note: product_id validation is needed here but the product is not used.
 		// This ensures the user has access to a valid product context.
-		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
+		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
 		if ( ! $product_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
-		$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( $_POST['image_url'] ) : '';
-		$action    = isset( $_POST['improve_action'] ) ? sanitize_key( $_POST['improve_action'] ) : 'enhance';
+		$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
+		$action    = isset( $_POST['improve_action'] ) ? sanitize_key( wp_unslash( $_POST['improve_action'] ) ) : 'enhance';
 
 		if ( empty( $image_url ) ) {
-			wp_send_json_error( array( 'message' => __( 'No image selected.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No image selected.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
-		$api    = WooAI_API_Client::instance();
+		$api    = AISales_API_Client::instance();
 		$result = $api->improve_image( array(
 			'image_url' => $image_url,
 			'action'    => $action,
@@ -412,7 +301,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Use balance from API response, fallback to stored option for mock mode.
-		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'wooai_balance', 0 );
+		$balance = isset( $result['new_balance'] ) ? $result['new_balance'] : get_option( 'aisales_balance', 0 );
 
 		wp_send_json_success( array(
 			'image_url'   => $result['image_url'],
@@ -425,9 +314,13 @@ class WooAI_Ajax_Handlers {
 	 * Handle get balance
 	 */
 	public function handle_get_balance() {
-		$this->verify_request();
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
 
-		$api     = WooAI_API_Client::instance();
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api     = AISales_API_Client::instance();
 		$account = $api->get_account();
 
 		if ( is_wp_error( $account ) ) {
@@ -444,19 +337,23 @@ class WooAI_Ajax_Handlers {
 	 * Used by chat to apply AI suggestions to products
 	 */
 	public function handle_update_product_field() {
-		$this->verify_chat_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
 
-		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-		$field      = isset( $_POST['field'] ) ? sanitize_key( $_POST['field'] ) : '';
-		$value      = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
+		if ( ! current_user_can( 'edit_products' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
+		$field      = isset( $_POST['field'] ) ? sanitize_key( wp_unslash( $_POST['field'] ) ) : '';
+		$value_raw  = isset( $_POST['value'] ) ? wp_kses_post( wp_unslash( $_POST['value'] ) ) : '';
 
 		if ( ! $product_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			wp_send_json_error( array( 'message' => __( 'Product not found.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		// Allowed fields
@@ -469,21 +366,28 @@ class WooAI_Ajax_Handlers {
 		);
 
 		if ( ! in_array( $field, $allowed_fields, true ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid field.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid field.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		// Sanitize value based on field type.
+		if ( in_array( $field, array( 'description', 'short_description' ), true ) ) {
+			$value = wp_kses_post( $value_raw );
+		} else {
+			$value = sanitize_text_field( $value_raw );
 		}
 
 		// Update the field
 		switch ( $field ) {
 			case 'title':
-				$product->set_name( sanitize_text_field( $value ) );
+				$product->set_name( $value );
 				break;
 
 			case 'description':
-				$product->set_description( wp_kses_post( $value ) );
+				$product->set_description( $value );
 				break;
 
 			case 'short_description':
-				$product->set_short_description( wp_kses_post( $value ) );
+				$product->set_short_description( $value );
 				break;
 
 			case 'tags':
@@ -522,7 +426,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		wp_send_json_success( array(
-			'message' => __( 'Product updated successfully.', 'woo-ai-sales-manager' ),
+			'message' => __( 'Product updated successfully.', 'ai-sales-manager-for-woocommerce' ),
 			'field'   => $field,
 		) );
 	}
@@ -533,27 +437,27 @@ class WooAI_Ajax_Handlers {
 	 */
 	public function handle_update_category_field() {
 		// Use chat nonce
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
+		if ( ! check_ajax_referer( 'aisales_chat_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
 		if ( ! current_user_can( 'manage_product_terms' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
-		$category_id = isset( $_POST['category_id'] ) ? absint( $_POST['category_id'] ) : 0;
-		$field       = isset( $_POST['field'] ) ? sanitize_key( $_POST['field'] ) : '';
-		$value       = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
+		$category_id = isset( $_POST['category_id'] ) ? absint( wp_unslash( $_POST['category_id'] ) ) : 0;
+		$field       = isset( $_POST['field'] ) ? sanitize_key( wp_unslash( $_POST['field'] ) ) : '';
+		$value_raw   = isset( $_POST['value'] ) ? wp_kses_post( wp_unslash( $_POST['value'] ) ) : '';
 
 		if ( ! $category_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid category.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid category.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		$term = get_term( $category_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			wp_send_json_error( array( 'message' => __( 'Category not found.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		// Allowed fields
@@ -565,40 +469,47 @@ class WooAI_Ajax_Handlers {
 		);
 
 		if ( ! in_array( $field, $allowed_fields, true ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid field.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid field.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		// Sanitize value based on field type.
+		if ( 'description' === $field ) {
+			$value = wp_kses_post( $value_raw );
+		} else {
+			$value = sanitize_text_field( $value_raw );
 		}
 
 		// Update the field
 		switch ( $field ) {
 			case 'name':
 				wp_update_term( $category_id, 'product_cat', array(
-					'name' => sanitize_text_field( $value ),
+					'name' => $value,
 				) );
 				break;
 
 			case 'description':
 				wp_update_term( $category_id, 'product_cat', array(
-					'description' => wp_kses_post( $value ),
+					'description' => $value,
 				) );
 				break;
 
 			case 'seo_title':
 				// Store as term meta - works with Yoast SEO and RankMath
-				update_term_meta( $category_id, '_yoast_wpseo_title', sanitize_text_field( $value ) );
-				update_term_meta( $category_id, 'rank_math_title', sanitize_text_field( $value ) );
-				update_term_meta( $category_id, 'wooai_seo_title', sanitize_text_field( $value ) );
+				update_term_meta( $category_id, '_yoast_wpseo_title', $value );
+				update_term_meta( $category_id, 'rank_math_title', $value );
+				update_term_meta( $category_id, 'aisales_seo_title', $value );
 				break;
 
 			case 'meta_description':
 				// Store as term meta - works with Yoast SEO and RankMath
-				update_term_meta( $category_id, '_yoast_wpseo_metadesc', sanitize_text_field( $value ) );
-				update_term_meta( $category_id, 'rank_math_description', sanitize_text_field( $value ) );
-				update_term_meta( $category_id, 'wooai_meta_description', sanitize_text_field( $value ) );
+				update_term_meta( $category_id, '_yoast_wpseo_metadesc', $value );
+				update_term_meta( $category_id, 'rank_math_description', $value );
+				update_term_meta( $category_id, 'aisales_meta_description', $value );
 				break;
 		}
 
 		wp_send_json_success( array(
-			'message' => __( 'Category updated successfully.', 'woo-ai-sales-manager' ),
+			'message' => __( 'Category updated successfully.', 'ai-sales-manager-for-woocommerce' ),
 			'field'   => $field,
 		) );
 	}
@@ -609,20 +520,20 @@ class WooAI_Ajax_Handlers {
 	 */
 	public function handle_get_category() {
 		// Use chat nonce
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
+		if ( ! check_ajax_referer( 'aisales_chat_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
-		$category_id = isset( $_POST['category_id'] ) ? absint( $_POST['category_id'] ) : 0;
+		$category_id = isset( $_POST['category_id'] ) ? absint( wp_unslash( $_POST['category_id'] ) ) : 0;
 
 		if ( ! $category_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid category.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid category.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		$term = get_term( $category_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			wp_send_json_error( array( 'message' => __( 'Category not found.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
 		// Get parent info
@@ -652,7 +563,7 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Get SEO meta
-		$seo_title = get_term_meta( $category_id, 'wooai_seo_title', true );
+		$seo_title = get_term_meta( $category_id, 'aisales_seo_title', true );
 		if ( empty( $seo_title ) ) {
 			$seo_title = get_term_meta( $category_id, '_yoast_wpseo_title', true );
 		}
@@ -660,7 +571,7 @@ class WooAI_Ajax_Handlers {
 			$seo_title = get_term_meta( $category_id, 'rank_math_title', true );
 		}
 
-		$meta_description = get_term_meta( $category_id, 'wooai_meta_description', true );
+		$meta_description = get_term_meta( $category_id, 'aisales_meta_description', true );
 		if ( empty( $meta_description ) ) {
 			$meta_description = get_term_meta( $category_id, '_yoast_wpseo_metadesc', true );
 		}
@@ -689,33 +600,38 @@ class WooAI_Ajax_Handlers {
 	 * Handle save store context
 	 */
 	public function handle_save_store_context() {
-		$this->verify_chat_admin_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
 
-		$context = isset( $_POST['context'] ) ? $_POST['context'] : array();
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$context_raw = isset( $_POST['context'] ) ? map_deep( wp_unslash( $_POST['context'] ), 'sanitize_textarea_field' ) : array();
+		$context     = is_array( $context_raw ) ? $context_raw : array();
 
 		$store_context = array(
 			'store_name'          => isset( $context['store_name'] ) ? sanitize_text_field( $context['store_name'] ) : '',
-			'store_description'   => isset( $context['store_description'] ) ? sanitize_textarea_field( $context['store_description'] ) : '',
+			'store_description'   => isset( $context['store_description'] ) ? $context['store_description'] : '',
 			'business_niche'      => isset( $context['business_niche'] ) ? sanitize_key( $context['business_niche'] ) : '',
 			'target_audience'     => isset( $context['target_audience'] ) ? sanitize_text_field( $context['target_audience'] ) : '',
 			'brand_tone'          => isset( $context['brand_tone'] ) ? sanitize_key( $context['brand_tone'] ) : '',
 			'language'            => isset( $context['language'] ) ? sanitize_text_field( $context['language'] ) : 'English',
-			'custom_instructions' => isset( $context['custom_instructions'] ) ? sanitize_textarea_field( $context['custom_instructions'] ) : '',
+			'custom_instructions' => isset( $context['custom_instructions'] ) ? $context['custom_instructions'] : '',
 			'updated_at'          => current_time( 'mysql' ),
 		);
 
 		// Preserve sync data if it exists
-		$existing = get_option( 'wooai_store_context', array() );
+		$existing = get_option( 'aisales_store_context', array() );
 		if ( isset( $existing['last_sync'] ) ) {
 			$store_context['last_sync']       = $existing['last_sync'];
 			$store_context['category_count']  = $existing['category_count'];
 			$store_context['product_count']   = $existing['product_count'];
 		}
 
-		update_option( 'wooai_store_context', $store_context );
+		update_option( 'aisales_store_context', $store_context );
 
 		wp_send_json_success( array(
-			'message' => __( 'Store context saved successfully.', 'woo-ai-sales-manager' ),
+			'message' => __( 'Store context saved successfully.', 'ai-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -723,7 +639,11 @@ class WooAI_Ajax_Handlers {
 	 * Handle sync store context
 	 */
 	public function handle_sync_store_context() {
-		$this->verify_chat_admin_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
 		// Count products and categories
 		$product_count = wp_count_posts( 'product' );
@@ -739,17 +659,17 @@ class WooAI_Ajax_Handlers {
 		}
 
 		// Update store context
-		$store_context = get_option( 'wooai_store_context', array() );
+		$store_context = get_option( 'aisales_store_context', array() );
 		$store_context['last_sync']      = current_time( 'mysql' );
 		$store_context['category_count'] = $category_count;
 		$store_context['product_count']  = $product_total;
 
-		update_option( 'wooai_store_context', $store_context );
+		update_option( 'aisales_store_context', $store_context );
 
 		wp_send_json_success( array(
 			'message' => sprintf(
 				/* translators: %1$s: category count, %2$s: product count */
-				__( 'Synced: %1$s categories, %2$s products', 'woo-ai-sales-manager' ),
+				__( 'Synced: %1$s categories, %2$s products', 'ai-sales-manager-for-woocommerce' ),
 				number_format_i18n( $category_count ),
 				number_format_i18n( $product_total )
 			),
@@ -761,12 +681,12 @@ class WooAI_Ajax_Handlers {
 	 */
 	public function handle_mark_chat_visited() {
 		// Use chat nonce
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
+		if ( ! check_ajax_referer( 'aisales_chat_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
-		update_user_meta( get_current_user_id(), 'wooai_chat_visited', true );
+		update_user_meta( get_current_user_id(), 'aisales_chat_visited', true );
 
 		wp_send_json_success();
 	}
@@ -775,16 +695,20 @@ class WooAI_Ajax_Handlers {
 	 * Handle sync balance from chat page
 	 */
 	public function handle_sync_balance() {
-		$this->verify_chat_admin_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
 
-		$balance = isset( $_POST['balance'] ) ? absint( $_POST['balance'] ) : null;
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$balance = isset( $_POST['balance'] ) ? absint( wp_unslash( $_POST['balance'] ) ) : null;
 
 		if ( null === $balance ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid balance value.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid balance value.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
-		update_option( 'wooai_balance', $balance );
+		update_option( 'aisales_balance', $balance );
 
 		wp_send_json_success( array( 'balance' => $balance ) );
 	}
@@ -795,22 +719,22 @@ class WooAI_Ajax_Handlers {
 	 */
 	public function handle_save_generated_image() {
 		// Use chat nonce
-		if ( ! check_ajax_referer( 'wooai_chat_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'woo-ai-sales-manager' ) ) );
+		if ( ! check_ajax_referer( 'aisales_chat_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid security token.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
 		if ( ! current_user_can( 'upload_files' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
-		$image_data = isset( $_POST['image_data'] ) ? $_POST['image_data'] : '';
-		$filename   = isset( $_POST['filename'] ) ? sanitize_file_name( $_POST['filename'] ) : 'ai-generated-image.png';
-		$title      = isset( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
+		$image_data = isset( $_POST['image_data'] ) ? sanitize_text_field( wp_unslash( $_POST['image_data'] ) ) : '';
+		$filename   = isset( $_POST['filename'] ) ? sanitize_file_name( wp_unslash( $_POST['filename'] ) ) : 'ai-generated-image.png';
+		$title      = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
 
 		if ( empty( $image_data ) ) {
-			wp_send_json_error( array( 'message' => __( 'No image data provided.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No image data provided.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
@@ -819,7 +743,7 @@ class WooAI_Ajax_Handlers {
 			// Extract mime type and base64 data
 			preg_match( '/data:image\/(\w+);base64,(.+)/', $image_data, $matches );
 			if ( count( $matches ) !== 3 ) {
-				wp_send_json_error( array( 'message' => __( 'Invalid image data format.', 'woo-ai-sales-manager' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Invalid image data format.', 'ai-sales-manager-for-woocommerce' ) ) );
 				return;
 			}
 			$extension   = $matches[1];
@@ -832,7 +756,7 @@ class WooAI_Ajax_Handlers {
 		// Decode base64
 		$decoded = base64_decode( $image_data );
 		if ( false === $decoded ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to decode image data.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Failed to decode image data.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
@@ -842,7 +766,7 @@ class WooAI_Ajax_Handlers {
 
 		$allowed_mimes = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
 		if ( ! in_array( $mime, $allowed_mimes, true ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid image type.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid image type.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
@@ -860,7 +784,7 @@ class WooAI_Ajax_Handlers {
 		// Save the file
 		$saved = file_put_contents( $upload_path, $decoded );
 		if ( false === $saved ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to save image file.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Failed to save image file.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
@@ -886,7 +810,7 @@ class WooAI_Ajax_Handlers {
 		wp_update_attachment_metadata( $attachment_id, $metadata );
 
 		wp_send_json_success( array(
-			'message'       => __( 'Image saved to media library.', 'woo-ai-sales-manager' ),
+			'message'       => __( 'Image saved to media library.', 'ai-sales-manager-for-woocommerce' ),
 			'attachment_id' => $attachment_id,
 			'url'           => wp_get_attachment_url( $attachment_id ),
 			'edit_url'      => admin_url( 'upload.php?item=' . $attachment_id ),
@@ -898,7 +822,11 @@ class WooAI_Ajax_Handlers {
 	 * Used by agent mode to get store statistics for context
 	 */
 	public function handle_get_store_summary() {
-		$this->verify_chat_admin_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
 
 		// Get product counts
 		$product_counts = wp_count_posts( 'product' );
@@ -976,41 +904,62 @@ class WooAI_Ajax_Handlers {
 			}
 		}
 
-		// Get products with missing descriptions
-		$products_missing_desc = new WP_Query( array(
-			'post_type'      => 'product',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-			'meta_query'     => array(
-				'relation' => 'OR',
-				array(
-					'key'     => '_product_description',
-					'compare' => 'NOT EXISTS',
-				),
-			),
-		) );
+		// Count products with empty description using WP_Query.
+		// Use caching to reduce database load.
+		$cache_key        = 'aisales_empty_desc_count';
+		$empty_desc_count = wp_cache_get( $cache_key );
 
-		// Count products with empty description via direct query for accuracy
-		global $wpdb;
-		$empty_desc_count = (int) $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->posts} 
-			WHERE post_type = 'product' 
-			AND post_status = 'publish' 
-			AND (post_content = '' OR post_content IS NULL)"
-		);
+		if ( false === $empty_desc_count ) {
+			// Query for products with empty post_content.
+			$empty_desc_query = new WP_Query( array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				's'              => '', // Empty search to include all.
+			) );
 
-		// Get products without images
-		$products_no_image = (int) $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->posts} p
-			LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_thumbnail_id'
-			WHERE p.post_type = 'product' 
-			AND p.post_status = 'publish'
-			AND (pm.meta_value IS NULL OR pm.meta_value = '')"
-		);
+			// Count products with truly empty descriptions.
+			$empty_desc_count = 0;
+			if ( $empty_desc_query->have_posts() ) {
+				foreach ( $empty_desc_query->posts as $product_id ) {
+					$content = get_post_field( 'post_content', $product_id );
+					if ( empty( trim( $content ) ) ) {
+						$empty_desc_count++;
+					}
+				}
+			}
+			wp_reset_postdata();
+			wp_cache_set( $cache_key, $empty_desc_count, '', 300 ); // Cache for 5 minutes.
+		}
+
+		// Get products without images with caching.
+		$cache_key_images  = 'aisales_no_image_count';
+		$products_no_image = wp_cache_get( $cache_key_images );
+
+		if ( false === $products_no_image ) {
+			// Query all published products and check for thumbnails.
+			$all_products_query = new WP_Query( array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			) );
+
+			$products_no_image = 0;
+			if ( $all_products_query->have_posts() ) {
+				foreach ( $all_products_query->posts as $product_id ) {
+					if ( ! has_post_thumbnail( $product_id ) ) {
+						$products_no_image++;
+					}
+				}
+			}
+			wp_reset_postdata();
+			wp_cache_set( $cache_key_images, $products_no_image, '', 300 ); // Cache for 5 minutes.
+		}
 
 		// Get store context for additional info
-		$store_context = get_option( 'wooai_store_context', array() );
+		$store_context = get_option( 'aisales_store_context', array() );
 
 		wp_send_json_success( array(
 			'products'        => array(
@@ -1050,35 +999,40 @@ class WooAI_Ajax_Handlers {
 	 *   - params: object
 	 */
 	public function handle_fetch_tool_data() {
-		$this->verify_chat_admin_request();
+		check_ajax_referer( 'aisales_chat_nonce', 'nonce' );
 
-		$requests_raw = isset( $_POST['requests'] ) ? wp_unslash( $_POST['requests'] ) : '';
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$requests_raw = isset( $_POST['requests'] ) ? sanitize_text_field( wp_unslash( $_POST['requests'] ) ) : '';
 
 		// Decode JSON string from JavaScript
 		$requests = json_decode( $requests_raw, true );
 
 		if ( empty( $requests ) || ! is_array( $requests ) ) {
-			wp_send_json_error( array( 'message' => __( 'No tool requests provided.', 'woo-ai-sales-manager' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No tool requests provided.', 'ai-sales-manager-for-woocommerce' ) ) );
 			return;
 		}
 
 		// Load tool executor
-		require_once WOOAI_PLUGIN_DIR . 'includes/class-wooai-tool-executor.php';
-		$executor = new WooAI_Tool_Executor();
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-tool-executor.php';
+		$executor = new AISales_Tool_Executor();
 
 		$results = array();
 
 		foreach ( $requests as $request ) {
 			$request_id = isset( $request['request_id'] ) ? sanitize_text_field( $request['request_id'] ) : '';
 			$tool       = isset( $request['tool'] ) ? sanitize_key( $request['tool'] ) : '';
-			$params     = isset( $request['params'] ) ? $request['params'] : array();
+			$params_raw = isset( $request['params'] ) ? $request['params'] : array();
+			$params     = is_array( $params_raw ) ? map_deep( $params_raw, 'sanitize_text_field' ) : array();
 
 			if ( empty( $request_id ) || empty( $tool ) ) {
 				$results[] = array(
 					'request_id' => $request_id,
 					'tool'       => $tool,
 					'success'    => false,
-					'error'      => __( 'Invalid request format.', 'woo-ai-sales-manager' ),
+					'error'      => __( 'Invalid request format.', 'ai-sales-manager-for-woocommerce' ),
 				);
 				continue;
 			}

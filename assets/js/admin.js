@@ -1,10 +1,10 @@
 /**
- * WooAI Sales Manager - Admin JavaScript
+ * AISales Sales Manager - Admin JavaScript
  */
 (function($) {
     'use strict';
 
-    var WooAI = {
+    var AISales = {
         /**
          * Initialize
          */
@@ -28,8 +28,8 @@
             var self = this;
 
             // Check for toast data from localized script
-            if (typeof wooaiAdmin !== 'undefined' && wooaiAdmin.toast) {
-                var toast = wooaiAdmin.toast;
+            if (typeof aisalesAdmin !== 'undefined' && aisalesAdmin.toast) {
+                var toast = aisalesAdmin.toast;
                 // Small delay to ensure DOM is ready
                 setTimeout(function() {
                     self.showRichToast({
@@ -48,19 +48,19 @@
          * This fixes layout issues when WP injects notices after the h1 tag
          */
         relocateNotices: function() {
-            var $adminWrap = $('.wooai-admin-wrap');
-            var $pageHeader = $('.wooai-page-header');
-            var $pageHeaderContent = $('.wooai-page-header__content');
-            var $chatWrap = $('.wooai-chat-wrap');
+            var $adminWrap = $('.aisales-admin-wrap');
+            var $pageHeader = $('.aisales-page-header');
+            var $pageHeaderContent = $('.aisales-page-header__content');
+            var $chatWrap = $('.aisales-chat-wrap');
             
             if (!$adminWrap.length) {
                 return;
             }
 
             // Create a notices container at the top of admin wrap if it doesn't exist
-            var $noticesContainer = $adminWrap.find('.wooai-notices-container');
+            var $noticesContainer = $adminWrap.find('.aisales-notices-container');
             if (!$noticesContainer.length) {
-                $noticesContainer = $('<div class="wooai-notices-container"></div>');
+                $noticesContainer = $('<div class="aisales-notices-container"></div>');
                 $adminWrap.prepend($noticesContainer);
             }
 
@@ -98,41 +98,41 @@
             var self = this;
 
             // Tab switching (legacy support)
-            $('.wooai-auth-tab-btn').on('click', function() {
+            $('.aisales-auth-tab-btn').on('click', function() {
                 var tab = $(this).data('tab');
 
                 // Update button states (support both old and new classes)
-                $('.wooai-auth-tab-btn').removeClass('button-primary wooai-auth__tab--active');
-                $(this).addClass('button-primary wooai-auth__tab--active');
+                $('.aisales-auth-tab-btn').removeClass('button-primary aisales-auth__tab--active');
+                $(this).addClass('button-primary aisales-auth__tab--active');
 
                 // Show/hide forms
-                $('.wooai-auth-form').hide();
-                $('#wooai-' + tab + '-form').show();
+                $('.aisales-auth-form').hide();
+                $('#aisales-' + tab + '-form').show();
 
                 // Clear message
-                $('#wooai-auth-message').hide();
+                $('#aisales-auth-message').hide();
             });
 
             // Legacy Login form
-            $('#wooai-login-btn').on('click', function() {
-                var email = $('#wooai-login-email').val();
-                var password = $('#wooai-login-password').val();
+            $('#aisales-login-btn').on('click', function() {
+                var email = $('#aisales-login-email').val();
+                var password = $('#aisales-login-password').val();
 
                 if (!email || !password) {
-                    self.showAuthMessage('error', wooaiAdmin.strings.error);
+                    self.showAuthMessage('error', aisalesAdmin.strings.error);
                     return;
                 }
 
-                self.authRequest('wooai_login', { email: email, password: password }, $(this));
+                self.authRequest('aisales_login', { email: email, password: password }, $(this));
             });
 
             // Legacy Register form
-            $('#wooai-register-btn').on('click', function() {
-                var email = $('#wooai-register-email').val();
-                var password = $('#wooai-register-password').val();
+            $('#aisales-register-btn').on('click', function() {
+                var email = $('#aisales-register-email').val();
+                var password = $('#aisales-register-password').val();
 
                 if (!email || !password) {
-                    self.showAuthMessage('error', wooaiAdmin.strings.error);
+                    self.showAuthMessage('error', aisalesAdmin.strings.error);
                     return;
                 }
 
@@ -141,20 +141,20 @@
                     return;
                 }
 
-                self.authRequest('wooai_register', { email: email, password: password }, $(this));
+                self.authRequest('aisales_register', { email: email, password: password }, $(this));
             });
 
             // New Connect form (domain-based auth)
-            $('#wooai-connect-btn').on('click', function() {
-                var email = $('#wooai-connect-email').val();
-                var domain = $('#wooai-connect-domain').val();
+            $('#aisales-connect-btn').on('click', function() {
+                var email = $('#aisales-connect-email').val();
+                var domain = $('#aisales-connect-domain').val();
 
                 if (!email) {
                     self.showAuthMessage('error', 'Please enter your email address.');
                     return;
                 }
 
-                self.authRequest('wooai_connect', { email: email, domain: domain }, $(this));
+                self.authRequest('aisales_connect', { email: email, domain: domain }, $(this));
             });
         },
 
@@ -169,20 +169,20 @@
             $spinner.addClass('is-active');
 
             data.action = action;
-            data.nonce = wooaiAdmin.nonce;
+            data.nonce = aisalesAdmin.nonce;
 
-            $.post(wooaiAdmin.ajaxUrl, data)
+            $.post(aisalesAdmin.ajaxUrl, data)
                 .done(function(response) {
                     if (response.success) {
                         // Show success toast for connect action
-                        if (action === 'wooai_connect') {
+                        if (action === 'aisales_connect') {
                             var isNew = response.data.is_new;
                             self.showRichToast({
                                 type: 'success',
                                 icon: 'dashicons-yes-alt',
                                 title: isNew ? 'Account Created!' : 'Connected!',
                                 message: isNew
-                                    ? 'Your WooAI account is ready. Redirecting to dashboard...'
+                                    ? 'Your AISales account is ready. Redirecting to dashboard...'
                                     : 'Welcome back! Redirecting to dashboard...',
                                 duration: 2500
                             });
@@ -193,14 +193,14 @@
                         if (response.data.redirect) {
                             setTimeout(function() {
                                 window.location.href = response.data.redirect;
-                            }, action === 'wooai_connect' ? 1500 : 0);
+                            }, action === 'aisales_connect' ? 1500 : 0);
                         }
                     } else {
                         self.showAuthMessage('error', response.data.message);
                     }
                 })
                 .fail(function() {
-                    self.showAuthMessage('error', wooaiAdmin.strings.error);
+                    self.showAuthMessage('error', aisalesAdmin.strings.error);
                 })
                 .always(function() {
                     $btn.prop('disabled', false);
@@ -212,12 +212,12 @@
          * Show auth message
          */
         showAuthMessage: function(type, message) {
-            var $msg = $('#wooai-auth-message');
-            var alertClass = type === 'error' ? 'wooai-alert--danger' : 'wooai-alert--success';
+            var $msg = $('#aisales-auth-message');
+            var alertClass = type === 'error' ? 'aisales-alert--danger' : 'aisales-alert--success';
             var iconClass = type === 'error' ? 'dashicons-warning' : 'dashicons-yes-alt';
 
-            $msg.removeClass('notice notice-success notice-error notice-info wooai-alert--success wooai-alert--danger wooai-alert--warning wooai-alert--info')
-                .addClass('wooai-alert ' + alertClass)
+            $msg.removeClass('notice notice-success notice-error notice-info aisales-alert--success aisales-alert--danger aisales-alert--warning aisales-alert--info')
+                .addClass('aisales-alert ' + alertClass)
                 .html('<span class="dashicons ' + iconClass + '"></span><span>' + message + '</span>')
                 .show();
         },
@@ -226,34 +226,34 @@
          * Bind top-up button events
          */
         bindTopUpEvents: function() {
-            $('#wooai-topup-btn').on('click', function() {
+            $('#aisales-topup-btn').on('click', function() {
                 var $btn = $(this);
                 $btn.prop('disabled', true);
 
-                $.post(wooaiAdmin.ajaxUrl, {
-                    action: 'wooai_topup',
-                    nonce: wooaiAdmin.nonce
+                $.post(aisalesAdmin.ajaxUrl, {
+                    action: 'aisales_topup',
+                    nonce: aisalesAdmin.nonce
                 })
                 .done(function(response) {
                     if (response.success && response.data.checkout_url) {
                         window.location.href = response.data.checkout_url;
                     } else {
-                        WooAI.showRichToast({
+                        AISales.showRichToast({
                             type: 'error',
                             icon: 'dashicons-warning',
                             title: 'Top-Up Error',
-                            message: response.data.message || wooaiAdmin.strings.error,
+                            message: response.data.message || aisalesAdmin.strings.error,
                             duration: 4000
                         });
                         $btn.prop('disabled', false);
                     }
                 })
                 .fail(function() {
-                    WooAI.showRichToast({
+                    AISales.showRichToast({
                         type: 'error',
                         icon: 'dashicons-warning',
                         title: 'Connection Error',
-                        message: wooaiAdmin.strings.error,
+                        message: aisalesAdmin.strings.error,
                         duration: 4000
                     });
                     $btn.prop('disabled', false);
@@ -267,19 +267,19 @@
         bindAIActions: function() {
             var self = this;
 
-            $('.wooai-ai-action').on('click', function() {
+            $('.aisales-ai-action').on('click', function() {
                 var $btn = $(this);
                 var action = $btn.data('action');
                 var productId = $btn.data('product-id');
 
                 // Check balance first
-                var balance = parseInt($('#wooai-balance-count').text().replace(/,/g, ''), 10);
+                var balance = parseInt($('#aisales-balance-count').text().replace(/,/g, ''), 10);
                 if (balance < 50) {
                     self.showRichToast({
                         type: 'warning',
                         icon: 'dashicons-money-alt',
                         title: 'Low Balance',
-                        message: wooaiAdmin.strings.lowBalance || 'Your token balance is too low. Please top up to continue.',
+                        message: aisalesAdmin.strings.lowBalance || 'Your token balance is too low. Please top up to continue.',
                         duration: 5000
                     });
                     return;
@@ -301,8 +301,8 @@
             $spinner.addClass('is-active');
 
             var data = {
-                action: 'wooai_' + action,
-                nonce: wooaiAdmin.nonce,
+                action: 'aisales_' + action,
+                nonce: aisalesAdmin.nonce,
                 product_id: productId
             };
 
@@ -311,7 +311,7 @@
                 data.ai_action = $btn.data('ai-action') || 'improve';
             }
 
-            $.post(wooaiAdmin.ajaxUrl, data)
+            $.post(aisalesAdmin.ajaxUrl, data)
                 .done(function(response) {
                     if (response.success) {
                         self.showResultModal(action, response.data);
@@ -320,7 +320,7 @@
                             type: 'error',
                             icon: 'dashicons-warning',
                             title: 'AI Action Failed',
-                            message: response.data.message || wooaiAdmin.strings.error,
+                            message: response.data.message || aisalesAdmin.strings.error,
                             duration: 4000
                         });
                     }
@@ -330,7 +330,7 @@
                         type: 'error',
                         icon: 'dashicons-warning',
                         title: 'Connection Error',
-                        message: wooaiAdmin.strings.error,
+                        message: aisalesAdmin.strings.error,
                         duration: 4000
                     });
                 })
@@ -345,14 +345,14 @@
          */
         showResultModal: function(action, data) {
             var self = this;
-            var $modal = $('#wooai-result-modal');
-            var $title = $('#wooai-modal-title');
-            var $body = $('#wooai-modal-body');
-            var $tokensUsed = $('.wooai-tokens-used');
+            var $modal = $('#aisales-result-modal');
+            var $title = $('#aisales-modal-title');
+            var $body = $('#aisales-modal-body');
+            var $tokensUsed = $('.aisales-tokens-used');
 
             // Update balance display
             if (data.new_balance !== undefined) {
-                $('#wooai-balance-count').text(data.new_balance.toLocaleString());
+                $('#aisales-balance-count').text(data.new_balance.toLocaleString());
             }
 
             // Set tokens used
@@ -388,7 +388,7 @@
             $modal.data('result-data', data);
 
             // Open Thickbox
-            tb_show('AI Result', '#TB_inline?inlineId=wooai-result-modal&width=550&height=500');
+            tb_show('AI Result', '#TB_inline?inlineId=aisales-result-modal&width=550&height=500');
         },
 
         /**
@@ -398,23 +398,23 @@
             var html = '';
 
             if (result.title) {
-                html += '<div class="wooai-result-field">';
+                html += '<div class="aisales-result-field">';
                 html += '<label>Title</label>';
-                html += '<input type="text" id="wooai-result-title" value="' + this.escapeHtml(result.title) + '" class="large-text">';
+                html += '<input type="text" id="aisales-result-title" value="' + this.escapeHtml(result.title) + '" class="large-text">';
                 html += '</div>';
             }
 
             if (result.description) {
-                html += '<div class="wooai-result-field">';
+                html += '<div class="aisales-result-field">';
                 html += '<label>Description</label>';
-                html += '<textarea id="wooai-result-description" rows="6" class="large-text">' + this.escapeHtml(result.description) + '</textarea>';
+                html += '<textarea id="aisales-result-description" rows="6" class="large-text">' + this.escapeHtml(result.description) + '</textarea>';
                 html += '</div>';
             }
 
             if (result.short_description) {
-                html += '<div class="wooai-result-field">';
+                html += '<div class="aisales-result-field">';
                 html += '<label>Short Description</label>';
-                html += '<textarea id="wooai-result-short-desc" rows="2" class="large-text">' + this.escapeHtml(result.short_description) + '</textarea>';
+                html += '<textarea id="aisales-result-short-desc" rows="2" class="large-text">' + this.escapeHtml(result.short_description) + '</textarea>';
                 html += '</div>';
             }
 
@@ -428,21 +428,21 @@
             var html = '';
 
             if (data.categories && data.categories.length) {
-                html += '<div class="wooai-result-field">';
+                html += '<div class="aisales-result-field">';
                 html += '<label>Suggested Categories</label>';
-                html += '<div class="wooai-result-tags">';
+                html += '<div class="aisales-result-tags">';
                 data.categories.forEach(function(cat) {
-                    html += '<span class="wooai-result-tag selected" data-type="category">' + cat + '</span>';
+                    html += '<span class="aisales-result-tag selected" data-type="category">' + cat + '</span>';
                 });
                 html += '</div></div>';
             }
 
             if (data.tags && data.tags.length) {
-                html += '<div class="wooai-result-field">';
+                html += '<div class="aisales-result-field">';
                 html += '<label>Suggested Tags</label>';
-                html += '<div class="wooai-result-tags">';
+                html += '<div class="aisales-result-tags">';
                 data.tags.forEach(function(tag) {
-                    html += '<span class="wooai-result-tag selected" data-type="tag">' + tag + '</span>';
+                    html += '<span class="aisales-result-tag selected" data-type="tag">' + tag + '</span>';
                 });
                 html += '</div></div>';
             }
@@ -454,8 +454,8 @@
          * Build image result HTML
          */
         buildImageResult: function(data) {
-            var html = '<div class="wooai-result-field" style="text-align: center;">';
-            html += '<img src="' + data.image_url + '" class="wooai-result-image" alt="Generated image">';
+            var html = '<div class="aisales-result-field" style="text-align: center;">';
+            html += '<img src="' + data.image_url + '" class="aisales-result-image" alt="Generated image">';
             html += '</div>';
             return html;
         },
@@ -467,18 +467,18 @@
             var self = this;
 
             // Tag selection toggle
-            $(document).on('click', '.wooai-result-tag', function() {
+            $(document).on('click', '.aisales-result-tag', function() {
                 $(this).toggleClass('selected');
             });
 
             // Discard button
-            $('#wooai-modal-discard').on('click', function() {
+            $('#aisales-modal-discard').on('click', function() {
                 tb_remove();
             });
 
             // Apply button
-            $('#wooai-modal-apply').on('click', function() {
-                var $modal = $('#wooai-result-modal');
+            $('#aisales-modal-apply').on('click', function() {
+                var $modal = $('#aisales-result-modal');
                 var actionType = $modal.data('action-type');
                 var data = $modal.data('result-data');
 
@@ -492,9 +492,9 @@
          */
         bindApiKeyEvents: function() {
             var self = this;
-            var $display = $('#wooai-api-key-display');
-            var $toggleBtn = $('#wooai-toggle-key');
-            var $copyBtn = $('#wooai-copy-key');
+            var $display = $('#aisales-api-key-display');
+            var $toggleBtn = $('#aisales-toggle-key');
+            var $copyBtn = $('#aisales-copy-key');
 
             // Only proceed if elements exist
             if (!$display.length) {
@@ -511,13 +511,13 @@
                     $display.text($display.data('masked'));
                     $display.data('visible', false);
                     $icon.removeClass('dashicons-hidden').addClass('dashicons-visibility');
-                    $(this).attr('title', wooaiAdmin.strings.showKey || 'Show API Key');
+                    $(this).attr('title', aisalesAdmin.strings.showKey || 'Show API Key');
                 } else {
                     // Show the key
                     $display.text($display.data('full'));
                     $display.data('visible', true);
                     $icon.removeClass('dashicons-visibility').addClass('dashicons-hidden');
-                    $(this).attr('title', wooaiAdmin.strings.hideKey || 'Hide API Key');
+                    $(this).attr('title', aisalesAdmin.strings.hideKey || 'Hide API Key');
                 }
             });
 
@@ -559,7 +559,7 @@
                     type: 'error',
                     icon: 'dashicons-warning',
                     title: 'Copy Failed',
-                    message: wooaiAdmin.strings.copyError || 'Failed to copy to clipboard.',
+                    message: aisalesAdmin.strings.copyError || 'Failed to copy to clipboard.',
                     duration: 3000
                 });
             }
@@ -576,15 +576,15 @@
 
             // Change icon to checkmark
             $icon.removeClass(originalClass).addClass(successClass);
-            $btn.addClass('wooai-api-key__btn--success');
+            $btn.addClass('aisales-api-key__btn--success');
 
             // Show toast notification
-            this.showToast(wooaiAdmin.strings.copied || 'Copied to clipboard!');
+            this.showToast(aisalesAdmin.strings.copied || 'Copied to clipboard!');
 
             // Revert after 2 seconds
             setTimeout(function() {
                 $icon.removeClass(successClass).addClass(originalClass);
-                $btn.removeClass('wooai-api-key__btn--success');
+                $btn.removeClass('aisales-api-key__btn--success');
             }, 2000);
         },
 
@@ -592,23 +592,23 @@
          * Show simple toast notification (backwards compatible)
          */
         showToast: function(message, type) {
-            var typeClass = type ? ' wooai-toast--' + type : '';
-            var $toast = $('<div class="wooai-toast wooai-toast--simple' + typeClass + '">' + this.escapeHtml(message) + '</div>');
+            var typeClass = type ? ' aisales-toast--' + type : '';
+            var $toast = $('<div class="aisales-toast aisales-toast--simple' + typeClass + '">' + this.escapeHtml(message) + '</div>');
 
             // Remove any existing toast
-            $('.wooai-toast').remove();
+            $('.aisales-toast').remove();
 
             // Add toast to body
             $('body').append($toast);
 
             // Trigger animation
             setTimeout(function() {
-                $toast.addClass('wooai-toast--visible');
+                $toast.addClass('aisales-toast--visible');
             }, 10);
 
             // Auto-hide after 2 seconds
             setTimeout(function() {
-                $toast.addClass('wooai-toast--hiding');
+                $toast.addClass('aisales-toast--hiding');
                 setTimeout(function() {
                     $toast.remove();
                 }, 400);
@@ -633,36 +633,36 @@
             var duration = options.duration || 3000;
 
             // Build toast HTML
-            var html = '<div class="wooai-toast wooai-toast--' + type + '">';
-            html += '<div class="wooai-toast__icon"><span class="dashicons ' + icon + '"></span></div>';
-            html += '<div class="wooai-toast__content">';
+            var html = '<div class="aisales-toast aisales-toast--' + type + '">';
+            html += '<div class="aisales-toast__icon"><span class="dashicons ' + icon + '"></span></div>';
+            html += '<div class="aisales-toast__content">';
             if (title) {
-                html += '<h4 class="wooai-toast__title">' + self.escapeHtml(title) + '</h4>';
+                html += '<h4 class="aisales-toast__title">' + self.escapeHtml(title) + '</h4>';
             }
             if (message) {
-                html += '<p class="wooai-toast__message">' + self.escapeHtml(message) + '</p>';
+                html += '<p class="aisales-toast__message">' + self.escapeHtml(message) + '</p>';
             }
             html += '</div>';
-            html += '<button type="button" class="wooai-toast__close"><span class="dashicons dashicons-no-alt"></span></button>';
-            html += '<div class="wooai-toast__progress"><div class="wooai-toast__progress-bar" style="animation-duration: ' + duration + 'ms;"></div></div>';
+            html += '<button type="button" class="aisales-toast__close"><span class="dashicons dashicons-no-alt"></span></button>';
+            html += '<div class="aisales-toast__progress"><div class="aisales-toast__progress-bar" style="animation-duration: ' + duration + 'ms;"></div></div>';
             html += '</div>';
 
             var $toast = $(html);
 
             // Remove any existing toast
-            $('.wooai-toast').remove();
+            $('.aisales-toast').remove();
 
             // Add toast to body
             $('body').append($toast);
 
             // Bind close button
-            $toast.find('.wooai-toast__close').on('click', function() {
+            $toast.find('.aisales-toast__close').on('click', function() {
                 self.hideToast($toast);
             });
 
             // Trigger animation
             setTimeout(function() {
-                $toast.addClass('wooai-toast--visible');
+                $toast.addClass('aisales-toast--visible');
             }, 10);
 
             // Auto-hide after duration
@@ -677,10 +677,10 @@
          * Hide toast with animation
          */
         hideToast: function($toast) {
-            if (!$toast.length || $toast.hasClass('wooai-toast--hiding')) {
+            if (!$toast.length || $toast.hasClass('aisales-toast--hiding')) {
                 return;
             }
-            $toast.addClass('wooai-toast--hiding');
+            $toast.addClass('aisales-toast--hiding');
             setTimeout(function() {
                 $toast.remove();
             }, 400);
@@ -717,7 +717,7 @@
                 type: 'success',
                 icon: 'dashicons-yes-alt',
                 title: actionLabels[actionType] || 'Applied!',
-                message: wooaiAdmin.strings.success || 'Changes have been applied to the product.',
+                message: aisalesAdmin.strings.success || 'Changes have been applied to the product.',
                 duration: 3000
             });
         },
@@ -726,9 +726,9 @@
          * Apply content result to product form
          */
         applyContentResult: function() {
-            var title = $('#wooai-result-title').val();
-            var description = $('#wooai-result-description').val();
-            var shortDesc = $('#wooai-result-short-desc').val();
+            var title = $('#aisales-result-title').val();
+            var description = $('#aisales-result-description').val();
+            var shortDesc = $('#aisales-result-short-desc').val();
 
             if (title) {
                 $('#title').val(title);
@@ -758,7 +758,7 @@
         applyTaxonomyResult: function() {
             // Get selected tags
             var selectedTags = [];
-            $('.wooai-result-tag.selected[data-type="tag"]').each(function() {
+            $('.aisales-result-tag.selected[data-type="tag"]').each(function() {
                 selectedTags.push($(this).text());
             });
 
@@ -816,7 +816,7 @@
          */
         bindStoreContextEvents: function() {
             var self = this;
-            var $panel = $('#wooai-context-panel');
+            var $panel = $('#aisales-context-panel');
 
             // Skip if panel doesn't exist on this page
             if (!$panel.length) {
@@ -824,16 +824,16 @@
             }
 
             // Open/close panel
-            $('#wooai-open-context').on('click', function() { self.openContextPanel(); });
-            $('#wooai-close-context, #wooai-cancel-context, #wooai-context-backdrop').on('click', function() { self.closeContextPanel(); });
+            $('#aisales-open-context').on('click', function() { self.openContextPanel(); });
+            $('#aisales-close-context, #aisales-cancel-context, #aisales-context-backdrop').on('click', function() { self.closeContextPanel(); });
 
             // Save and sync
-            $('#wooai-save-context').on('click', function() { self.saveStoreContext(); });
-            $('#wooai-sync-context').on('click', function() { self.syncStoreContext(); });
+            $('#aisales-save-context').on('click', function() { self.saveStoreContext(); });
+            $('#aisales-sync-context').on('click', function() { self.syncStoreContext(); });
 
             // Close on Escape key
             $(document).on('keydown', function(e) {
-                if (e.key === 'Escape' && $panel.hasClass('wooai-context-panel--open')) {
+                if (e.key === 'Escape' && $panel.hasClass('aisales-context-panel--open')) {
                     self.closeContextPanel();
                 }
             });
@@ -843,16 +843,16 @@
          * Open store context panel
          */
         openContextPanel: function() {
-            $('#wooai-context-panel').addClass('wooai-context-panel--open');
-            $('body').addClass('wooai-context-panel-active');
+            $('#aisales-context-panel').addClass('aisales-context-panel--open');
+            $('body').addClass('aisales-context-panel-active');
         },
 
         /**
          * Close store context panel
          */
         closeContextPanel: function() {
-            $('#wooai-context-panel').removeClass('wooai-context-panel--open');
-            $('body').removeClass('wooai-context-panel-active');
+            $('#aisales-context-panel').removeClass('aisales-context-panel--open');
+            $('body').removeClass('aisales-context-panel-active');
         },
 
         /**
@@ -861,24 +861,24 @@
         saveStoreContext: function() {
             var self = this;
             var formData = {
-                store_name: $('#wooai-store-name').val(),
-                store_description: $('#wooai-store-description').val(),
-                business_niche: $('#wooai-business-niche').val(),
-                target_audience: $('#wooai-target-audience').val(),
+                store_name: $('#aisales-store-name').val(),
+                store_description: $('#aisales-store-description').val(),
+                business_niche: $('#aisales-business-niche').val(),
+                target_audience: $('#aisales-target-audience').val(),
                 brand_tone: $('input[name="brand_tone"]:checked').val() || '',
-                language: $('#wooai-language').val(),
-                custom_instructions: $('#wooai-custom-instructions').val()
+                language: $('#aisales-language').val(),
+                custom_instructions: $('#aisales-custom-instructions').val()
             };
 
-            var $saveBtn = $('#wooai-save-context');
-            $saveBtn.addClass('wooai-btn--loading').prop('disabled', true);
+            var $saveBtn = $('#aisales-save-context');
+            $saveBtn.addClass('aisales-btn--loading').prop('disabled', true);
 
             $.ajax({
-                url: wooaiAdmin.ajaxUrl,
+                url: aisalesAdmin.ajaxUrl,
                 method: 'POST',
                 data: {
-                    action: 'wooai_save_store_context',
-                    nonce: wooaiAdmin.chatNonce,
+                    action: 'aisales_save_store_context',
+                    nonce: aisalesAdmin.chatNonce,
                     context: formData
                 },
                 success: function(response) {
@@ -900,7 +900,7 @@
                     self.showErrorToast('Failed to save store context');
                 },
                 complete: function() {
-                    $saveBtn.removeClass('wooai-btn--loading').prop('disabled', false);
+                    $saveBtn.removeClass('aisales-btn--loading').prop('disabled', false);
                 }
             });
         },
@@ -910,20 +910,20 @@
          */
         syncStoreContext: function() {
             var self = this;
-            var $syncBtn = $('#wooai-sync-context');
-            $syncBtn.addClass('wooai-btn--loading').prop('disabled', true);
+            var $syncBtn = $('#aisales-sync-context');
+            $syncBtn.addClass('aisales-btn--loading').prop('disabled', true);
 
             $.ajax({
-                url: wooaiAdmin.ajaxUrl,
+                url: aisalesAdmin.ajaxUrl,
                 method: 'POST',
                 data: {
-                    action: 'wooai_sync_store_context',
-                    nonce: wooaiAdmin.chatNonce
+                    action: 'aisales_sync_store_context',
+                    nonce: aisalesAdmin.chatNonce
                 },
                 success: function(response) {
                     if (response.success) {
                         var message = response.data.message || 'Store context synced';
-                        $('#wooai-sync-status').text(message);
+                        $('#aisales-sync-status').text(message);
                         self.showRichToast({
                             type: 'success',
                             icon: 'dashicons-update',
@@ -939,7 +939,7 @@
                     self.showErrorToast('Failed to sync store context');
                 },
                 complete: function() {
-                    $syncBtn.removeClass('wooai-btn--loading').prop('disabled', false);
+                    $syncBtn.removeClass('aisales-btn--loading').prop('disabled', false);
                 }
             });
         },
@@ -965,12 +965,12 @@
             var hasOptional = context.target_audience || context.brand_tone;
             var status = hasRequired ? (hasOptional ? 'configured' : 'partial') : 'missing';
 
-            $('.wooai-context-status')
-                .removeClass('wooai-context-status--configured wooai-context-status--partial wooai-context-status--missing')
-                .addClass('wooai-context-status--' + status);
+            $('.aisales-context-status')
+                .removeClass('aisales-context-status--configured aisales-context-status--partial aisales-context-status--missing')
+                .addClass('aisales-context-status--' + status);
 
             if (context.store_name) {
-                $('.wooai-store-name').text(context.store_name);
+                $('.aisales-store-name').text(context.store_name);
             }
         },
 
@@ -987,19 +987,19 @@
          * Initialize balance indicator
          */
         initBalanceIndicator: function() {
-            var $indicator = $('.wooai-balance-indicator');
+            var $indicator = $('.aisales-balance-indicator');
             if (!$indicator.length) return;
 
             // Make clickable
-            $indicator.addClass('wooai-balance-indicator--clickable');
+            $indicator.addClass('aisales-balance-indicator--clickable');
             $indicator.attr('role', 'button');
             $indicator.attr('tabindex', '0');
-            $indicator.attr('title', wooaiAdmin.strings.clickToTopUp || 'Click to add tokens');
+            $indicator.attr('title', aisalesAdmin.strings.clickToTopUp || 'Click to add tokens');
 
             // Check if balance is low (below 1000)
             var balance = this.getBalanceValue();
             if (balance < 1000) {
-                $indicator.addClass('wooai-balance-indicator--low');
+                $indicator.addClass('aisales-balance-indicator--low');
             }
         },
 
@@ -1007,7 +1007,7 @@
          * Get current balance value
          */
         getBalanceValue: function() {
-            var balanceText = $('#wooai-balance-count, #wooai-balance-display').first().text();
+            var balanceText = $('#aisales-balance-count, #aisales-balance-display').first().text();
             return parseInt(balanceText.replace(/,/g, ''), 10) || 0;
         },
 
@@ -1016,20 +1016,20 @@
          */
         bindBalanceModalEvents: function() {
             var self = this;
-            var $modal = $('#wooai-balance-modal');
-            var $overlay = $('#wooai-balance-modal-overlay');
+            var $modal = $('#aisales-balance-modal');
+            var $overlay = $('#aisales-balance-modal-overlay');
 
             // Skip if modal doesn't exist on this page
             if (!$modal.length) return;
 
             // Click on balance indicator opens modal
-            $('.wooai-balance-indicator').on('click', function(e) {
+            $('.aisales-balance-indicator').on('click', function(e) {
                 e.preventDefault();
                 self.openBalanceModal();
             });
 
             // Keyboard support
-            $('.wooai-balance-indicator').on('keydown', function(e) {
+            $('.aisales-balance-indicator').on('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     self.openBalanceModal();
@@ -1037,7 +1037,7 @@
             });
 
             // Close modal
-            $('#wooai-balance-modal-close').on('click', function() {
+            $('#aisales-balance-modal-close').on('click', function() {
                 self.closeBalanceModal();
             });
 
@@ -1047,19 +1047,19 @@
 
             // Close on Escape key
             $(document).on('keydown.balanceModal', function(e) {
-                if (e.key === 'Escape' && $modal.hasClass('wooai-modal--active')) {
+                if (e.key === 'Escape' && $modal.hasClass('aisales-modal--active')) {
                     self.closeBalanceModal();
                 }
             });
 
             // Package selection (for future multi-plan support)
-            $('.wooai-package-card').on('click', function() {
-                $('.wooai-package-card').removeClass('wooai-package-card--selected');
-                $(this).addClass('wooai-package-card--selected');
+            $('.aisales-package-card').on('click', function() {
+                $('.aisales-package-card').removeClass('aisales-package-card--selected');
+                $(this).addClass('aisales-package-card--selected');
             });
 
             // Purchase button
-            $('#wooai-purchase-btn').on('click', function() {
+            $('#aisales-purchase-btn').on('click', function() {
                 self.initiateCheckout();
             });
         },
@@ -1069,33 +1069,33 @@
          */
         openBalanceModal: function() {
             var self = this;
-            var $modal = $('#wooai-balance-modal');
-            var $overlay = $('#wooai-balance-modal-overlay');
+            var $modal = $('#aisales-balance-modal');
+            var $overlay = $('#aisales-balance-modal-overlay');
 
             // Update balance display in modal
             var currentBalance = this.getBalanceValue();
-            $('#wooai-balance-modal-value').text(currentBalance.toLocaleString());
+            $('#aisales-balance-modal-value').text(currentBalance.toLocaleString());
 
             // Update progress bar
             var progressPercent = Math.min(100, (currentBalance / 10000) * 100);
-            $('#wooai-balance-progress-bar').css('width', progressPercent + '%');
+            $('#aisales-balance-progress-bar').css('width', progressPercent + '%');
 
             // Update low balance state
-            var $balanceCurrent = $('.wooai-balance-current');
+            var $balanceCurrent = $('.aisales-balance-current');
             if (currentBalance < 1000) {
-                $balanceCurrent.addClass('wooai-balance-current--low');
+                $balanceCurrent.addClass('aisales-balance-current--low');
             } else {
-                $balanceCurrent.removeClass('wooai-balance-current--low');
+                $balanceCurrent.removeClass('aisales-balance-current--low');
             }
 
             // Show modal
-            $overlay.addClass('wooai-modal-overlay--active');
-            $modal.addClass('wooai-modal--active');
-            $('body').addClass('wooai-balance-modal-active');
+            $overlay.addClass('aisales-modal-overlay--active');
+            $modal.addClass('aisales-modal--active');
+            $('body').addClass('aisales-balance-modal-active');
 
             // Focus close button for accessibility
             setTimeout(function() {
-                $('#wooai-balance-modal-close').focus();
+                $('#aisales-balance-modal-close').focus();
             }, 100);
         },
 
@@ -1103,12 +1103,12 @@
          * Close balance modal
          */
         closeBalanceModal: function() {
-            $('#wooai-balance-modal-overlay').removeClass('wooai-modal-overlay--active');
-            $('#wooai-balance-modal').removeClass('wooai-modal--active');
-            $('body').removeClass('wooai-balance-modal-active');
+            $('#aisales-balance-modal-overlay').removeClass('aisales-modal-overlay--active');
+            $('#aisales-balance-modal').removeClass('aisales-modal--active');
+            $('body').removeClass('aisales-balance-modal-active');
 
             // Return focus to balance indicator
-            $('.wooai-balance-indicator').first().focus();
+            $('.aisales-balance-indicator').first().focus();
         },
 
         /**
@@ -1116,19 +1116,19 @@
          */
         initiateCheckout: function() {
             var self = this;
-            var $btn = $('#wooai-purchase-btn');
-            var $loading = $('#wooai-balance-modal-loading');
+            var $btn = $('#aisales-purchase-btn');
+            var $loading = $('#aisales-balance-modal-loading');
 
             // Show loading state
             $btn.prop('disabled', true);
             $loading.show();
 
             $.ajax({
-                url: wooaiAdmin.ajaxUrl,
+                url: aisalesAdmin.ajaxUrl,
                 method: 'POST',
                 data: {
-                    action: 'wooai_topup',
-                    nonce: wooaiAdmin.nonce
+                    action: 'aisales_topup',
+                    nonce: aisalesAdmin.nonce
                 },
                 success: function(response) {
                     if (response.success && response.data.checkout_url) {
@@ -1164,27 +1164,27 @@
          * Update balance indicator after successful purchase
          */
         updateBalanceIndicator: function(newBalance) {
-            var $indicator = $('.wooai-balance-indicator');
-            var $count = $('#wooai-balance-count, #wooai-balance-display');
+            var $indicator = $('.aisales-balance-indicator');
+            var $count = $('#aisales-balance-count, #aisales-balance-display');
 
             // Animate the update
-            $indicator.addClass('wooai-balance--increasing');
+            $indicator.addClass('aisales-balance--increasing');
             $count.text(newBalance.toLocaleString());
 
             setTimeout(function() {
-                $indicator.removeClass('wooai-balance--increasing');
+                $indicator.removeClass('aisales-balance--increasing');
             }, 500);
 
             // Update low balance state
             if (newBalance >= 1000) {
-                $indicator.removeClass('wooai-balance-indicator--low');
+                $indicator.removeClass('aisales-balance-indicator--low');
             }
         }
     };
 
     // Initialize on document ready
     $(document).ready(function() {
-        WooAI.init();
+        AISales.init();
     });
 
 })(jQuery);

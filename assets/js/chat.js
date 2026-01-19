@@ -1,7 +1,7 @@
 /**
- * WooAI Chat Interface
+ * AISales Chat Interface
  *
- * @package WooAI_Sales_Manager
+ * @package AISales_Sales_Manager
  */
 
 (function($) {
@@ -89,16 +89,16 @@
 		loadTemplates();
 
 		// Initialize state from localized data
-		if (typeof wooaiChat !== 'undefined') {
-			state.products = wooaiChat.products || [];
-			state.categories = wooaiChat.categories || [];
-			state.balance = parseInt(wooaiChat.balance, 10) || 0;
-			state.storeContext = wooaiChat.storeContext || {};
+		if (typeof aisalesChat !== 'undefined') {
+			state.products = aisalesChat.products || [];
+			state.categories = aisalesChat.categories || [];
+			state.balance = parseInt(aisalesChat.balance, 10) || 0;
+			state.storeContext = aisalesChat.storeContext || {};
 		}
 
 		// Check for preselected entity type
-		if (typeof window.wooaiPreselectedEntityType !== 'undefined') {
-			state.entityType = window.wooaiPreselectedEntityType;
+		if (typeof window.aisalesPreselectedEntityType !== 'undefined') {
+			state.entityType = window.aisalesPreselectedEntityType;
 		}
 
 		// Populate entity selector based on type
@@ -108,17 +108,17 @@
 		bindEvents();
 
 		// Check for preselected product
-		if (typeof window.wooaiPreselectedProduct !== 'undefined') {
+		if (typeof window.aisalesPreselectedProduct !== 'undefined') {
 			state.entityType = 'product';
 			updateEntityTabs();
-			selectProduct(window.wooaiPreselectedProduct);
+			selectProduct(window.aisalesPreselectedProduct);
 		}
 
 		// Check for preselected category
-		if (typeof window.wooaiPreselectedCategory !== 'undefined') {
+		if (typeof window.aisalesPreselectedCategory !== 'undefined') {
 			state.entityType = 'category';
 			updateEntityTabs();
-			selectCategory(window.wooaiPreselectedCategory);
+			selectCategory(window.aisalesPreselectedCategory);
 		}
 
 		// Auto-resize textarea
@@ -134,61 +134,61 @@
 	 */
 	function cacheElements() {
 		// Entity switcher
-		elements.entityTabs = $('.wooai-entity-tabs');
-		elements.entitySelect = $('#wooai-entity-select');
+		elements.entityTabs = $('.aisales-entity-tabs');
+		elements.entitySelect = $('#aisales-entity-select');
 		
 		// Chat elements
-		elements.messageInput = $('#wooai-message-input');
-		elements.sendButton = $('#wooai-send-message');
-		elements.messagesContainer = $('#wooai-chat-messages');
-		elements.chatWelcome = $('#wooai-chat-welcome');
+		elements.messageInput = $('#aisales-message-input');
+		elements.sendButton = $('#aisales-send-message');
+		elements.messagesContainer = $('#aisales-chat-messages');
+		elements.chatWelcome = $('#aisales-chat-welcome');
 		
 		// Quick actions
-		elements.quickActionsProduct = $('#wooai-quick-actions-product');
-		elements.quickActionsCategory = $('#wooai-quick-actions-category');
-		elements.quickActionsAgent = $('#wooai-quick-actions-agent');
+		elements.quickActionsProduct = $('#aisales-quick-actions-product');
+		elements.quickActionsCategory = $('#aisales-quick-actions-category');
+		elements.quickActionsAgent = $('#aisales-quick-actions-agent');
 		
 		// Entity panels
-		elements.entityPanel = $('#wooai-entity-panel');
-		elements.entityEmpty = $('#wooai-entity-empty');
-		elements.productInfo = $('#wooai-product-info');
-		elements.categoryInfo = $('#wooai-category-info');
-		elements.agentInfo = $('#wooai-agent-info');
+		elements.entityPanel = $('#aisales-entity-panel');
+		elements.entityEmpty = $('#aisales-entity-empty');
+		elements.productInfo = $('#aisales-product-info');
+		elements.categoryInfo = $('#aisales-category-info');
+		elements.agentInfo = $('#aisales-agent-info');
 		
 		// Pending changes
-		elements.pendingSummary = $('#wooai-pending-summary');
-		elements.categoryPendingSummary = $('#wooai-category-pending-summary');
+		elements.pendingSummary = $('#aisales-pending-summary');
+		elements.categoryPendingSummary = $('#aisales-category-pending-summary');
 		
 		// Header elements
-		elements.balanceDisplay = $('#wooai-balance-display');
-		elements.newChatButton = $('#wooai-new-chat');
-		elements.tokensUsed = $('#wooai-tokens-used');
+		elements.balanceDisplay = $('#aisales-balance-display');
+		elements.newChatButton = $('#aisales-new-chat');
+		elements.tokensUsed = $('#aisales-tokens-used');
 		
 		// Store context
-		elements.storeContextBtn = $('#wooai-open-context');
-		elements.contextPanel = $('#wooai-context-panel');
-		elements.contextBackdrop = $('#wooai-context-backdrop');
-		elements.contextForm = $('#wooai-context-form');
+		elements.storeContextBtn = $('#aisales-open-context');
+		elements.contextPanel = $('#aisales-context-panel');
+		elements.contextBackdrop = $('#aisales-context-backdrop');
+		elements.contextForm = $('#aisales-context-form');
 		
 		// Onboarding
-		elements.onboardingOverlay = $('#wooai-onboarding');
+		elements.onboardingOverlay = $('#aisales-onboarding');
 		
 		// Welcome cards
-		elements.welcomeCards = $('.wooai-welcome-cards');
+		elements.welcomeCards = $('.aisales-welcome-cards');
 		
 		// Attachment elements
-		elements.attachButton = $('#wooai-attach-button');
-		elements.fileInput = $('#wooai-file-input');
-		elements.attachmentPreviews = $('#wooai-attachment-previews');
+		elements.attachButton = $('#aisales-attach-button');
+		elements.fileInput = $('#aisales-file-input');
+		elements.attachmentPreviews = $('#aisales-attachment-previews');
 	}
 
 	/**
 	 * Load template strings
 	 */
 	function loadTemplates() {
-		templates.message = $('#wooai-message-template').html() || '';
-		templates.suggestion = $('#wooai-suggestion-template').html() || '';
-		templates.thinking = $('#wooai-thinking-template').html() || '';
+		templates.message = $('#aisales-message-template').html() || '';
+		templates.suggestion = $('#aisales-suggestion-template').html() || '';
+		templates.thinking = $('#aisales-thinking-template').html() || '';
 	}
 
 	/**
@@ -199,13 +199,13 @@
 		$select.empty();
 		$select.append($('<option>', {
 			value: '',
-			text: wooaiChat.i18n.selectProduct
+			text: aisalesChat.i18n.selectProduct
 		}));
 
 		if (state.products.length === 0) {
 			$select.append($('<option>', {
 				value: '',
-				text: wooaiChat.i18n.noProducts,
+				text: aisalesChat.i18n.noProducts,
 				disabled: true
 			}));
 			return;
@@ -228,13 +228,13 @@
 		$select.empty();
 		$select.append($('<option>', {
 			value: '',
-			text: wooaiChat.i18n.selectCategory || 'Select a category...'
+			text: aisalesChat.i18n.selectCategory || 'Select a category...'
 		}));
 
 		if (state.categories.length === 0) {
 			$select.append($('<option>', {
 				value: '',
-				text: wooaiChat.i18n.noCategories || 'No categories found',
+				text: aisalesChat.i18n.noCategories || 'No categories found',
 				disabled: true
 			}));
 			return;
@@ -274,7 +274,7 @@
 	 */
 	function bindEvents() {
 		// Entity type tabs
-		elements.entityTabs.on('click', '.wooai-entity-tab', handleEntityTabClick);
+		elements.entityTabs.on('click', '.aisales-entity-tab', handleEntityTabClick);
 
 		// Entity selection
 		elements.entitySelect.on('change', handleEntityChange);
@@ -298,57 +298,57 @@
 		elements.quickActionsAgent.on('click', '[data-action]', handleAgentQuickAction);
 		
 		// Agent capabilities (right panel)
-		elements.agentInfo.on('click', '.wooai-capability-btn', handleAgentQuickAction);
+		elements.agentInfo.on('click', '.aisales-capability-btn', handleAgentQuickAction);
 
 		// New chat
 		elements.newChatButton.on('click', handleNewChat);
 
 		// Accept/Discard all - Products
-		$('#wooai-accept-all').on('click', handleAcceptAll);
-		$('#wooai-discard-all').on('click', handleDiscardAll);
+		$('#aisales-accept-all').on('click', handleAcceptAll);
+		$('#aisales-discard-all').on('click', handleDiscardAll);
 		
 		// Accept/Discard all - Categories
-		$('#wooai-category-accept-all').on('click', handleAcceptAll);
-		$('#wooai-category-discard-all').on('click', handleDiscardAll);
+		$('#aisales-category-accept-all').on('click', handleAcceptAll);
+		$('#aisales-category-discard-all').on('click', handleDiscardAll);
 
 		// Suggestion actions (delegated)
-		elements.messagesContainer.on('click', '.wooai-suggestion [data-action]', handleSuggestionAction);
+		elements.messagesContainer.on('click', '.aisales-suggestion [data-action]', handleSuggestionAction);
 
 		// Product panel suggestion actions
-		elements.productInfo.on('click', '.wooai-pending-change__actions [data-action]', handlePendingChangeAction);
+		elements.productInfo.on('click', '.aisales-pending-change__actions [data-action]', handlePendingChangeAction);
 		
 		// Category panel suggestion actions
-		elements.categoryInfo.on('click', '.wooai-pending-change__actions [data-action]', handlePendingChangeAction);
+		elements.categoryInfo.on('click', '.aisales-pending-change__actions [data-action]', handlePendingChangeAction);
 
 		// Expand toggle for description
-		elements.entityPanel.on('click', '.wooai-expand-toggle', handleExpandToggle);
+		elements.entityPanel.on('click', '.aisales-expand-toggle', handleExpandToggle);
 
 		// Store context panel
 		elements.storeContextBtn.on('click', openContextPanel);
-		$('#wooai-close-context, #wooai-cancel-context').on('click', closeContextPanel);
+		$('#aisales-close-context, #aisales-cancel-context').on('click', closeContextPanel);
 		elements.contextBackdrop.on('click', closeContextPanel);
-		$('#wooai-save-context').on('click', saveStoreContext);
-		$('#wooai-sync-context').on('click', syncStoreContext);
+		$('#aisales-save-context').on('click', saveStoreContext);
+		$('#aisales-sync-context').on('click', syncStoreContext);
 
 		// Onboarding
-		$('#wooai-onboarding-setup').on('click', function() {
+		$('#aisales-onboarding-setup').on('click', function() {
 			closeOnboarding();
 			openContextPanel();
 		});
-		$('#wooai-onboarding-skip').on('click', closeOnboarding);
+		$('#aisales-onboarding-skip').on('click', closeOnboarding);
 
 		// Welcome cards
-		elements.welcomeCards.on('click', '.wooai-welcome-card', handleWelcomeCardClick);
+		elements.welcomeCards.on('click', '.aisales-welcome-card', handleWelcomeCardClick);
 		
 		// Welcome context hint
-		$('#wooai-welcome-setup-context').on('click', openContextPanel);
+		$('#aisales-welcome-setup-context').on('click', openContextPanel);
 		
 		// Attachment handling
 		elements.attachButton.on('click', function() {
 			elements.fileInput.click();
 		});
 		elements.fileInput.on('change', handleFileSelect);
-		elements.attachmentPreviews.on('click', '.wooai-attachment-remove', handleRemoveAttachment);
+		elements.attachmentPreviews.on('click', '.aisales-attachment-remove', handleRemoveAttachment);
 		
 		// Drag and drop
 		setupDragAndDrop();
@@ -371,7 +371,7 @@
 	 * Handle removing an attachment
 	 */
 	function handleRemoveAttachment(e) {
-		const index = $(e.currentTarget).closest('.wooai-attachment-preview').data('index');
+		const index = $(e.currentTarget).closest('.aisales-attachment-preview').data('index');
 		state.pendingAttachments.splice(index, 1);
 		updateAttachmentPreviews();
 	}
@@ -397,18 +397,18 @@
 	 * Setup drag and drop for attachments
 	 */
 	function setupDragAndDrop() {
-		const $dropZone = $('.wooai-chat-input');
+		const $dropZone = $('.aisales-chat-input');
 		
 		$dropZone.on('dragenter dragover', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
-			$(this).addClass('wooai-drag-over');
+			$(this).addClass('aisales-drag-over');
 		});
 
 		$dropZone.on('dragleave drop', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
-			$(this).removeClass('wooai-drag-over');
+			$(this).removeClass('aisales-drag-over');
 		});
 
 		$dropZone.on('drop', function(e) {
@@ -553,7 +553,7 @@
 
 		if (state.pendingAttachments.length === 0) {
 			$container.hide();
-			elements.attachButton.find('.wooai-attachment-count').remove();
+			elements.attachButton.find('.aisales-attachment-count').remove();
 			return;
 		}
 
@@ -561,18 +561,18 @@
 			const isImage = attachment.mime_type.startsWith('image/');
 			const isPdf = attachment.mime_type === 'application/pdf';
 
-			let previewHtml = '<div class="wooai-attachment-preview" data-index="' + index + '">';
+			let previewHtml = '<div class="aisales-attachment-preview" data-index="' + index + '">';
 			
 			if (isImage && attachment.preview) {
 				previewHtml += '<img src="' + attachment.preview + '" alt="' + escapeHtml(attachment.filename) + '">';
 			} else if (isPdf) {
-				previewHtml += '<div class="wooai-attachment-preview__icon"><span class="dashicons dashicons-pdf"></span></div>';
+				previewHtml += '<div class="aisales-attachment-preview__icon"><span class="dashicons dashicons-pdf"></span></div>';
 			} else {
-				previewHtml += '<div class="wooai-attachment-preview__icon"><span class="dashicons dashicons-media-default"></span></div>';
+				previewHtml += '<div class="aisales-attachment-preview__icon"><span class="dashicons dashicons-media-default"></span></div>';
 			}
 
-			previewHtml += '<div class="wooai-attachment-preview__name">' + escapeHtml(truncate(attachment.filename, 15)) + '</div>';
-			previewHtml += '<button type="button" class="wooai-attachment-remove" title="Remove"><span class="dashicons dashicons-no-alt"></span></button>';
+			previewHtml += '<div class="aisales-attachment-preview__name">' + escapeHtml(truncate(attachment.filename, 15)) + '</div>';
+			previewHtml += '<button type="button" class="aisales-attachment-remove" title="Remove"><span class="dashicons dashicons-no-alt"></span></button>';
 			previewHtml += '</div>';
 
 			$container.append(previewHtml);
@@ -581,9 +581,9 @@
 		$container.show();
 
 		// Update attachment count on button
-		let $count = elements.attachButton.find('.wooai-attachment-count');
+		let $count = elements.attachButton.find('.aisales-attachment-count');
 		if ($count.length === 0) {
-			$count = $('<span class="wooai-attachment-count"></span>');
+			$count = $('<span class="aisales-attachment-count"></span>');
 			elements.attachButton.append($count);
 		}
 		$count.text(state.pendingAttachments.length);
@@ -643,8 +643,8 @@
 	 * Update entity tabs UI
 	 */
 	function updateEntityTabs() {
-		elements.entityTabs.find('.wooai-entity-tab').removeClass('wooai-entity-tab--active');
-		elements.entityTabs.find('[data-type="' + state.entityType + '"]').addClass('wooai-entity-tab--active');
+		elements.entityTabs.find('.aisales-entity-tab').removeClass('aisales-entity-tab--active');
+		elements.entityTabs.find('[data-type="' + state.entityType + '"]').addClass('aisales-entity-tab--active');
 	}
 
 	/**
@@ -668,18 +668,18 @@
 	 * Update empty state text and icon
 	 */
 	function updateEmptyState() {
-		const $icon = $('#wooai-empty-icon');
-		const $text = $('#wooai-empty-text');
+		const $icon = $('#aisales-empty-icon');
+		const $text = $('#aisales-empty-text');
 		
 		if (state.entityType === 'agent') {
 			$icon.attr('class', 'dashicons dashicons-superhero-alt');
-			$text.text(wooaiChat.i18n.agentReady || 'AI Agent ready to help with marketing');
+			$text.text(aisalesChat.i18n.agentReady || 'AI Agent ready to help with marketing');
 		} else if (state.entityType === 'category') {
 			$icon.attr('class', 'dashicons dashicons-category');
-			$text.text(wooaiChat.i18n.selectCategory || 'Select a category to view details');
+			$text.text(aisalesChat.i18n.selectCategory || 'Select a category to view details');
 		} else {
 			$icon.attr('class', 'dashicons dashicons-products');
-			$text.text(wooaiChat.i18n.selectProduct || 'Select a product to view details');
+			$text.text(aisalesChat.i18n.selectProduct || 'Select a product to view details');
 		}
 	}
 
@@ -799,11 +799,11 @@
 		} else {
 			// Fetch category data via AJAX
 			$.ajax({
-				url: wooaiChat.ajaxUrl,
+				url: aisalesChat.ajaxUrl,
 				method: 'POST',
 				data: {
-					action: 'wooai_get_category',
-					nonce: wooaiChat.nonce,
+					action: 'aisales_get_category',
+					nonce: aisalesChat.nonce,
 					category_id: categoryId
 				},
 				success: function(response) {
@@ -886,7 +886,7 @@
 		elements.productInfo.show();
 
 		// Image
-		const $image = $('#wooai-product-image');
+		const $image = $('#aisales-product-image');
 		if (product.image_url) {
 			$image.attr('src', product.image_url).show();
 		} else {
@@ -894,49 +894,49 @@
 		}
 
 		// Title
-		$('#wooai-product-title').text(product.title || '');
+		$('#aisales-product-title').text(product.title || '');
 
 		// Description
 		const desc = product.description || '';
-		$('#wooai-product-description').html(desc.substring(0, 200) + (desc.length > 200 ? '...' : ''));
+		$('#aisales-product-description').html(desc.substring(0, 200) + (desc.length > 200 ? '...' : ''));
 
 		// Short description
-		$('#wooai-product-short-description').text(product.short_description || '');
+		$('#aisales-product-short-description').text(product.short_description || '');
 
 		// Categories
 		const categories = product.categories || [];
 		if (categories.length > 0) {
-			$('#wooai-product-categories').html(
-				categories.map(cat => '<span class="wooai-tag">' + escapeHtml(cat) + '</span>').join('')
+			$('#aisales-product-categories').html(
+				categories.map(cat => '<span class="aisales-tag">' + escapeHtml(cat) + '</span>').join('')
 			);
 		} else {
-			$('#wooai-product-categories').html('<span class="wooai-no-value">' + (wooaiChat.i18n.none || 'None') + '</span>');
+			$('#aisales-product-categories').html('<span class="aisales-no-value">' + (aisalesChat.i18n.none || 'None') + '</span>');
 		}
 
 		// Tags
 		const tags = product.tags || [];
 		if (tags.length > 0) {
-			$('#wooai-product-tags').html(
-				tags.map(tag => '<span class="wooai-tag">' + escapeHtml(tag) + '</span>').join('')
+			$('#aisales-product-tags').html(
+				tags.map(tag => '<span class="aisales-tag">' + escapeHtml(tag) + '</span>').join('')
 			);
 		} else {
-			$('#wooai-product-tags').html('<span class="wooai-no-value">' + (wooaiChat.i18n.none || 'None') + '</span>');
+			$('#aisales-product-tags').html('<span class="aisales-no-value">' + (aisalesChat.i18n.none || 'None') + '</span>');
 		}
 
 		// Price
 		const priceHtml = formatPrice(product.regular_price, product.sale_price, product.price);
-		$('#wooai-product-price').html(priceHtml);
+		$('#aisales-product-price').html(priceHtml);
 
 		// Stock
 		const stockHtml = formatStock(product.stock_status, product.stock_quantity);
-		$('#wooai-product-stock').html(stockHtml);
+		$('#aisales-product-stock').html(stockHtml);
 
 		// Status
-		$('#wooai-product-status').html(formatStatus(product.status));
+		$('#aisales-product-status').html(formatStatus(product.status));
 
 		// Edit/View links
-		$('#wooai-edit-product').attr('href', product.edit_url || '#');
-		$('#wooai-view-product').attr('href', product.view_url || '#');
+		$('#aisales-edit-product').attr('href', product.edit_url || '#');
+		$('#aisales-view-product').attr('href', product.view_url || '#');
 
 		// Set selected in dropdown
 		elements.entitySelect.val(product.id);
@@ -950,55 +950,55 @@
 		elements.categoryInfo.show();
 
 		// Name
-		$('#wooai-category-name').text(category.name || '');
-		$('#wooai-category-name-value').text(category.name || '');
+		$('#aisales-category-name').text(category.name || '');
+		$('#aisales-category-name-value').text(category.name || '');
 
 		// Parent
 		if (category.parent_name) {
-			$('#wooai-category-parent').text('in ' + category.parent_name).show();
+			$('#aisales-category-parent').text('in ' + category.parent_name).show();
 		} else {
-			$('#wooai-category-parent').hide();
+			$('#aisales-category-parent').hide();
 		}
 
 		// Stats
-		$('#wooai-category-product-count').text(category.product_count || 0);
-		$('#wooai-category-subcat-count').text(category.subcategory_count || 0);
+		$('#aisales-category-product-count').text(category.product_count || 0);
+		$('#aisales-category-subcat-count').text(category.subcategory_count || 0);
 
 		// Description
 		const desc = category.description || '';
 		if (desc) {
-			$('#wooai-category-description').html(desc.substring(0, 200) + (desc.length > 200 ? '...' : ''));
+			$('#aisales-category-description').html(desc.substring(0, 200) + (desc.length > 200 ? '...' : ''));
 		} else {
-			$('#wooai-category-description').html('<span class="wooai-no-value">' + (wooaiChat.i18n.noDescription || 'No description') + '</span>');
+			$('#aisales-category-description').html('<span class="aisales-no-value">' + (aisalesChat.i18n.noDescription || 'No description') + '</span>');
 		}
 
 		// SEO Title
 		if (category.seo_title) {
-			$('#wooai-category-seo-title').text(category.seo_title);
+			$('#aisales-category-seo-title').text(category.seo_title);
 		} else {
-			$('#wooai-category-seo-title').html('<span class="wooai-no-value">' + (wooaiChat.i18n.notSet || 'Not set') + '</span>');
+			$('#aisales-category-seo-title').html('<span class="aisales-no-value">' + (aisalesChat.i18n.notSet || 'Not set') + '</span>');
 		}
 
 		// Meta Description
 		if (category.meta_description) {
-			$('#wooai-category-meta-description').text(category.meta_description);
+			$('#aisales-category-meta-description').text(category.meta_description);
 		} else {
-			$('#wooai-category-meta-description').html('<span class="wooai-no-value">' + (wooaiChat.i18n.notSet || 'Not set') + '</span>');
+			$('#aisales-category-meta-description').html('<span class="aisales-no-value">' + (aisalesChat.i18n.notSet || 'Not set') + '</span>');
 		}
 
 		// Subcategories
 		const subcats = category.subcategories || [];
 		if (subcats.length > 0) {
-			$('#wooai-category-subcategories').html(
-				subcats.map(sub => '<span class="wooai-subcat-tag"><span class="dashicons dashicons-category"></span>' + escapeHtml(sub.name) + '</span>').join('')
+			$('#aisales-category-subcategories').html(
+				subcats.map(sub => '<span class="aisales-subcat-tag"><span class="dashicons dashicons-category"></span>' + escapeHtml(sub.name) + '</span>').join('')
 			);
 		} else {
-			$('#wooai-category-subcategories').html('<span class="wooai-no-value">' + (wooaiChat.i18n.none || 'None') + '</span>');
+			$('#aisales-category-subcategories').html('<span class="aisales-no-value">' + (aisalesChat.i18n.none || 'None') + '</span>');
 		}
 
 		// Edit/View links
-		$('#wooai-edit-category').attr('href', category.edit_url || '#');
-		$('#wooai-view-category').attr('href', category.view_url || '#');
+		$('#aisales-edit-category').attr('href', category.edit_url || '#');
+		$('#aisales-view-category').attr('href', category.view_url || '#');
 
 		// Set selected in dropdown
 		elements.entitySelect.val(category.id);
@@ -1093,11 +1093,11 @@
 		}
 
 		$.ajax({
-			url: wooaiChat.apiBaseUrl + '/ai/chat/sessions',
+			url: aisalesChat.apiBaseUrl + '/ai/chat/sessions',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-API-Key': wooaiChat.apiKey
+				'X-API-Key': aisalesChat.apiKey
 			},
 			data: JSON.stringify(sessionData),
 			success: function(response) {
@@ -1122,10 +1122,10 @@
 	 */
 	function loadSessionMessages(sessionId) {
 		$.ajax({
-			url: wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + sessionId,
+			url: aisalesChat.apiBaseUrl + '/ai/chat/sessions/' + sessionId,
 			method: 'GET',
 			headers: {
-				'X-API-Key': wooaiChat.apiKey
+				'X-API-Key': aisalesChat.apiKey
 			},
 			success: function(response) {
 				// Handle both direct API response and wrapped response
@@ -1214,14 +1214,14 @@
 	 * Send message with SSE streaming
 	 */
 	function sendMessageSSE(requestData) {
-		const url = wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/messages';
+		const url = aisalesChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/messages';
 
 		// Use fetch with streaming
 		fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-API-Key': wooaiChat.apiKey,
+				'X-API-Key': aisalesChat.apiKey,
 				'Accept': 'text/event-stream'
 			},
 			body: JSON.stringify(requestData)
@@ -1261,15 +1261,15 @@
 			hideThinking();
 			
 			// Handle specific error codes
-			let errorMessage = wooaiChat.i18n.connectionError;
+			let errorMessage = aisalesChat.i18n.connectionError;
 			
 			if (error.status === 402) {
 				// Payment required - insufficient balance
-				errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+				errorMessage = aisalesChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
 			} else if (error.data && error.data.error) {
 				// Use error message from API if available
 				if (error.data.error.code === 'insufficient_balance') {
-					errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+					errorMessage = aisalesChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
 				} else if (error.data.error.message) {
 					errorMessage = error.data.error.message;
 				}
@@ -1392,7 +1392,7 @@
 
 				case 'error':
 					hideThinking();
-					addErrorMessage(data.message || wooaiChat.i18n.errorOccurred);
+					addErrorMessage(data.message || aisalesChat.i18n.errorOccurred);
 					setLoading(false);
 					break;
 			}
@@ -1418,14 +1418,14 @@
 	 */
 	function showToolProcessingMessage(message) {
 		// Remove any existing tool processing message
-		elements.messagesContainer.find('.wooai-message--tool-processing').remove();
+		elements.messagesContainer.find('.aisales-message--tool-processing').remove();
 
 		const $toolMessage = $(
-			'<div class="wooai-message wooai-message--tool-processing">' +
-				'<div class="wooai-message__avatar"><span class="dashicons dashicons-database"></span></div>' +
-				'<div class="wooai-message__content">' +
-					'<div class="wooai-message__text">' +
-						'<span class="wooai-tool-spinner"></span> ' +
+			'<div class="aisales-message aisales-message--tool-processing">' +
+				'<div class="aisales-message__avatar"><span class="dashicons dashicons-database"></span></div>' +
+				'<div class="aisales-message__content">' +
+					'<div class="aisales-message__text">' +
+						'<span class="aisales-tool-spinner"></span> ' +
 						escapeHtml(message) +
 					'</div>' +
 				'</div>' +
@@ -1440,7 +1440,7 @@
 	 * Hide tool processing message
 	 */
 	function hideToolProcessingMessage() {
-		elements.messagesContainer.find('.wooai-message--tool-processing').remove();
+		elements.messagesContainer.find('.aisales-message--tool-processing').remove();
 	}
 
 	/**
@@ -1467,11 +1467,11 @@
 		}
 
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_fetch_tool_data',
-				nonce: wooaiChat.nonce,
+				action: 'aisales_fetch_tool_data',
+				nonce: aisalesChat.nonce,
 				requests: JSON.stringify(requests)
 			},
 			success: function(response) {
@@ -1508,13 +1508,16 @@
 		};
 
 		// Send tool results using SSE for streaming response
-		const url = wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/messages';
+		const url = aisalesChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/messages';
+		console.log('[AISales Debug] Sending tool results to API');
+		console.log('[AISales Debug] URL:', url);
+		console.log('[AISales Debug] Request body:', JSON.stringify(requestData, null, 2));
 
 		fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-API-Key': wooaiChat.apiKey,
+				'X-API-Key': aisalesChat.apiKey,
 				'Accept': 'text/event-stream'
 			},
 			body: JSON.stringify(requestData)
@@ -1546,17 +1549,18 @@
 			}
 		})
 		.catch(function(error) {
-			console.error('Tool results send error:', error);
+			console.error('[AISales Debug] Tool results send error:', error);
+			console.error('[AISales Debug] Error data:', JSON.stringify(error.data, null, 2));
 			hideThinking();
-			
+
 			// Handle specific error codes
-			let errorMessage = wooaiChat.i18n.connectionError || 'Connection error';
-			
+			let errorMessage = aisalesChat.i18n.connectionError || 'Connection error';
+
 			if (error.status === 402) {
-				errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+				errorMessage = aisalesChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
 			} else if (error.data && error.data.error) {
 				if (error.data.error.code === 'insufficient_balance') {
-					errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+					errorMessage = aisalesChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
 				} else if (error.data.error.message) {
 					errorMessage = error.data.error.message;
 				}
@@ -1683,7 +1687,7 @@
 	function handleSuggestionAction(e) {
 		e.preventDefault();
 		const action = $(e.currentTarget).data('action');
-		const $suggestion = $(e.currentTarget).closest('.wooai-suggestion');
+		const $suggestion = $(e.currentTarget).closest('.aisales-suggestion');
 		const suggestionId = $suggestion.data('suggestion-id');
 
 		if (action === 'apply') {
@@ -1701,7 +1705,7 @@
 	function handlePendingChangeAction(e) {
 		e.preventDefault();
 		const action = $(e.currentTarget).data('action');
-		const $field = $(e.currentTarget).closest('.wooai-product-info__field, .wooai-category-info__field');
+		const $field = $(e.currentTarget).closest('.aisales-product-info__field, .aisales-category-info__field');
 		const fieldType = $field.data('field');
 
 		// Find matching suggestion
@@ -1726,11 +1730,11 @@
 		if (!suggestion) return;
 
 		$.ajax({
-			url: wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/suggestions/' + suggestionId,
+			url: aisalesChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/suggestions/' + suggestionId,
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-API-Key': wooaiChat.apiKey
+				'X-API-Key': aisalesChat.apiKey
 			},
 			data: JSON.stringify({ action: 'apply' }),
 			success: function(response) {
@@ -1750,11 +1754,11 @@
 
 					// Update UI
 					if ($element) {
-						$element.addClass('wooai-suggestion--applied');
-						$element.find('.wooai-suggestion__actions').html(
-							'<span class="wooai-suggestion__status wooai-suggestion__status--applied">' +
+						$element.addClass('aisales-suggestion--applied');
+						$element.find('.aisales-suggestion__actions').html(
+							'<span class="aisales-suggestion__status aisales-suggestion__status--applied">' +
 							'<span class="dashicons dashicons-yes-alt"></span> ' +
-							wooaiChat.i18n.applied +
+							aisalesChat.i18n.applied +
 							'</span>'
 						);
 					}
@@ -1777,11 +1781,11 @@
 		if (!suggestion) return;
 
 		$.ajax({
-			url: wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/suggestions/' + suggestionId,
+			url: aisalesChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/suggestions/' + suggestionId,
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-API-Key': wooaiChat.apiKey
+				'X-API-Key': aisalesChat.apiKey
 			},
 			data: JSON.stringify({ action: 'discard' }),
 			success: function(response) {
@@ -1792,11 +1796,11 @@
 
 					// Update UI
 					if ($element) {
-						$element.addClass('wooai-suggestion--discarded');
-						$element.find('.wooai-suggestion__actions').html(
-							'<span class="wooai-suggestion__status wooai-suggestion__status--discarded">' +
+						$element.addClass('aisales-suggestion--discarded');
+						$element.find('.aisales-suggestion__actions').html(
+							'<span class="aisales-suggestion__status aisales-suggestion__status--discarded">' +
 							'<span class="dashicons dashicons-dismiss"></span> ' +
-							wooaiChat.i18n.discarded +
+							aisalesChat.i18n.discarded +
 							'</span>'
 						);
 					}
@@ -1853,9 +1857,9 @@
 	 * Handle expand toggle for description
 	 */
 	function handleExpandToggle(e) {
-		const $field = $(e.currentTarget).closest('.wooai-product-info__field, .wooai-category-info__field');
-		$field.toggleClass('wooai-product-info__field--expanded wooai-category-info__field--expanded');
-		$field.find('.wooai-product-info__value, .wooai-category-info__value').toggleClass('wooai-product-info__value--truncated wooai-category-info__value--truncated');
+		const $field = $(e.currentTarget).closest('.aisales-product-info__field, .aisales-category-info__field');
+		$field.toggleClass('aisales-product-info__field--expanded aisales-category-info__field--expanded');
+		$field.find('.aisales-product-info__value, .aisales-category-info__value').toggleClass('aisales-product-info__value--truncated aisales-category-info__value--truncated');
 	}
 
 	/**
@@ -1888,16 +1892,16 @@
 	 * Open store context panel
 	 */
 	function openContextPanel() {
-		elements.contextPanel.addClass('wooai-context-panel--open');
-		$('body').addClass('wooai-context-panel-active');
+		elements.contextPanel.addClass('aisales-context-panel--open');
+		$('body').addClass('aisales-context-panel-active');
 	}
 
 	/**
 	 * Close store context panel
 	 */
 	function closeContextPanel() {
-		elements.contextPanel.removeClass('wooai-context-panel--open');
-		$('body').removeClass('wooai-context-panel-active');
+		elements.contextPanel.removeClass('aisales-context-panel--open');
+		$('body').removeClass('aisales-context-panel-active');
 	}
 
 	/**
@@ -1905,24 +1909,24 @@
 	 */
 	function saveStoreContext() {
 		const formData = {
-			store_name: $('#wooai-store-name').val(),
-			store_description: $('#wooai-store-description').val(),
-			business_niche: $('#wooai-business-niche').val(),
-			target_audience: $('#wooai-target-audience').val(),
+			store_name: $('#aisales-store-name').val(),
+			store_description: $('#aisales-store-description').val(),
+			business_niche: $('#aisales-business-niche').val(),
+			target_audience: $('#aisales-target-audience').val(),
 			brand_tone: $('input[name="brand_tone"]:checked').val() || '',
-			language: $('#wooai-language').val(),
-			custom_instructions: $('#wooai-custom-instructions').val()
+			language: $('#aisales-language').val(),
+			custom_instructions: $('#aisales-custom-instructions').val()
 		};
 
-		const $saveBtn = $('#wooai-save-context');
-		$saveBtn.addClass('wooai-btn--loading').prop('disabled', true);
+		const $saveBtn = $('#aisales-save-context');
+		$saveBtn.addClass('aisales-btn--loading').prop('disabled', true);
 
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_save_store_context',
-				nonce: wooaiChat.nonce,
+				action: 'aisales_save_store_context',
+				nonce: aisalesChat.nonce,
 				context: formData
 			},
 			success: function(response) {
@@ -1941,7 +1945,7 @@
 				showNotice('Failed to save store context', 'error');
 			},
 			complete: function() {
-				$saveBtn.removeClass('wooai-btn--loading').prop('disabled', false);
+				$saveBtn.removeClass('aisales-btn--loading').prop('disabled', false);
 			}
 		});
 	}
@@ -1950,19 +1954,19 @@
 	 * Sync store context (re-fetch category/product counts)
 	 */
 	function syncStoreContext() {
-		const $syncBtn = $('#wooai-sync-context');
-		$syncBtn.addClass('wooai-btn--loading').prop('disabled', true);
+		const $syncBtn = $('#aisales-sync-context');
+		$syncBtn.addClass('aisales-btn--loading').prop('disabled', true);
 
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_sync_store_context',
-				nonce: wooaiChat.nonce
+				action: 'aisales_sync_store_context',
+				nonce: aisalesChat.nonce
 			},
 			success: function(response) {
 				if (response.success) {
-					$('#wooai-sync-status').text(response.data.message || 'Synced successfully');
+					$('#aisales-sync-status').text(response.data.message || 'Synced successfully');
 				} else {
 					showNotice(response.data || 'Sync failed', 'error');
 				}
@@ -1971,7 +1975,7 @@
 				showNotice('Sync failed', 'error');
 			},
 			complete: function() {
-				$syncBtn.removeClass('wooai-btn--loading').prop('disabled', false);
+				$syncBtn.removeClass('aisales-btn--loading').prop('disabled', false);
 			}
 		});
 	}
@@ -1988,13 +1992,13 @@
 			status = hasOptional ? 'configured' : 'partial';
 		}
 
-		$('.wooai-context-status')
-			.removeClass('wooai-context-status--configured wooai-context-status--partial wooai-context-status--missing')
-			.addClass('wooai-context-status--' + status);
+		$('.aisales-context-status')
+			.removeClass('aisales-context-status--configured aisales-context-status--partial aisales-context-status--missing')
+			.addClass('aisales-context-status--' + status);
 
 		// Update store name in button
 		if (context.store_name) {
-			$('.wooai-store-name').text(context.store_name);
+			$('.aisales-store-name').text(context.store_name);
 		}
 	}
 
@@ -2008,11 +2012,11 @@
 
 		// Mark as visited
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_mark_chat_visited',
-				nonce: wooaiChat.nonce
+				action: 'aisales_mark_chat_visited',
+				nonce: aisalesChat.nonce
 			}
 		});
 	}
@@ -2022,7 +2026,7 @@
 	 */
 	function showNotice(message, type) {
 		const $notice = $('<div class="notice notice-' + type + ' is-dismissible"><p>' + escapeHtml(message) + '</p></div>');
-		$('.wooai-chat-page-header').after($notice);
+		$('.aisales-chat-page-header').after($notice);
 		
 		// Auto-dismiss after 5 seconds
 		setTimeout(function() {
@@ -2058,7 +2062,7 @@
 			.replace('{content}', formatMessageContent(message.content))
 			.replace('{time}', formatTime(message.created_at))
 			.replace('{tokens}', message.tokens_input ?
-				'<span class="wooai-message__tokens">' + message.tokens_input + ' + ' + message.tokens_output + ' ' + wooaiChat.i18n.tokensUsed + '</span>' :
+				'<span class="aisales-message__tokens">' + message.tokens_input + ' + ' + message.tokens_output + ' ' + aisalesChat.i18n.tokensUsed + '</span>' :
 				''
 			);
 
@@ -2066,19 +2070,19 @@
 
 		// Add attachment indicators for user messages
 		if (message.attachments && message.attachments.length > 0) {
-			let attachmentHtml = '<div class="wooai-message__attachments">';
+			let attachmentHtml = '<div class="aisales-message__attachments">';
 			message.attachments.forEach(function(att) {
 				const isImage = att.mime_type && att.mime_type.startsWith('image/');
 				const isPdf = att.mime_type === 'application/pdf';
 				const icon = isImage ? 'dashicons-format-image' : (isPdf ? 'dashicons-pdf' : 'dashicons-media-default');
-				attachmentHtml += '<span class="wooai-message__attachment"><span class="dashicons ' + icon + '"></span>' + escapeHtml(att.filename) + '</span>';
+				attachmentHtml += '<span class="aisales-message__attachment"><span class="dashicons ' + icon + '"></span>' + escapeHtml(att.filename) + '</span>';
 			});
 			attachmentHtml += '</div>';
-			$message.find('.wooai-message__content').prepend(attachmentHtml);
+			$message.find('.aisales-message__content').prepend(attachmentHtml);
 		}
 
 		if (isStreaming) {
-			$message.addClass('wooai-message--streaming');
+			$message.addClass('aisales-message--streaming');
 			$message.attr('data-streaming', 'true');
 		}
 
@@ -2091,7 +2095,7 @@
 	function updateStreamingMessage(content) {
 		const $streaming = elements.messagesContainer.find('[data-streaming="true"]');
 		if ($streaming.length) {
-			$streaming.find('.wooai-message__text').html(formatMessageContent(content));
+			$streaming.find('.aisales-message__text').html(formatMessageContent(content));
 			scrollToBottom();
 		}
 	}
@@ -2102,11 +2106,11 @@
 	function renderSuggestionInMessage(suggestion) {
 		const typeLabels = {
 			// Product fields
-			'title': wooaiChat.i18n.improveTitle || 'Improve Title',
-			'description': wooaiChat.i18n.improveDescription || 'Improve Description',
+			'title': aisalesChat.i18n.improveTitle || 'Improve Title',
+			'description': aisalesChat.i18n.improveDescription || 'Improve Description',
 			'short_description': 'Short Description',
-			'tags': wooaiChat.i18n.suggestTags || 'Tags',
-			'categories': wooaiChat.i18n.suggestCategories || 'Categories',
+			'tags': aisalesChat.i18n.suggestTags || 'Tags',
+			'categories': aisalesChat.i18n.suggestCategories || 'Categories',
 			'meta_description': 'Meta Description',
 			// Category fields
 			'name': 'Category Name',
@@ -2116,39 +2120,39 @@
 		};
 
 		const $container = elements.messagesContainer.find('[data-streaming="true"]').length
-			? elements.messagesContainer.find('[data-streaming="true"] .wooai-message__content')
-			: elements.messagesContainer.find('.wooai-message--assistant').last().find('.wooai-message__content');
+			? elements.messagesContainer.find('[data-streaming="true"] .aisales-message__content')
+			: elements.messagesContainer.find('.aisales-message--assistant').last().find('.aisales-message__content');
 
 		if (!$container.length) return;
 
 		// Check if there's already a group for this suggestion type
-		let $group = $container.find('.wooai-suggestions-group[data-type="' + suggestion.suggestion_type + '"]');
+		let $group = $container.find('.aisales-suggestions-group[data-type="' + suggestion.suggestion_type + '"]');
 
 		if ($group.length) {
 			// Add to existing group
-			const $options = $group.find('.wooai-suggestions-group__options');
-			const optionNumber = $options.find('.wooai-suggestion').length + 1;
+			const $options = $group.find('.aisales-suggestions-group__options');
+			const optionNumber = $options.find('.aisales-suggestion').length + 1;
 			
 			const optionHtml = renderSuggestionOption(suggestion, optionNumber);
 			$options.append(optionHtml);
 			
 			// Update count
-			$group.find('.wooai-suggestions-group__count').text(optionNumber + ' options');
+			$group.find('.aisales-suggestions-group__count').text(optionNumber + ' options');
 		} else {
 			// Create new group
-			const groupHtml = '<div class="wooai-suggestions-group" data-type="' + suggestion.suggestion_type + '">' +
-				'<div class="wooai-suggestions-group__header">' +
-					'<div class="wooai-suggestions-group__title">' +
+			const groupHtml = '<div class="aisales-suggestions-group" data-type="' + suggestion.suggestion_type + '">' +
+				'<div class="aisales-suggestions-group__header">' +
+					'<div class="aisales-suggestions-group__title">' +
 						'<span class="dashicons dashicons-lightbulb"></span>' +
 						'<span>' + (typeLabels[suggestion.suggestion_type] || suggestion.suggestion_type) + '</span>' +
 					'</div>' +
-					'<span class="wooai-suggestions-group__count">1 option</span>' +
+					'<span class="aisales-suggestions-group__count">1 option</span>' +
 				'</div>' +
-				'<div class="wooai-suggestions-group__current">' +
-					'<div class="wooai-suggestions-group__current-label">Current value</div>' +
-					'<div class="wooai-suggestions-group__current-value">' + escapeHtml(suggestion.current_value || 'None') + '</div>' +
+				'<div class="aisales-suggestions-group__current">' +
+					'<div class="aisales-suggestions-group__current-label">Current value</div>' +
+					'<div class="aisales-suggestions-group__current-value">' + escapeHtml(suggestion.current_value || 'None') + '</div>' +
 				'</div>' +
-				'<div class="wooai-suggestions-group__options">' +
+				'<div class="aisales-suggestions-group__options">' +
 					renderSuggestionOption(suggestion, 1) +
 				'</div>' +
 			'</div>';
@@ -2161,16 +2165,16 @@
 	 * Render a single suggestion option within a group
 	 */
 	function renderSuggestionOption(suggestion, number) {
-		return '<div class="wooai-suggestion" data-suggestion-id="' + suggestion.id + '" data-suggestion-type="' + suggestion.suggestion_type + '">' +
-			'<span class="wooai-suggestion__number">' + number + '</span>' +
-			'<div class="wooai-suggestion__content">' +
-				'<div class="wooai-suggestion__value">' + escapeHtml(suggestion.suggested_value) + '</div>' +
+		return '<div class="aisales-suggestion" data-suggestion-id="' + suggestion.id + '" data-suggestion-type="' + suggestion.suggestion_type + '">' +
+			'<span class="aisales-suggestion__number">' + number + '</span>' +
+			'<div class="aisales-suggestion__content">' +
+				'<div class="aisales-suggestion__value">' + escapeHtml(suggestion.suggested_value) + '</div>' +
 			'</div>' +
-			'<div class="wooai-suggestion__actions">' +
-				'<button type="button" class="wooai-btn wooai-btn--success wooai-btn--sm" data-action="apply">' +
+			'<div class="aisales-suggestion__actions">' +
+				'<button type="button" class="aisales-btn aisales-btn--success aisales-btn--sm" data-action="apply">' +
 					'<span class="dashicons dashicons-yes"></span> Apply' +
 				'</button>' +
-				'<button type="button" class="wooai-btn wooai-btn--outline wooai-btn--sm" data-action="discard">' +
+				'<button type="button" class="aisales-btn aisales-btn--outline aisales-btn--sm" data-action="discard">' +
 					'<span class="dashicons dashicons-no"></span>' +
 				'</button>' +
 			'</div>' +
@@ -2217,7 +2221,7 @@
 	 * Show thinking indicator
 	 */
 	function showThinking() {
-		elements.messagesContainer.find('.wooai-message--thinking').remove();
+		elements.messagesContainer.find('.aisales-message--thinking').remove();
 		elements.messagesContainer.append(templates.thinking);
 		scrollToBottom();
 	}
@@ -2226,17 +2230,17 @@
 	 * Hide thinking indicator
 	 */
 	function hideThinking() {
-		elements.messagesContainer.find('.wooai-message--thinking').remove();
+		elements.messagesContainer.find('.aisales-message--thinking').remove();
 	}
 
 	/**
 	 * Add error message
 	 */
 	function addErrorMessage(text) {
-		const $error = $('<div class="wooai-message wooai-message--error">' +
-			'<div class="wooai-message__avatar"><span class="dashicons dashicons-warning"></span></div>' +
-			'<div class="wooai-message__content">' +
-			'<div class="wooai-message__text">' + escapeHtml(text) + '</div>' +
+		const $error = $('<div class="aisales-message aisales-message--error">' +
+			'<div class="aisales-message__avatar"><span class="dashicons dashicons-warning"></span></div>' +
+			'<div class="aisales-message__content">' +
+			'<div class="aisales-message__text">' + escapeHtml(text) + '</div>' +
 			'</div></div>');
 		elements.messagesContainer.append($error);
 		scrollToBottom();
@@ -2251,8 +2255,8 @@
 		const $field = $panel.find('[data-field="' + suggestion.suggestion_type + '"]');
 		if (!$field.length) return;
 
-		$field.addClass('wooai-product-info__field--has-pending wooai-category-info__field--has-pending');
-		const $pending = $field.find('.wooai-product-info__pending, .wooai-category-info__pending');
+		$field.addClass('aisales-product-info__field--has-pending aisales-category-info__field--has-pending');
+		const $pending = $field.find('.aisales-product-info__pending, .aisales-category-info__pending');
 
 		if (suggestion.suggestion_type === 'tags' || suggestion.suggestion_type === 'categories' || suggestion.suggestion_type === 'subcategories') {
 			// Handle array fields
@@ -2261,15 +2265,15 @@
 			const added = suggestedArr.filter(t => !currentArr.includes(t));
 			const removed = currentArr.filter(t => !suggestedArr.includes(t));
 
-			$pending.find('.wooai-pending-change__added').html(
-				added.map(t => '<span class="wooai-tag wooai-tag--added">+ ' + escapeHtml(t) + '</span>').join('')
+			$pending.find('.aisales-pending-change__added').html(
+				added.map(t => '<span class="aisales-tag aisales-tag--added">+ ' + escapeHtml(t) + '</span>').join('')
 			);
-			$pending.find('.wooai-pending-change__removed').html(
-				removed.map(t => '<span class="wooai-tag wooai-tag--removed">- ' + escapeHtml(t) + '</span>').join('')
+			$pending.find('.aisales-pending-change__removed').html(
+				removed.map(t => '<span class="aisales-tag aisales-tag--removed">- ' + escapeHtml(t) + '</span>').join('')
 			);
 		} else {
 			// Handle text fields - only show new value
-			$pending.find('.wooai-pending-change__new').text(suggestion.suggested_value);
+			$pending.find('.aisales-pending-change__new').text(suggestion.suggested_value);
 		}
 
 		$pending.slideDown(200);
@@ -2281,18 +2285,18 @@
 	function hidePendingChange(fieldType) {
 		const $panel = state.entityType === 'category' ? elements.categoryInfo : elements.productInfo;
 		const $field = $panel.find('[data-field="' + fieldType + '"]');
-		$field.removeClass('wooai-product-info__field--has-pending wooai-category-info__field--has-pending');
-		$field.find('.wooai-product-info__pending, .wooai-category-info__pending').slideUp(200);
+		$field.removeClass('aisales-product-info__field--has-pending aisales-category-info__field--has-pending');
+		$field.find('.aisales-product-info__pending, .aisales-category-info__pending').slideUp(200);
 	}
 
 	/**
 	 * Clear all pending changes from entity panel
 	 */
 	function clearPendingChanges() {
-		elements.productInfo.find('.wooai-product-info__field--has-pending').removeClass('wooai-product-info__field--has-pending');
-		elements.productInfo.find('.wooai-product-info__pending').hide();
-		elements.categoryInfo.find('.wooai-category-info__field--has-pending').removeClass('wooai-category-info__field--has-pending');
-		elements.categoryInfo.find('.wooai-category-info__pending').hide();
+		elements.productInfo.find('.aisales-product-info__field--has-pending').removeClass('aisales-product-info__field--has-pending');
+		elements.productInfo.find('.aisales-product-info__pending').hide();
+		elements.categoryInfo.find('.aisales-category-info__field--has-pending').removeClass('aisales-category-info__field--has-pending');
+		elements.categoryInfo.find('.aisales-category-info__pending').hide();
 	}
 
 	/**
@@ -2304,7 +2308,7 @@
 		}).length;
 
 		if (state.entityType === 'category') {
-			$('#wooai-category-pending-count').text(count);
+			$('#aisales-category-pending-count').text(count);
 			if (count > 0) {
 				elements.categoryPendingSummary.slideDown(200);
 			} else {
@@ -2312,7 +2316,7 @@
 			}
 			elements.pendingSummary.hide();
 		} else {
-			$('#wooai-pending-count').text(count);
+			$('#aisales-pending-count').text(count);
 			if (count > 0) {
 				elements.pendingSummary.slideDown(200);
 			} else {
@@ -2383,11 +2387,11 @@
 		if (!state.selectedProduct) return;
 
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_update_product_field',
-				nonce: wooaiChat.nonce,
+				action: 'aisales_update_product_field',
+				nonce: aisalesChat.nonce,
 				product_id: state.selectedProduct.id,
 				field: fieldType,
 				value: value
@@ -2410,11 +2414,11 @@
 		if (!state.selectedCategory) return;
 
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			method: 'POST',
 			data: {
-				action: 'wooai_update_category_field',
-				nonce: wooaiChat.nonce,
+				action: 'aisales_update_category_field',
+				nonce: aisalesChat.nonce,
 				category_id: state.selectedCategory.id,
 				field: fieldType,
 				value: value
@@ -2434,7 +2438,7 @@
 	 * Update tokens used display
 	 */
 	function updateTokensUsed(tokens) {
-		elements.tokensUsed.text(tokens.total + ' ' + wooaiChat.i18n.tokensUsed);
+		elements.tokensUsed.text(tokens.total + ' ' + aisalesChat.i18n.tokensUsed);
 	}
 
 	/**
@@ -2451,11 +2455,11 @@
 	 */
 	function syncBalanceToWordPress(balance) {
 		$.ajax({
-			url: wooaiChat.ajaxUrl,
+			url: aisalesChat.ajaxUrl,
 			type: 'POST',
 			data: {
-				action: 'wooai_sync_balance',
-				nonce: wooaiChat.nonce,
+				action: 'aisales_sync_balance',
+				nonce: aisalesChat.nonce,
 				balance: balance
 			}
 		});
@@ -2471,11 +2475,11 @@
 	function saveGeneratedImage(imageData, filename, title) {
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: wooaiChat.ajaxUrl,
+				url: aisalesChat.ajaxUrl,
 				type: 'POST',
 				data: {
-					action: 'wooai_save_generated_image',
-					nonce: wooaiChat.nonce,
+					action: 'aisales_save_generated_image',
+					nonce: aisalesChat.nonce,
 					image_data: imageData,
 					filename: filename || 'ai-generated-image.png',
 					title: title || ''
@@ -2508,11 +2512,11 @@
 	function getStoreSummary() {
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: wooaiChat.ajaxUrl,
+				url: aisalesChat.ajaxUrl,
 				type: 'POST',
 				data: {
-					action: 'wooai_get_store_summary',
-					nonce: wooaiChat.nonce
+					action: 'aisales_get_store_summary',
+					nonce: aisalesChat.nonce
 				},
 				success: function(response) {
 					if (response.success) {
@@ -2569,9 +2573,9 @@
 		elements.messageInput.prop('disabled', loading || !hasEntity);
 
 		if (loading) {
-			elements.sendButton.addClass('wooai-btn--loading');
+			elements.sendButton.addClass('aisales-btn--loading');
 		} else {
-			elements.sendButton.removeClass('wooai-btn--loading');
+			elements.sendButton.removeClass('aisales-btn--loading');
 		}
 	}
 
@@ -2596,13 +2600,13 @@
 	 * Handle error response
 	 */
 	function handleError(xhr) {
-		let message = wooaiChat.i18n.errorOccurred;
+		let message = aisalesChat.i18n.errorOccurred;
 
 		if (xhr.responseJSON && xhr.responseJSON.error) {
 			message = xhr.responseJSON.error.message || message;
 
 			if (xhr.responseJSON.error.code === 'INSUFFICIENT_BALANCE') {
-				message = wooaiChat.i18n.insufficientBalance;
+				message = aisalesChat.i18n.insufficientBalance;
 			}
 		}
 
@@ -2647,7 +2651,7 @@
 	 * Format price display
 	 */
 	function formatPrice(regularPrice, salePrice, price) {
-		if (!price && !regularPrice) return '<span class="wooai-no-value">Not set</span>';
+		if (!price && !regularPrice) return '<span class="aisales-no-value">Not set</span>';
 
 		if (salePrice && regularPrice && salePrice !== regularPrice) {
 			return '<del>' + formatCurrency(regularPrice) + '</del> ' + formatCurrency(salePrice);
@@ -2670,15 +2674,15 @@
 	 */
 	function formatStock(status, quantity) {
 		const statusLabels = {
-			'instock': '<span class="wooai-stock wooai-stock--instock">In Stock</span>',
-			'outofstock': '<span class="wooai-stock wooai-stock--outofstock">Out of Stock</span>',
-			'onbackorder': '<span class="wooai-stock wooai-stock--backorder">On Backorder</span>'
+			'instock': '<span class="aisales-stock aisales-stock--instock">In Stock</span>',
+			'outofstock': '<span class="aisales-stock aisales-stock--outofstock">Out of Stock</span>',
+			'onbackorder': '<span class="aisales-stock aisales-stock--backorder">On Backorder</span>'
 		};
 
-		let html = statusLabels[status] || '<span class="wooai-no-value">Unknown</span>';
+		let html = statusLabels[status] || '<span class="aisales-no-value">Unknown</span>';
 
 		if (quantity !== null && quantity !== undefined && status === 'instock') {
-			html += ' <span class="wooai-stock__qty">(' + quantity + ')</span>';
+			html += ' <span class="aisales-stock__qty">(' + quantity + ')</span>';
 		}
 
 		return html;
@@ -2689,10 +2693,10 @@
 	 */
 	function formatStatus(status) {
 		const statusClasses = {
-			'publish': 'wooai-status--published',
-			'draft': 'wooai-status--draft',
-			'pending': 'wooai-status--pending',
-			'private': 'wooai-status--private'
+			'publish': 'aisales-status--published',
+			'draft': 'aisales-status--draft',
+			'pending': 'aisales-status--pending',
+			'private': 'aisales-status--private'
 		};
 
 		const statusLabels = {
@@ -2705,7 +2709,7 @@
 		const cls = statusClasses[status] || '';
 		const label = statusLabels[status] || status || 'Unknown';
 
-		return '<span class="wooai-status ' + cls + '">' + label + '</span>';
+		return '<span class="aisales-status ' + cls + '">' + label + '</span>';
 	}
 
 	/**
@@ -2754,7 +2758,7 @@
 		var isDecreasing = difference < 0;
 		
 		// Add visual feedback class
-		$el.parent().addClass(isDecreasing ? 'wooai-balance--decreasing' : 'wooai-balance--increasing');
+		$el.parent().addClass(isDecreasing ? 'aisales-balance--decreasing' : 'aisales-balance--increasing');
 		
 		function step(timestamp) {
 			if (!startTime) startTime = timestamp;
@@ -2776,7 +2780,7 @@
 				
 				// Remove visual feedback class after a short delay
 				setTimeout(function() {
-					$el.parent().removeClass('wooai-balance--decreasing wooai-balance--increasing');
+					$el.parent().removeClass('aisales-balance--decreasing aisales-balance--increasing');
 				}, 300);
 			}
 		}

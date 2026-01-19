@@ -1,11 +1,11 @@
 <?php
 /**
- * WooAI Sales Manager Uninstall
+ * AI Sales Manager Uninstall
  *
  * Fired when the plugin is uninstalled (deleted) via WordPress admin.
  * This file is called automatically by WordPress when the plugin is deleted.
  *
- * @package WooAI_Sales_Manager
+ * @package AISales_Sales_Manager
  * @since 1.1.0
  */
 
@@ -20,76 +20,71 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * Removes:
  * - Plugin options from wp_options table
  * - User meta from wp_usermeta table
- * - Term meta from wp_termmeta table (WooAI-specific only)
+ * - Term meta from wp_termmeta table (AISales-specific only)
+ * - Transients with our prefix
  */
 
 // =============================================================================
 // OPTIONS CLEANUP
 // =============================================================================
 
-$options_to_delete = array(
-	'wooai_api_key',
-	'wooai_user_email',
-	'wooai_balance',
-	'wooai_domain',
-	'wooai_store_context',
+$aisales_options_to_delete = array(
+	'aisales_api_key',
+	'aisales_user_email',
+	'aisales_balance',
+	'aisales_domain',
+	'aisales_store_context',
 );
 
-foreach ( $options_to_delete as $option ) {
-	delete_option( $option );
+foreach ( $aisales_options_to_delete as $aisales_option ) {
+	delete_option( $aisales_option );
 }
 
 // =============================================================================
 // USER META CLEANUP
 // =============================================================================
 
-// Delete user meta for all users.
-// Using direct query for efficiency with large user bases.
-global $wpdb;
-
-$user_meta_keys = array(
-	'wooai_chat_visited',
+// Delete user meta for all users using WordPress API.
+// delete_metadata with empty string for object_id and delete_all=true removes for all users.
+$aisales_user_meta_keys = array(
+	'aisales_chat_visited',
 );
 
-foreach ( $user_meta_keys as $meta_key ) {
-	$wpdb->delete(
-		$wpdb->usermeta,
-		array( 'meta_key' => $meta_key ),
-		array( '%s' )
-	);
+foreach ( $aisales_user_meta_keys as $aisales_meta_key ) {
+	delete_metadata( 'user', 0, $aisales_meta_key, '', true );
 }
 
 // =============================================================================
 // TERM META CLEANUP
 // =============================================================================
 
-// Delete WooAI-specific term meta from product categories.
+// Delete AISales-specific term meta from all terms using WordPress API.
 // Note: We only delete our own meta keys, not Yoast/RankMath meta that we also write to.
-$term_meta_keys = array(
-	'wooai_seo_title',
-	'wooai_meta_description',
+$aisales_term_meta_keys = array(
+	'aisales_seo_title',
+	'aisales_meta_description',
 );
 
-foreach ( $term_meta_keys as $meta_key ) {
-	$wpdb->delete(
-		$wpdb->termmeta,
-		array( 'meta_key' => $meta_key ),
-		array( '%s' )
-	);
+foreach ( $aisales_term_meta_keys as $aisales_meta_key ) {
+	delete_metadata( 'term', 0, $aisales_meta_key, '', true );
 }
 
 // =============================================================================
-// TRANSIENTS CLEANUP (if any were added in future versions)
+// TRANSIENTS CLEANUP
 // =============================================================================
 
-// Delete any transients with our prefix.
-$wpdb->query(
-	$wpdb->prepare(
-		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-		'_transient_wooai_%',
-		'_transient_timeout_wooai_%'
-	)
+// Delete known transients used by the plugin.
+// These are the cache transients used for store summary data.
+$aisales_transients_to_delete = array(
+	'aisales_empty_desc_count',
+	'aisales_no_image_count',
 );
 
-// Clear any cached data.
+foreach ( $aisales_transients_to_delete as $aisales_transient ) {
+	delete_transient( $aisales_transient );
+}
+
+// Clear any object cache data.
+wp_cache_delete( 'aisales_empty_desc_count' );
+wp_cache_delete( 'aisales_no_image_count' );
 wp_cache_flush();
