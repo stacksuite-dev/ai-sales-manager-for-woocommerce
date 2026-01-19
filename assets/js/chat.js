@@ -1228,7 +1228,14 @@
 		})
 		.then(function(response) {
 			if (!response.ok) {
-				throw new Error('Network response was not ok');
+				// Handle HTTP errors by parsing the JSON response
+				return response.json().then(function(errorData) {
+					throw { status: response.status, data: errorData };
+				}).catch(function(parseError) {
+					// If JSON parsing fails, throw generic error with status
+					if (parseError.status) throw parseError;
+					throw { status: response.status, data: null };
+				});
 			}
 
 			const contentType = response.headers.get('content-type');
@@ -1252,7 +1259,23 @@
 		.catch(function(error) {
 			console.error('Chat error:', error);
 			hideThinking();
-			addErrorMessage(wooaiChat.i18n.connectionError);
+			
+			// Handle specific error codes
+			let errorMessage = wooaiChat.i18n.connectionError;
+			
+			if (error.status === 402) {
+				// Payment required - insufficient balance
+				errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+			} else if (error.data && error.data.error) {
+				// Use error message from API if available
+				if (error.data.error.code === 'insufficient_balance') {
+					errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+				} else if (error.data.error.message) {
+					errorMessage = error.data.error.message;
+				}
+			}
+			
+			addErrorMessage(errorMessage);
 			setLoading(false);
 		});
 	}
@@ -1266,6 +1289,7 @@
 		let buffer = '';
 		let assistantMessage = null;
 		let messageContent = '';
+		let pendingEventType = null; // Persist event type across chunks
 
 		function processChunk(chunk) {
 			buffer += decoder.decode(chunk, { stream: true });
@@ -1274,22 +1298,18 @@
 			const lines = buffer.split('\n');
 			buffer = lines.pop() || ''; // Keep incomplete line
 
-			let eventType = null;
-			let eventData = null;
-
 			lines.forEach(function(line) {
 				if (line.startsWith('event:')) {
-					eventType = line.substring(6).trim();
+					pendingEventType = line.substring(6).trim();
 				} else if (line.startsWith('data:')) {
 					const dataStr = line.substring(5).trim();
 					try {
-						eventData = JSON.parse(dataStr);
-						handleSSEEvent(eventType, eventData);
+						const eventData = JSON.parse(dataStr);
+						handleSSEEvent(pendingEventType, eventData);
 					} catch (e) {
 						// Not valid JSON, ignore
 					}
-					eventType = null;
-					eventData = null;
+					pendingEventType = null; // Reset after handling
 				}
 			});
 		}
@@ -1442,7 +1462,9 @@
 	 * Fetches data via WordPress AJAX and sends results back to API
 	 */
 	function handleToolDataRequests(requests) {
-		if (!requests || requests.length === 0) return;
+		if (!requests || requests.length === 0) {
+			return;
+		}
 
 		$.ajax({
 			url: wooaiChat.ajaxUrl,
@@ -1472,7 +1494,9 @@
 	 * Send tool results back to API to continue the conversation
 	 */
 	function sendToolResults(toolResults) {
-		if (!state.sessionId || !toolResults || toolResults.length === 0) return;
+		if (!state.sessionId || !toolResults || toolResults.length === 0) {
+			return;
+		}
 
 		// Show thinking indicator while AI processes the results
 		showThinking();
@@ -1497,7 +1521,13 @@
 		})
 		.then(function(response) {
 			if (!response.ok) {
-				throw new Error('Network response was not ok');
+				// Handle HTTP errors by parsing the JSON response
+				return response.json().then(function(errorData) {
+					throw { status: response.status, data: errorData };
+				}).catch(function(parseError) {
+					if (parseError.status) throw parseError;
+					throw { status: response.status, data: null };
+				});
 			}
 
 			const contentType = response.headers.get('content-type');
@@ -1518,7 +1548,21 @@
 		.catch(function(error) {
 			console.error('Tool results send error:', error);
 			hideThinking();
-			addErrorMessage(wooaiChat.i18n.connectionError || 'Connection error');
+			
+			// Handle specific error codes
+			let errorMessage = wooaiChat.i18n.connectionError || 'Connection error';
+			
+			if (error.status === 402) {
+				errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+			} else if (error.data && error.data.error) {
+				if (error.data.error.code === 'insufficient_balance') {
+					errorMessage = wooaiChat.i18n.insufficientBalance || 'Insufficient token balance. Please top up to continue.';
+				} else if (error.data.error.message) {
+					errorMessage = error.data.error.message;
+				}
+			}
+			
+			addErrorMessage(errorMessage);
 			setLoading(false);
 		});
 	}
