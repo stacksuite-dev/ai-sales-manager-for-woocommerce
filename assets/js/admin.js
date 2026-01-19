@@ -16,7 +16,9 @@
             this.bindModalEvents();
             this.bindApiKeyEvents();
             this.bindStoreContextEvents();
+            this.bindBalanceModalEvents();
             this.handlePageToasts();
+            this.initBalanceIndicator();
         },
 
         /**
@@ -979,6 +981,204 @@
             var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        },
+
+        /**
+         * Initialize balance indicator
+         */
+        initBalanceIndicator: function() {
+            var $indicator = $('.wooai-balance-indicator');
+            if (!$indicator.length) return;
+
+            // Make clickable
+            $indicator.addClass('wooai-balance-indicator--clickable');
+            $indicator.attr('role', 'button');
+            $indicator.attr('tabindex', '0');
+            $indicator.attr('title', wooaiAdmin.strings.clickToTopUp || 'Click to add tokens');
+
+            // Check if balance is low (below 1000)
+            var balance = this.getBalanceValue();
+            if (balance < 1000) {
+                $indicator.addClass('wooai-balance-indicator--low');
+            }
+        },
+
+        /**
+         * Get current balance value
+         */
+        getBalanceValue: function() {
+            var balanceText = $('#wooai-balance-count, #wooai-balance-display').first().text();
+            return parseInt(balanceText.replace(/,/g, ''), 10) || 0;
+        },
+
+        /**
+         * Bind balance modal events
+         */
+        bindBalanceModalEvents: function() {
+            var self = this;
+            var $modal = $('#wooai-balance-modal');
+            var $overlay = $('#wooai-balance-modal-overlay');
+
+            // Skip if modal doesn't exist on this page
+            if (!$modal.length) return;
+
+            // Click on balance indicator opens modal
+            $('.wooai-balance-indicator').on('click', function(e) {
+                e.preventDefault();
+                self.openBalanceModal();
+            });
+
+            // Keyboard support
+            $('.wooai-balance-indicator').on('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    self.openBalanceModal();
+                }
+            });
+
+            // Close modal
+            $('#wooai-balance-modal-close').on('click', function() {
+                self.closeBalanceModal();
+            });
+
+            $overlay.on('click', function() {
+                self.closeBalanceModal();
+            });
+
+            // Close on Escape key
+            $(document).on('keydown.balanceModal', function(e) {
+                if (e.key === 'Escape' && $modal.hasClass('wooai-modal--active')) {
+                    self.closeBalanceModal();
+                }
+            });
+
+            // Package selection (for future multi-plan support)
+            $('.wooai-package-card').on('click', function() {
+                $('.wooai-package-card').removeClass('wooai-package-card--selected');
+                $(this).addClass('wooai-package-card--selected');
+            });
+
+            // Purchase button
+            $('#wooai-purchase-btn').on('click', function() {
+                self.initiateCheckout();
+            });
+        },
+
+        /**
+         * Open balance modal
+         */
+        openBalanceModal: function() {
+            var self = this;
+            var $modal = $('#wooai-balance-modal');
+            var $overlay = $('#wooai-balance-modal-overlay');
+
+            // Update balance display in modal
+            var currentBalance = this.getBalanceValue();
+            $('#wooai-balance-modal-value').text(currentBalance.toLocaleString());
+
+            // Update progress bar
+            var progressPercent = Math.min(100, (currentBalance / 10000) * 100);
+            $('#wooai-balance-progress-bar').css('width', progressPercent + '%');
+
+            // Update low balance state
+            var $balanceCurrent = $('.wooai-balance-current');
+            if (currentBalance < 1000) {
+                $balanceCurrent.addClass('wooai-balance-current--low');
+            } else {
+                $balanceCurrent.removeClass('wooai-balance-current--low');
+            }
+
+            // Show modal
+            $overlay.addClass('wooai-modal-overlay--active');
+            $modal.addClass('wooai-modal--active');
+            $('body').addClass('wooai-balance-modal-active');
+
+            // Focus close button for accessibility
+            setTimeout(function() {
+                $('#wooai-balance-modal-close').focus();
+            }, 100);
+        },
+
+        /**
+         * Close balance modal
+         */
+        closeBalanceModal: function() {
+            $('#wooai-balance-modal-overlay').removeClass('wooai-modal-overlay--active');
+            $('#wooai-balance-modal').removeClass('wooai-modal--active');
+            $('body').removeClass('wooai-balance-modal-active');
+
+            // Return focus to balance indicator
+            $('.wooai-balance-indicator').first().focus();
+        },
+
+        /**
+         * Initiate Stripe checkout
+         */
+        initiateCheckout: function() {
+            var self = this;
+            var $btn = $('#wooai-purchase-btn');
+            var $loading = $('#wooai-balance-modal-loading');
+
+            // Show loading state
+            $btn.prop('disabled', true);
+            $loading.show();
+
+            $.ajax({
+                url: wooaiAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'wooai_topup',
+                    nonce: wooaiAdmin.nonce
+                },
+                success: function(response) {
+                    if (response.success && response.data.checkout_url) {
+                        // Redirect to Stripe checkout
+                        window.location.href = response.data.checkout_url;
+                    } else {
+                        $loading.hide();
+                        $btn.prop('disabled', false);
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Checkout Error',
+                            message: response.data.message || 'Failed to create checkout session',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    $loading.hide();
+                    $btn.prop('disabled', false);
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to payment service',
+                        duration: 4000
+                    });
+                }
+            });
+        },
+
+        /**
+         * Update balance indicator after successful purchase
+         */
+        updateBalanceIndicator: function(newBalance) {
+            var $indicator = $('.wooai-balance-indicator');
+            var $count = $('#wooai-balance-count, #wooai-balance-display');
+
+            // Animate the update
+            $indicator.addClass('wooai-balance--increasing');
+            $count.text(newBalance.toLocaleString());
+
+            setTimeout(function() {
+                $indicator.removeClass('wooai-balance--increasing');
+            }, 500);
+
+            // Update low balance state
+            if (newBalance >= 1000) {
+                $indicator.removeClass('wooai-balance-indicator--low');
+            }
         }
     };
 

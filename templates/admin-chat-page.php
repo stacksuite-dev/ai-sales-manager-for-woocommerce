@@ -92,6 +92,9 @@ $show_onboarding = empty( $has_visited ) && 'missing' === $context_status;
 	<!-- Store Context Slide-out Panel (Shared Partial) -->
 	<?php include WOOAI_PLUGIN_DIR . 'templates/partials/store-context-panel.php'; ?>
 
+	<!-- Balance Top-Up Modal (Shared Partial) -->
+	<?php include WOOAI_PLUGIN_DIR . 'templates/partials/balance-modal.php'; ?>
+
 	<!-- Main Chat Container -->
 	<div class="wooai-chat-container">
 		<!-- Chat Panel (Left - 70%) -->

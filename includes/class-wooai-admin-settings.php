@@ -195,6 +195,9 @@ class WooAI_Admin_Settings {
 				<!-- Store Context Slide-out Panel (Shared Partial) -->
 				<?php include WOOAI_PLUGIN_DIR . 'templates/partials/store-context-panel.php'; ?>
 
+				<!-- Balance Top-Up Modal (Shared Partial) -->
+				<?php include WOOAI_PLUGIN_DIR . 'templates/partials/balance-modal.php'; ?>
+
 				<!-- Modern Navigation Tabs -->
 				<nav class="wooai-nav">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=woo-ai-manager&tab=dashboard' ) ); ?>"

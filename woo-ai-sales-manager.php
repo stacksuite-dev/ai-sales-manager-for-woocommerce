@@ -199,6 +199,7 @@ final class WooAI_Sales_Manager {
 					'success'      => __( 'Success!', 'woo-ai-sales-manager' ),
 					'lowBalance'   => __( 'Low balance. Please top up.', 'woo-ai-sales-manager' ),
 					'confirmApply' => __( 'Apply this suggestion?', 'woo-ai-sales-manager' ),
+					'clickToTopUp' => __( 'Click to add tokens', 'woo-ai-sales-manager' ),
 				),
 			)
 		);
