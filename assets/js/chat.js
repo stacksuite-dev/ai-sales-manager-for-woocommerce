@@ -616,8 +616,10 @@
 		// Update tabs UI
 		updateEntityTabs();
 		
-		// Clear current selection
-		clearEntity();
+		// Clear current selection (skip for agent - selectAgent handles cleanup)
+		if (newType !== 'agent') {
+			clearEntity();
+		}
 		
 		// Populate selector with new entity type (or hide for agent)
 		populateEntitySelector();
@@ -629,7 +631,7 @@
 		updateEmptyState();
 		
 		// If agent mode, activate immediately
-		if (state.isAgentMode) {
+		if (state.entityType === 'agent') {
 			selectAgent();
 		}
 	}
@@ -756,17 +758,27 @@
 	 * Select agent mode (store-wide marketing operations)
 	 */
 	function selectAgent() {
+		// Clear previous state
 		state.selectedProduct = null;
 		state.selectedCategory = null;
+		state.sessionId = null;
+		state.messages = [];
+		state.pendingSuggestions = {};
 		state.isAgentMode = true;
+		
+		// Clear messages display
+		clearMessages();
+		
+		// Enable inputs for agent mode
 		enableInputs();
 
-		// Hide welcome, show agent info
+		// Hide welcome and other panels, show agent info
 		elements.chatWelcome.hide();
 		elements.entityEmpty.hide();
 		elements.productInfo.hide();
 		elements.categoryInfo.hide();
 		elements.agentInfo.show();
+		elements.pendingSummary.hide();
 
 		// Create new session for agent mode
 		createSession(null, 'agent');
@@ -1332,6 +1344,25 @@
 					messageContent = '';
 					break;
 
+				case 'data_request':
+					// AI is requesting data from WordPress
+					if (data.requests && data.requests.length > 0) {
+						// Show interim message if provided
+						if (data.interim_message) {
+							showToolProcessingMessage(data.interim_message);
+						}
+						// Fetch tool data and continue conversation
+						handleToolDataRequests(data.requests);
+					}
+					break;
+
+				case 'tool_processing':
+					// Status update about tool processing
+					if (data.message) {
+						showToolProcessingMessage(data.message);
+					}
+					break;
+
 				case 'done':
 					setLoading(false);
 					break;
@@ -1356,6 +1387,145 @@
 		}
 
 		return read();
+	}
+
+	/**
+	 * Show tool processing status message
+	 * Displays a temporary status indicator while AI tools fetch data
+	 */
+	function showToolProcessingMessage(message) {
+		// Remove any existing tool processing message
+		elements.messagesContainer.find('.wooai-message--tool-processing').remove();
+
+		const $toolMessage = $(
+			'<div class="wooai-message wooai-message--tool-processing">' +
+				'<div class="wooai-message__avatar"><span class="dashicons dashicons-database"></span></div>' +
+				'<div class="wooai-message__content">' +
+					'<div class="wooai-message__text">' +
+						'<span class="wooai-tool-spinner"></span> ' +
+						escapeHtml(message) +
+					'</div>' +
+				'</div>' +
+			'</div>'
+		);
+
+		elements.messagesContainer.append($toolMessage);
+		scrollToBottom();
+	}
+
+	/**
+	 * Hide tool processing message
+	 */
+	function hideToolProcessingMessage() {
+		elements.messagesContainer.find('.wooai-message--tool-processing').remove();
+	}
+
+	/**
+	 * Handle tool data requests from AI
+	 * Fetches data via WordPress AJAX and sends results back to API
+	 */
+	function handleToolDataRequests(requests) {
+		if (!requests || requests.length === 0) return;
+
+		// Call WordPress AJAX to execute the tools
+		$.ajax({
+			url: wooaiChat.ajaxUrl,
+			method: 'POST',
+			data: {
+				action: 'wooai_fetch_tool_data',
+				nonce: wooaiChat.nonce,
+				requests: JSON.stringify(requests)
+			},
+			success: function(response) {
+				hideToolProcessingMessage();
+
+				if (response.success && response.data && response.data.tool_results) {
+					// Send tool results back to API to continue conversation
+					sendToolResults(response.data.tool_results);
+				} else {
+					// Handle error - send error results back
+					const errorResults = requests.map(function(req) {
+						return {
+							request_id: req.request_id,
+							tool: req.tool,
+							success: false,
+							error: response.data || 'Failed to fetch tool data'
+						};
+					});
+					sendToolResults(errorResults);
+				}
+			},
+			error: function(xhr) {
+				hideToolProcessingMessage();
+				console.error('Tool data fetch error:', xhr);
+
+				// Send error results back to API
+				const errorResults = requests.map(function(req) {
+					return {
+						request_id: req.request_id,
+						tool: req.tool,
+						success: false,
+						error: 'Network error fetching tool data'
+					};
+				});
+				sendToolResults(errorResults);
+			}
+		});
+	}
+
+	/**
+	 * Send tool results back to API to continue the conversation
+	 */
+	function sendToolResults(toolResults) {
+		if (!state.sessionId || !toolResults || toolResults.length === 0) return;
+
+		// Show thinking indicator while AI processes the results
+		showThinking();
+
+		const requestData = {
+			role: 'tool',
+			content: 'Tool execution results',
+			tool_results: toolResults
+		};
+
+		// Send tool results using SSE for streaming response
+		const url = wooaiChat.apiBaseUrl + '/ai/chat/sessions/' + state.sessionId + '/messages';
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-API-Key': wooaiChat.apiKey,
+				'Accept': 'text/event-stream'
+			},
+			body: JSON.stringify(requestData)
+		})
+		.then(function(response) {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+
+			const contentType = response.headers.get('content-type');
+
+			if (contentType && contentType.includes('text/event-stream')) {
+				return handleSSEResponse(response);
+			} else {
+				return response.json().then(function(data) {
+					hideThinking();
+					const responseData = data.data || data;
+					if (responseData.assistant_message || responseData.suggestions) {
+						handleMessageResponse(responseData);
+					}
+					setLoading(false);
+				});
+			}
+		})
+		.catch(function(error) {
+			console.error('Tool results send error:', error);
+			hideThinking();
+			addErrorMessage(wooaiChat.i18n.connectionError || 'Connection error');
+			setLoading(false);
+		});
 	}
 
 	/**
