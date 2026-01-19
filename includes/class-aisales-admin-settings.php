@@ -674,6 +674,10 @@ class AISales_Admin_Settings {
 
 		// Include the billing template
 		include AISALES_PLUGIN_DIR . 'templates/pages/billing.php';
+
+		// Include the balance modal for Buy Tokens functionality
+		// Note: $balance variable is used by the modal template
+		include AISALES_PLUGIN_DIR . 'templates/partials/balance-modal.php';
 	}
 
 	/**

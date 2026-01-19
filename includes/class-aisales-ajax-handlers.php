@@ -40,8 +40,10 @@ class AISales_Ajax_Handlers {
 
 		// Billing actions
 		add_action( 'wp_ajax_aisales_topup', array( $this, 'handle_topup' ) );
+		add_action( 'wp_ajax_aisales_quick_topup', array( $this, 'handle_quick_topup' ) );
 		add_action( 'wp_ajax_aisales_update_auto_topup', array( $this, 'handle_update_auto_topup' ) );
 		add_action( 'wp_ajax_aisales_setup_payment_method', array( $this, 'handle_setup_payment_method' ) );
+		add_action( 'wp_ajax_aisales_confirm_setup', array( $this, 'handle_confirm_setup' ) );
 		add_action( 'wp_ajax_aisales_remove_payment_method', array( $this, 'handle_remove_payment_method' ) );
 
 		// AI actions
@@ -177,6 +179,40 @@ class AISales_Ajax_Handlers {
 	}
 
 	/**
+	 * Handle quick top-up with specific plan
+	 */
+	public function handle_quick_topup() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$plan_id = isset( $_POST['plan_id'] ) ? sanitize_text_field( wp_unslash( $_POST['plan_id'] ) ) : '';
+
+		if ( empty( $plan_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'No plan selected.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		// Validate plan ID
+		$valid_plans = array( 'starter_plan', 'standard_plan', 'pro_plan', 'business_plan' );
+		if ( ! in_array( $plan_id, $valid_plans, true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid plan selected.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->create_checkout( $plan_id );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( array(
+			'checkout_url' => $result['checkout_url'],
+		) );
+	}
+
+	/**
 	 * Handle update auto top-up settings
 	 */
 	public function handle_update_auto_topup() {
@@ -229,10 +265,10 @@ class AISales_Ajax_Handlers {
 		$cancel_url  = isset( $_POST['cancel_url'] ) ? esc_url_raw( wp_unslash( $_POST['cancel_url'] ) ) : '';
 
 		if ( empty( $success_url ) ) {
-			$success_url = admin_url( 'admin.php?page=aisales-billing&payment_setup=success' );
+			$success_url = admin_url( 'admin.php?page=ai-sales-manager&tab=billing&payment_setup=success' );
 		}
 		if ( empty( $cancel_url ) ) {
-			$cancel_url = admin_url( 'admin.php?page=aisales-billing&payment_setup=cancelled' );
+			$cancel_url = admin_url( 'admin.php?page=ai-sales-manager&tab=billing&payment_setup=cancelled' );
 		}
 
 		$api    = AISales_API_Client::instance();
@@ -243,7 +279,36 @@ class AISales_Ajax_Handlers {
 		}
 
 		wp_send_json_success( array(
-			'setup_url' => $result['setup_url'],
+			'setup_url'  => $result['setup_url'],
+			'session_id' => isset( $result['session_id'] ) ? $result['session_id'] : '',
+		) );
+	}
+
+	/**
+	 * Handle confirm setup session
+	 */
+	public function handle_confirm_setup() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$session_id = isset( $_POST['session_id'] ) ? sanitize_text_field( wp_unslash( $_POST['session_id'] ) ) : '';
+
+		if ( empty( $session_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Session ID required.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->confirm_setup( $session_id );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( array(
+			'confirmed' => true,
 		) );
 	}
 

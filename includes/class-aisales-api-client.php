@@ -250,7 +250,7 @@ class AISales_API_Client {
 	 */
 	public function create_checkout( $plan = '10k' ) {
 		if ( $this->use_mock ) {
-			return $this->mock_create_checkout();
+			return $this->mock_create_checkout( $plan );
 		}
 
 		$admin_url = admin_url( 'admin.php?page=ai-sales-manager' );
@@ -409,6 +409,22 @@ class AISales_API_Client {
 	}
 
 	/**
+	 * Confirm a setup session and save payment method
+	 *
+	 * @param string $session_id Stripe checkout session ID.
+	 * @return array|WP_Error
+	 */
+	public function confirm_setup( $session_id ) {
+		if ( $this->use_mock ) {
+			return array( 'confirmed' => true );
+		}
+
+		return $this->request( '/billing/confirm-setup', 'POST', array(
+			'session_id' => $session_id,
+		) );
+	}
+
+	/**
 	 * Remove saved payment method
 	 *
 	 * @return array|WP_Error
@@ -434,6 +450,19 @@ class AISales_API_Client {
 		}
 
 		return $this->request( "/billing/purchases?limit={$limit}&offset={$offset}" );
+	}
+
+	/**
+	 * Get available token plans
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_plans() {
+		if ( $this->use_mock ) {
+			return $this->mock_get_plans();
+		}
+
+		return $this->request( '/billing/plans' );
 	}
 
 	// =========================================================================
@@ -652,12 +681,27 @@ class AISales_API_Client {
 	/**
 	 * Mock create checkout response
 	 *
+	 * @param string $plan Plan identifier.
 	 * @return array
 	 */
-	private function mock_create_checkout() {
+	private function mock_create_checkout( $plan = '10k' ) {
+		// Map plan IDs to token amounts
+		$plan_tokens = array(
+			'starter_plan'  => 5000,
+			'standard_plan' => 10000,
+			'pro_plan'      => 25000,
+			'business_plan' => 50000,
+			'5k'            => 5000,
+			'10k'           => 10000,
+			'25k'           => 25000,
+			'50k'           => 50000,
+		);
+
+		$tokens = isset( $plan_tokens[ $plan ] ) ? $plan_tokens[ $plan ] : 10000;
+
 		// In mock mode, just add tokens directly
 		$current_balance = get_option( 'aisales_balance', 0 );
-		update_option( 'aisales_balance', $current_balance + 10000 );
+		update_option( 'aisales_balance', $current_balance + $tokens );
 
 		return array(
 			'checkout_url' => admin_url( 'admin.php?page=ai-sales-manager&topup=success' ),
@@ -856,8 +900,8 @@ class AISales_API_Client {
 		update_option( 'aisales_mock_payment_method', true );
 
 		return array(
-			'checkout_url' => add_query_arg( 'payment_setup', 'success', $success_url ),
-			'session_id'   => 'mock_setup_session_' . time(),
+			'setup_url'  => add_query_arg( 'payment_setup', 'success', $success_url ),
+			'session_id' => 'mock_setup_session_' . time(),
 		);
 	}
 
@@ -871,6 +915,42 @@ class AISales_API_Client {
 		update_option( 'aisales_auto_topup_enabled', false );
 
 		return array( 'removed' => true );
+	}
+
+	/**
+	 * Mock get plans response
+	 *
+	 * @return array
+	 */
+	private function mock_get_plans() {
+		return array(
+			'plans' => array(
+				array(
+					'id'        => 'starter_plan',
+					'name'      => 'Starter',
+					'tokens'    => 5000,
+					'price_usd' => 5.00,
+				),
+				array(
+					'id'        => 'standard_plan',
+					'name'      => 'Standard',
+					'tokens'    => 10000,
+					'price_usd' => 9.00,
+				),
+				array(
+					'id'        => 'pro_plan',
+					'name'      => 'Pro',
+					'tokens'    => 25000,
+					'price_usd' => 20.00,
+				),
+				array(
+					'id'        => 'business_plan',
+					'name'      => 'Business',
+					'tokens'    => 50000,
+					'price_usd' => 35.00,
+				),
+			),
+		);
 	}
 
 	/**

@@ -2501,8 +2501,17 @@
 
 /* Table Cell Styles */
 .aisales-table__date {
-  color: var(--aisales-text-secondary);
+  display: block;
+  color: var(--aisales-text-primary);
   white-space: nowrap;
+  font-weight: var(--aisales-font-weight-medium);
+}
+
+.aisales-table__time {
+  display: block;
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+  margin-top: 2px;
 }
 
 .aisales-table__tokens {
@@ -3454,6 +3463,10 @@
   color: var(--aisales-primary);
 }
 
+.aisales-card__icon svg {
+  color: var(--aisales-primary);
+}
+
 .aisales-card__icon--success {
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
 }
@@ -4063,21 +4076,28 @@
 
 /* Stat Card Variations for Billing */
 .aisales-stat-card--balance {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  color: var(--aisales-white);
+  background: var(--aisales-bg-white);
+  border-left: 4px solid var(--aisales-primary);
+  position: relative;
 }
 
 .aisales-stat-card--balance .aisales-stat-card__icon {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--aisales-white);
+  background: var(--aisales-primary-light);
+  color: var(--aisales-primary);
+}
+
+.aisales-stat-card--balance .aisales-stat-card__icon .dashicons {
+  color: var(--aisales-primary);
 }
 
 .aisales-stat-card--balance .aisales-stat-card__value {
-  color: var(--aisales-white);
+  color: var(--aisales-text-primary);
+  font-weight: var(--aisales-font-weight-bold);
 }
 
 .aisales-stat-card--balance .aisales-stat-card__label {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--aisales-text-secondary);
+  font-weight: var(--aisales-font-weight-medium);
 }
 
 .aisales-stat-card--autotopup {
@@ -4179,7 +4199,7 @@
   width: 20px;
   left: 3px;
   bottom: 3px;
-  background-color: var(--aisales-white);
+  background-color: #ffffff;
   border-radius: 50%;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -4269,7 +4289,7 @@
   padding: var(--aisales-space-3) var(--aisales-space-4);
   font-size: var(--aisales-font-sm);
   color: var(--aisales-text-primary);
-  background-color: var(--aisales-white);
+  background-color: #ffffff;
   border: 1px solid var(--aisales-border);
   border-radius: var(--aisales-radius-md);
   appearance: none;
@@ -4320,7 +4340,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--aisales-space-1) var(--aisales-space-3);
-  background: var(--aisales-white);
+  background: #ffffff;
   border: 1px solid var(--aisales-border);
   border-radius: var(--aisales-radius-sm);
   font-size: var(--aisales-font-xs);
@@ -4483,7 +4503,7 @@
 
 .aisales-btn--danger-outline:hover {
   background: var(--aisales-danger);
-  color: var(--aisales-white);
+  color: #ffffff;
 }
 
 /* Enhanced Empty State for Purchase History */
@@ -4583,4 +4603,604 @@
   font-size: 16px;
   width: 16px;
   height: 16px;
+}
+
+/* =========================================
+   BILLING PAGE - Enhanced Styles
+   ========================================= */
+
+/* Billing Two-Column Grid Layout */
+.aisales-billing__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--aisales-space-6);
+}
+
+@media (max-width: 1024px) {
+  .aisales-billing__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Icon Color Variants */
+.aisales-card__icon--purple {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+}
+
+.aisales-card__icon--purple .dashicons,
+.aisales-card__icon--purple svg {
+  color: #7c3aed;
+}
+
+.aisales-card__icon--green {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+}
+
+.aisales-card__icon--green .dashicons,
+.aisales-card__icon--green svg {
+  color: #059669;
+}
+
+.aisales-card__icon--blue {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+}
+
+.aisales-card__icon--blue .dashicons,
+.aisales-card__icon--blue svg {
+  color: #2563eb;
+}
+
+/* Stat Card Additional Variants */
+.aisales-stat-card--purchased .aisales-stat-card__icon {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+}
+
+.aisales-stat-card--purchased .aisales-stat-card__icon .dashicons {
+  color: #059669;
+}
+
+.aisales-stat-card--spent .aisales-stat-card__icon {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
+}
+
+.aisales-stat-card--spent .aisales-stat-card__icon .dashicons {
+  color: #d97706;
+}
+
+.aisales-stat-card--autotopup-status .aisales-stat-card__icon {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+}
+
+.aisales-stat-card--autotopup-status .aisales-stat-card__icon .dashicons {
+  color: #7c3aed;
+}
+
+/* Payment Card - Enhanced Layout */
+.aisales-payment-card {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-4);
+  padding: var(--aisales-space-5);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid var(--aisales-border-lighter);
+  border-radius: var(--aisales-radius-xl);
+}
+
+.aisales-payment-card__brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  background: var(--aisales-bg-white);
+  border: 1px solid var(--aisales-border-light);
+  border-radius: var(--aisales-radius-md);
+}
+
+.aisales-payment-card__brand-icon .dashicons {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-payment-card__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--aisales-space-1);
+}
+
+.aisales-payment-card__brand {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-primary);
+  text-transform: capitalize;
+}
+
+.aisales-payment-card__number {
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-text-secondary);
+  font-family: var(--aisales-font-mono);
+  letter-spacing: 1px;
+}
+
+.aisales-payment-card__expiry {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-payment-card__actions {
+  display: flex;
+  gap: var(--aisales-space-2);
+}
+
+/* Empty State Compact Variant */
+.aisales-empty-state--compact {
+  padding: var(--aisales-space-6);
+  text-align: center;
+}
+
+.aisales-empty-state--compact .aisales-empty-state__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--aisales-space-3);
+}
+
+.aisales-empty-state--compact h3 {
+  margin: 0 0 var(--aisales-space-2) 0;
+  font-size: var(--aisales-font-md);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-primary);
+}
+
+.aisales-empty-state--compact p {
+  margin: 0 0 var(--aisales-space-4) 0;
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-text-muted);
+}
+
+/* Quick Top-Up Section */
+.aisales-quick-topup {
+  padding-top: var(--aisales-space-5);
+  border-top: 1px solid var(--aisales-border-lighter);
+}
+
+.aisales-quick-topup__title {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-2);
+  margin: 0 0 var(--aisales-space-4) 0;
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-quick-topup__title .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--aisales-text-muted);
+}
+
+.aisales-quick-topup__buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--aisales-space-3);
+}
+
+.aisales-quick-topup__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aisales-space-4) var(--aisales-space-3);
+  background: var(--aisales-bg-white);
+  border: 2px solid var(--aisales-border-light);
+  border-radius: var(--aisales-radius-lg);
+  transition: all var(--aisales-transition-fast);
+  cursor: pointer;
+}
+
+.aisales-quick-topup__btn:hover {
+  border-color: var(--aisales-primary);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.aisales-quick-topup__tokens {
+  font-size: var(--aisales-font-md);
+  font-weight: var(--aisales-font-weight-bold);
+  color: var(--aisales-text-primary);
+}
+
+.aisales-quick-topup__price {
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-success);
+  font-weight: var(--aisales-font-weight-semibold);
+}
+
+/* ============================================
+   UNIFIED BILLING CARD STYLES
+   ============================================ */
+
+/* Sectioned Card Body */
+.aisales-card__body--sectioned {
+  padding: 0;
+}
+
+/* Billing Section */
+.aisales-billing-section {
+  padding: var(--aisales-space-5) var(--aisales-space-6);
+  border-bottom: 1px solid var(--aisales-border-lighter);
+}
+
+.aisales-billing-section--last {
+  border-bottom: none;
+}
+
+.aisales-billing-section__label {
+  display: block;
+  margin-bottom: var(--aisales-space-4);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--aisales-text-muted);
+}
+
+/* Payment Method - Inline Layout */
+.aisales-payment-method {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aisales-space-4);
+}
+
+.aisales-payment-method--empty {
+  padding: var(--aisales-space-4);
+  background: var(--aisales-bg-subtle);
+  border-radius: var(--aisales-radius-lg);
+}
+
+.aisales-payment-method__card {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-3);
+}
+
+.aisales-payment-method__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 32px;
+  background: var(--aisales-bg-white);
+  border: 1px solid var(--aisales-border-light);
+  border-radius: var(--aisales-radius-md);
+}
+
+.aisales-payment-method__icon svg {
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-payment-method__icon .dashicons {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-payment-method__info {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-2);
+  flex-wrap: wrap;
+}
+
+.aisales-payment-method__brand {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-primary);
+}
+
+.aisales-payment-method__number {
+  font-size: var(--aisales-font-sm);
+  font-family: var(--aisales-font-mono);
+  color: var(--aisales-text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.aisales-payment-method__expiry {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-payment-method__actions {
+  display: flex;
+  gap: var(--aisales-space-2);
+  flex-shrink: 0;
+}
+
+.aisales-payment-method__empty-state {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-3);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-payment-method__empty-icon {
+  color: var(--aisales-text-muted);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.aisales-payment-method__empty-state .dashicons {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+}
+
+.aisales-payment-method__empty-state span:last-child {
+  font-size: var(--aisales-font-sm);
+}
+
+/* Auto Top-Up Section */
+.aisales-autotopup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aisales-space-4);
+}
+
+.aisales-autotopup__toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-3);
+}
+
+.aisales-autotopup__toggle-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aisales-space-1);
+}
+
+.aisales-autotopup__toggle-text {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-text-primary);
+}
+
+.aisales-autotopup__requires-card {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-warning);
+}
+
+.aisales-autotopup__settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--aisales-space-4);
+  padding: var(--aisales-space-4);
+  background: var(--aisales-bg-subtle);
+  border-radius: var(--aisales-radius-lg);
+  transition: opacity var(--aisales-transition-fast);
+}
+
+.aisales-autotopup__settings--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.aisales-autotopup__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aisales-space-2);
+}
+
+.aisales-autotopup__field-label {
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-autotopup__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--aisales-space-2);
+  padding: var(--aisales-space-3);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%);
+  border-radius: var(--aisales-radius-md);
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-secondary);
+}
+
+.aisales-autotopup__notice .dashicons {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  color: var(--aisales-primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Buy Tokens Section */
+.aisales-buy-tokens {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aisales-space-4);
+}
+
+.aisales-buy-tokens__description {
+  margin: 0;
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-text-secondary);
+}
+
+/* Responsive Billing Unified Card */
+@media (max-width: 768px) {
+  .aisales-billing-section {
+    padding: var(--aisales-space-4);
+  }
+
+  .aisales-payment-method {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--aisales-space-3);
+  }
+
+  .aisales-payment-method__card {
+    justify-content: flex-start;
+  }
+
+  .aisales-payment-method__info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--aisales-space-1);
+  }
+
+  .aisales-payment-method__actions {
+    justify-content: flex-start;
+  }
+
+  .aisales-autotopup__settings {
+    grid-template-columns: 1fr;
+  }
+
+  .aisales-buy-tokens {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--aisales-space-3);
+  }
+
+  .aisales-buy-tokens__description {
+    text-align: center;
+  }
+
+  .aisales-buy-tokens .aisales-btn {
+    justify-content: center;
+  }
+}
+
+/* Purchase Badge - Enhanced */
+.aisales-purchase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aisales-space-1);
+  padding: var(--aisales-space-1) var(--aisales-space-3);
+  border-radius: var(--aisales-radius-md);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-medium);
+}
+
+.aisales-purchase-badge .dashicons {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.aisales-purchase-badge--auto {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+  color: #7c3aed;
+}
+
+.aisales-purchase-badge--manual {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+  color: #2563eb;
+}
+
+/* Tokens Badge - Enhanced */
+.aisales-tokens-badge--positive {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--aisales-space-1) var(--aisales-space-3);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+  color: #059669;
+  border-radius: var(--aisales-radius-md);
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  font-family: var(--aisales-font-mono);
+}
+
+/* Status Badge - Enhanced */
+.aisales-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aisales-space-2);
+  padding: var(--aisales-space-1) var(--aisales-space-3);
+  border-radius: var(--aisales-radius-full);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-medium);
+}
+
+.aisales-status-badge .aisales-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 0;
+}
+
+.aisales-status-badge--success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+  color: #059669;
+}
+
+.aisales-status-badge--success .aisales-status-dot {
+  background: #10b981;
+}
+
+/* Table Date and Time */
+td.aisales-table__col--date {
+  vertical-align: middle;
+}
+
+.aisales-table__date {
+  display: block;
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-text-primary);
+  line-height: 1.3;
+}
+
+.aisales-table__time {
+  display: block;
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+  margin-top: 2px;
+}
+
+.aisales-table__amount {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-primary);
+}
+
+/* Responsive Billing Adjustments */
+@media (max-width: 768px) {
+  .aisales-quick-topup__buttons {
+    grid-template-columns: 1fr;
+    gap: var(--aisales-space-2);
+  }
+
+  .aisales-quick-topup__btn {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--aisales-space-3) var(--aisales-space-4);
+  }
+
+  .aisales-payment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--aisales-space-3);
+  }
+
+  .aisales-payment-card__actions {
+    width: 100%;
+  }
+
+  .aisales-payment-card__actions .aisales-btn {
+    flex: 1;
+    justify-content: center;
+  }
 }

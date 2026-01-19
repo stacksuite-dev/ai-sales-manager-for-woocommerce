@@ -1027,6 +1027,62 @@
                     self.initiateCheckout();
                 }
             });
+
+            // Quick top-up buttons
+            $('.aisales-quick-topup__btn').on('click', function() {
+                var $btn = $(this);
+                var planId = $btn.data('plan');
+                self.initiateQuickTopup($btn, planId);
+            });
+        },
+
+        /**
+         * Initiate quick top-up checkout with specific plan
+         */
+        initiateQuickTopup: function($btn, planId) {
+            var self = this;
+            
+            // Disable all quick top-up buttons
+            var $allBtns = $('.aisales-quick-topup__btn');
+            $allBtns.prop('disabled', true);
+            $btn.addClass('aisales-btn--loading');
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_quick_topup',
+                    nonce: aisalesAdmin.nonce,
+                    plan_id: planId
+                },
+                success: function(response) {
+                    if (response.success && response.data.checkout_url) {
+                        // Redirect to Stripe checkout
+                        window.location.href = response.data.checkout_url;
+                    } else {
+                        $allBtns.prop('disabled', false);
+                        $btn.removeClass('aisales-btn--loading');
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Checkout Error',
+                            message: response.data.message || 'Failed to create checkout session',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    $allBtns.prop('disabled', false);
+                    $btn.removeClass('aisales-btn--loading');
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to payment service',
+                        duration: 4000
+                    });
+                }
+            });
         },
 
         /**
@@ -1037,39 +1093,96 @@
             var urlParams = new URLSearchParams(window.location.search);
             var paymentSetup = urlParams.get('payment_setup');
             
+            // Get session ID from sessionStorage (stored before redirecting to Stripe)
+            // Stripe setup mode doesn't replace {CHECKOUT_SESSION_ID} placeholder like payment mode does
+            var sessionId = sessionStorage.getItem('aisales_setup_session_id');
+            
             if (!paymentSetup) return;
 
-            var config = {
-                success: {
-                    type: 'success',
-                    icon: 'dashicons-yes-alt',
-                    title: 'Payment Method Added',
-                    message: 'Your card has been saved for auto top-up.',
-                    duration: 4000
-                },
-                cancelled: {
+            // Clean up URL first
+            var cleanUrl = window.location.pathname + '?page=ai-sales-manager&tab=billing';
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+
+            // Clear the stored session ID
+            sessionStorage.removeItem('aisales_setup_session_id');
+
+            // If success and we have a session ID, confirm the setup
+            if (paymentSetup === 'success' && sessionId) {
+                self.confirmSetupSession(sessionId);
+            } else if (paymentSetup === 'cancelled') {
+                self.showRichToast({
                     type: 'info',
                     icon: 'dashicons-info',
                     title: 'Setup Cancelled',
                     message: 'Payment method setup was cancelled.',
                     duration: 3000
-                }
-            };
-
-            var toastConfig = config[paymentSetup];
-            if (toastConfig) {
+                });
+            } else if (paymentSetup === 'success') {
+                // No session ID but marked as success - webhook should handle it
+                // Just show success message and reload
+                self.showRichToast({
+                    type: 'success',
+                    icon: 'dashicons-yes-alt',
+                    title: 'Payment Method Added',
+                    message: 'Your card has been saved for auto top-up.',
+                    duration: 4000
+                });
+                // Reload to show updated payment method
                 setTimeout(function() {
-                    self.showRichToast(toastConfig);
-                }, 100);
-
-                // Clean up URL
-                var cleanUrl = window.location.pathname + 
-                    window.location.search.replace(/[?&]payment_setup=(success|cancelled)/, '')
-                    .replace(/^&/, '?').replace(/\?$/, '');
-                if (window.history && window.history.replaceState) {
-                    window.history.replaceState({}, document.title, cleanUrl || window.location.pathname);
-                }
+                    window.location.reload();
+                }, 2000);
             }
+        },
+
+        /**
+         * Confirm setup session with the API
+         */
+        confirmSetupSession: function(sessionId) {
+            var self = this;
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_confirm_setup',
+                    nonce: aisalesAdmin.nonce,
+                    session_id: sessionId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        self.showRichToast({
+                            type: 'success',
+                            icon: 'dashicons-yes-alt',
+                            title: 'Payment Method Added',
+                            message: 'Your card has been saved for auto top-up.',
+                            duration: 4000
+                        });
+                        // Reload to show updated payment method
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Setup Error',
+                            message: response.data.message || 'Failed to confirm payment setup.',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to confirm payment setup. Please try again.',
+                        duration: 4000
+                    });
+                }
+            });
         },
 
         /**
@@ -1206,16 +1319,18 @@
         },
 
         /**
-         * Setup payment method via Stripe
+         * Setup payment method (add card for auto top-up)
          */
         setupPaymentMethod: function($btn) {
             var self = this;
             
             $btn.prop('disabled', true).addClass('aisales-btn--loading');
 
-            // Build return URL
-            var returnUrl = window.location.href.split('?')[0] + '?page=aisales-billing&payment_setup=success';
-            var cancelUrl = window.location.href.split('?')[0] + '?page=aisales-billing&payment_setup=cancelled';
+            // Build return URLs - session_id will be appended after we get it from the API
+            // Note: Stripe setup mode doesn't replace {CHECKOUT_SESSION_ID} placeholder like payment mode does
+            var baseUrl = window.location.href.split('?')[0];
+            var successUrlBase = baseUrl + '?page=ai-sales-manager&tab=billing&payment_setup=success';
+            var cancelUrl = baseUrl + '?page=ai-sales-manager&tab=billing&payment_setup=cancelled';
 
             $.ajax({
                 url: aisalesAdmin.ajaxUrl,
@@ -1223,11 +1338,15 @@
                 data: {
                     action: 'aisales_setup_payment_method',
                     nonce: aisalesAdmin.nonce,
-                    success_url: returnUrl,
+                    success_url: successUrlBase,
                     cancel_url: cancelUrl
                 },
                 success: function(response) {
                     if (response.success && response.data.setup_url) {
+                        // Store session_id in sessionStorage so we can use it when returning from Stripe
+                        if (response.data.session_id) {
+                            sessionStorage.setItem('aisales_setup_session_id', response.data.session_id);
+                        }
                         window.location.href = response.data.setup_url;
                     } else {
                         $btn.prop('disabled', false).removeClass('aisales-btn--loading');
