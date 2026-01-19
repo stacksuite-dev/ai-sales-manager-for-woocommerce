@@ -213,6 +213,11 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-chart-area"></span>
 						<?php esc_html_e( 'Usage History', 'ai-sales-manager-for-woocommerce' ); ?>
 					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=billing' ) ); ?>"
+					   class="aisales-nav__tab <?php echo 'billing' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
+						<span class="dashicons dashicons-money-alt"></span>
+						<?php esc_html_e( 'Billing', 'ai-sales-manager-for-woocommerce' ); ?>
+					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=account' ) ); ?>"
 					   class="aisales-nav__tab <?php echo 'account' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
 						<span class="dashicons dashicons-admin-users"></span>
@@ -224,6 +229,9 @@ class AISales_Admin_Settings {
 				switch ( $this->current_tab ) {
 					case 'usage':
 						$this->render_usage_tab();
+						break;
+					case 'billing':
+						$this->render_billing_tab();
 						break;
 					case 'account':
 						$this->render_account_tab();
@@ -651,6 +659,21 @@ class AISales_Admin_Settings {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render billing tab
+	 */
+	private function render_billing_tab() {
+		$api     = AISales_API_Client::instance();
+		$account = $api->get_account();
+
+		// Handle API errors gracefully
+		$has_error = is_wp_error( $account );
+		$balance   = ( ! $has_error && isset( $account['balance_tokens'] ) ) ? $account['balance_tokens'] : 0;
+
+		// Include the billing template
+		include AISALES_PLUGIN_DIR . 'templates/pages/billing.php';
 	}
 
 	/**

@@ -4043,3 +4043,544 @@
   -webkit-text-fill-color: var(--aisales-text-muted);
   color: var(--aisales-text-muted);
 }
+
+/* ========================================
+   BILLING PAGE STYLES
+   ======================================== */
+
+.aisales-billing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aisales-space-5);
+}
+
+/* Billing Stats Row */
+.aisales-billing__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--aisales-space-5);
+}
+
+/* Stat Card Variations for Billing */
+.aisales-stat-card--balance {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: var(--aisales-white);
+}
+
+.aisales-stat-card--balance .aisales-stat-card__icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--aisales-white);
+}
+
+.aisales-stat-card--balance .aisales-stat-card__value {
+  color: var(--aisales-white);
+}
+
+.aisales-stat-card--balance .aisales-stat-card__label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.aisales-stat-card--autotopup {
+  position: relative;
+  overflow: hidden;
+}
+
+.aisales-stat-card--autotopup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  opacity: 0.1;
+}
+
+.aisales-stat-card--enabled {
+  border-color: var(--aisales-success);
+}
+
+.aisales-stat-card--enabled::before {
+  background: var(--aisales-success);
+}
+
+.aisales-stat-card--enabled .aisales-stat-card__icon {
+  background: var(--aisales-success-light);
+  color: var(--aisales-success);
+}
+
+.aisales-stat-card--disabled {
+  border-color: var(--aisales-border);
+}
+
+.aisales-stat-card--disabled::before {
+  background: var(--aisales-text-muted);
+}
+
+.aisales-stat-card--disabled .aisales-stat-card__icon {
+  background: var(--aisales-bg-secondary);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-stat-card__detail {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+  margin-top: var(--aisales-space-1);
+}
+
+/* Status Dot */
+.aisales-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--aisales-space-1);
+  vertical-align: middle;
+}
+
+.aisales-status-dot--success {
+  background: var(--aisales-success);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.aisales-status-dot--muted {
+  background: var(--aisales-text-muted);
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.15);
+}
+
+/* Toggle Switch Component */
+.aisales-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.aisales-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.aisales-toggle__slider {
+  position: absolute;
+  inset: 0;
+  background-color: var(--aisales-border);
+  border-radius: 26px;
+  transition: all 0.3s ease;
+}
+
+.aisales-toggle__slider::before {
+  content: '';
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--aisales-white);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.aisales-toggle input:checked + .aisales-toggle__slider {
+  background-color: var(--aisales-primary);
+}
+
+.aisales-toggle input:checked + .aisales-toggle__slider::before {
+  transform: translateX(22px);
+}
+
+.aisales-toggle input:focus + .aisales-toggle__slider {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.aisales-toggle input:disabled + .aisales-toggle__slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Setting Row Styles */
+.aisales-setting-row {
+  padding: var(--aisales-space-4) 0;
+  border-bottom: 1px solid var(--aisales-border-light);
+}
+
+.aisales-setting-row:last-child {
+  border-bottom: none;
+}
+
+.aisales-setting-row--toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aisales-space-4);
+}
+
+.aisales-setting-row--grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--aisales-space-5);
+  padding: var(--aisales-space-5) 0;
+}
+
+@media (max-width: 768px) {
+  .aisales-setting-row--grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aisales-setting-row--payment {
+  padding: var(--aisales-space-5) 0;
+}
+
+.aisales-setting-row--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.aisales-setting-row__content {
+  flex: 1;
+}
+
+.aisales-setting-row__label {
+  display: block;
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+  color: var(--aisales-text-primary);
+  margin-bottom: var(--aisales-space-1);
+}
+
+.aisales-setting-row__description {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+  margin: 0;
+}
+
+.aisales-setting-row__control {
+  flex-shrink: 0;
+}
+
+/* Form Select Styling */
+.aisales-form-select {
+  width: 100%;
+  padding: var(--aisales-space-3) var(--aisales-space-4);
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-text-primary);
+  background-color: var(--aisales-white);
+  border: 1px solid var(--aisales-border);
+  border-radius: var(--aisales-radius-md);
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  transition: all 0.2s ease;
+}
+
+.aisales-form-select:hover {
+  border-color: var(--aisales-primary);
+}
+
+.aisales-form-select:focus {
+  outline: none;
+  border-color: var(--aisales-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.aisales-form-select:disabled {
+  background-color: var(--aisales-bg-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Payment Card Styles */
+.aisales-payment-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--aisales-space-4);
+  background: var(--aisales-bg-secondary);
+  border: 1px solid var(--aisales-border);
+  border-radius: var(--aisales-radius-lg);
+  margin-top: var(--aisales-space-3);
+}
+
+.aisales-payment-card__info {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-3);
+}
+
+.aisales-payment-card__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aisales-space-1) var(--aisales-space-3);
+  background: var(--aisales-white);
+  border: 1px solid var(--aisales-border);
+  border-radius: var(--aisales-radius-sm);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-bold);
+  color: var(--aisales-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.aisales-payment-card__number {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-text-primary);
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.aisales-payment-card__expiry {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-payment-card__actions {
+  display: flex;
+  gap: var(--aisales-space-2);
+}
+
+/* Payment Empty State */
+.aisales-payment-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aisales-space-6);
+  background: var(--aisales-bg-tertiary);
+  border: 2px dashed var(--aisales-border);
+  border-radius: var(--aisales-radius-lg);
+  margin-top: var(--aisales-space-3);
+  text-align: center;
+}
+
+.aisales-payment-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--aisales-bg-secondary);
+  border-radius: 50%;
+  margin-bottom: var(--aisales-space-3);
+}
+
+.aisales-payment-empty__icon .dashicons {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  color: var(--aisales-text-muted);
+}
+
+.aisales-payment-empty__text {
+  font-size: var(--aisales-font-sm);
+  color: var(--aisales-text-muted);
+  margin: 0 0 var(--aisales-space-4) 0;
+}
+
+/* Info Box */
+.aisales-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--aisales-space-3);
+  padding: var(--aisales-space-4);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--aisales-radius-md);
+  margin-top: var(--aisales-space-4);
+}
+
+.aisales-info-box .dashicons {
+  flex-shrink: 0;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--aisales-primary);
+  margin-top: 1px;
+}
+
+.aisales-info-box p {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Billing Settings & History Cards */
+.aisales-billing__settings,
+.aisales-billing__history {
+  margin-top: 0;
+}
+
+/* Purchase Type Badges */
+.aisales-purchase-type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aisales-space-1);
+  padding: var(--aisales-space-1) var(--aisales-space-2);
+  border-radius: var(--aisales-radius-full);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-medium);
+}
+
+.aisales-purchase-type .dashicons {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.aisales-purchase-type--auto {
+  background: rgba(139, 92, 246, 0.1);
+  color: #7c3aed;
+}
+
+.aisales-purchase-type--manual {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--aisales-primary);
+}
+
+/* Tokens Badge */
+.aisales-tokens-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--aisales-space-1) var(--aisales-space-2);
+  background: var(--aisales-success-light);
+  color: var(--aisales-success);
+  border-radius: var(--aisales-radius-sm);
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-semibold);
+}
+
+/* Status Badge */
+.aisales-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aisales-space-1);
+  padding: var(--aisales-space-1) var(--aisales-space-2);
+  border-radius: var(--aisales-radius-full);
+  font-size: var(--aisales-font-xs);
+  font-weight: var(--aisales-font-weight-medium);
+}
+
+.aisales-status-badge--success {
+  background: var(--aisales-success-light);
+  color: var(--aisales-success);
+}
+
+/* Danger Outline Button */
+.aisales-btn--danger-outline {
+  background: transparent;
+  color: var(--aisales-danger);
+  border: 1px solid var(--aisales-danger);
+}
+
+.aisales-btn--danger-outline:hover {
+  background: var(--aisales-danger);
+  color: var(--aisales-white);
+}
+
+/* Enhanced Empty State for Purchase History */
+.aisales-empty-state--enhanced {
+  padding: var(--aisales-space-8);
+}
+
+.aisales-empty-state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--aisales-bg-secondary) 0%, var(--aisales-bg-tertiary) 100%);
+  border-radius: 50%;
+  margin: 0 auto var(--aisales-space-4) auto;
+}
+
+.aisales-empty-state__icon .dashicons {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: var(--aisales-text-muted);
+}
+
+/* Auto Top-Up Notice in Balance Modal */
+.aisales-auto-topup-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--aisales-space-3);
+  padding: var(--aisales-space-3) var(--aisales-space-4);
+  border-radius: var(--aisales-radius-md);
+  margin-top: var(--aisales-space-4);
+}
+
+.aisales-auto-topup-notice--enabled {
+  background: var(--aisales-success-light);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.aisales-auto-topup-notice--disabled {
+  background: var(--aisales-bg-secondary);
+  border: 1px solid var(--aisales-border);
+}
+
+.aisales-auto-topup-notice__icon {
+  flex-shrink: 0;
+}
+
+.aisales-auto-topup-notice__icon .dashicons {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.aisales-auto-topup-notice--enabled .aisales-auto-topup-notice__icon .dashicons {
+  color: var(--aisales-success);
+}
+
+.aisales-auto-topup-notice--disabled .aisales-auto-topup-notice__icon .dashicons {
+  color: var(--aisales-text-muted);
+}
+
+.aisales-auto-topup-notice__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aisales-auto-topup-notice__title {
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-text-primary);
+}
+
+.aisales-auto-topup-notice__desc {
+  font-size: var(--aisales-font-xs);
+  color: var(--aisales-text-muted);
+}
+
+.aisales-auto-topup-notice__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aisales-space-1);
+  font-size: var(--aisales-font-sm);
+  font-weight: var(--aisales-font-weight-medium);
+  color: var(--aisales-success);
+  text-decoration: none;
+}
+
+.aisales-auto-topup-notice__link:hover {
+  text-decoration: underline;
+}
+
+.aisales-auto-topup-notice__link .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}

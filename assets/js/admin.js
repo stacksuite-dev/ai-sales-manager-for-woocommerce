@@ -17,7 +17,9 @@
             this.bindApiKeyEvents();
             this.bindStoreContextEvents();
             this.bindBalanceModalEvents();
+            this.bindBillingEvents();
             this.handlePageToasts();
+            this.handlePaymentSetupReturn();
             this.initBalanceIndicator();
         },
 
@@ -972,6 +974,340 @@
             if (context.store_name) {
                 $('.aisales-store-name').text(context.store_name);
             }
+        },
+
+        /**
+         * Bind billing page events
+         */
+        bindBillingEvents: function() {
+            var self = this;
+            var $billingPage = $('.aisales-billing');
+
+            // Skip if not on billing page
+            if (!$billingPage.length) return;
+
+            // Auto top-up toggle
+            $('#aisales-autotopup-enabled').on('change', function() {
+                var enabled = $(this).is(':checked');
+                self.updateAutoTopupEnabled(enabled);
+            });
+
+            // Threshold dropdown change
+            $('#aisales-autotopup-threshold').on('change', function() {
+                self.updateAutoTopupSettings();
+            });
+
+            // Product dropdown change
+            $('#aisales-autotopup-product').on('change', function() {
+                self.updateAutoTopupSettings();
+            });
+
+            // Add payment method button
+            $('#aisales-add-card-btn').on('click', function() {
+                self.setupPaymentMethod($(this));
+            });
+
+            // Change payment method button
+            $('#aisales-change-card-btn').on('click', function() {
+                self.setupPaymentMethod($(this));
+            });
+
+            // Remove payment method button
+            $('#aisales-remove-card-btn').on('click', function() {
+                self.removePaymentMethod($(this));
+            });
+
+            // Add tokens button on billing page
+            $('#aisales-billing-topup-btn').on('click', function() {
+                var $modal = $('#aisales-balance-modal');
+                if ($modal.length) {
+                    self.openBalanceModal();
+                } else {
+                    // Fallback to direct checkout
+                    self.initiateCheckout();
+                }
+            });
+        },
+
+        /**
+         * Handle payment setup return from Stripe
+         */
+        handlePaymentSetupReturn: function() {
+            var self = this;
+            var urlParams = new URLSearchParams(window.location.search);
+            var paymentSetup = urlParams.get('payment_setup');
+            
+            if (!paymentSetup) return;
+
+            var config = {
+                success: {
+                    type: 'success',
+                    icon: 'dashicons-yes-alt',
+                    title: 'Payment Method Added',
+                    message: 'Your card has been saved for auto top-up.',
+                    duration: 4000
+                },
+                cancelled: {
+                    type: 'info',
+                    icon: 'dashicons-info',
+                    title: 'Setup Cancelled',
+                    message: 'Payment method setup was cancelled.',
+                    duration: 3000
+                }
+            };
+
+            var toastConfig = config[paymentSetup];
+            if (toastConfig) {
+                setTimeout(function() {
+                    self.showRichToast(toastConfig);
+                }, 100);
+
+                // Clean up URL
+                var cleanUrl = window.location.pathname + 
+                    window.location.search.replace(/[?&]payment_setup=(success|cancelled)/, '')
+                    .replace(/^&/, '?').replace(/\?$/, '');
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState({}, document.title, cleanUrl || window.location.pathname);
+                }
+            }
+        },
+
+        /**
+         * Update auto top-up enabled state
+         */
+        updateAutoTopupEnabled: function(enabled) {
+            var self = this;
+            var $toggle = $('#aisales-autotopup-enabled');
+            var $options = $('#aisales-autotopup-options');
+            var $threshold = $('#aisales-autotopup-threshold');
+            var $product = $('#aisales-autotopup-product');
+            var $statCard = $('.aisales-stat-card--autotopup');
+
+            // Disable toggle during request
+            $toggle.prop('disabled', true);
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_update_auto_topup',
+                    nonce: aisalesAdmin.nonce,
+                    enabled: enabled ? 1 : 0,
+                    threshold: $threshold.val(),
+                    product_slug: $product.val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Update UI state
+                        if (enabled) {
+                            $options.removeClass('aisales-setting-row--disabled');
+                            $threshold.prop('disabled', false);
+                            $product.prop('disabled', false);
+                            $statCard.removeClass('aisales-stat-card--disabled').addClass('aisales-stat-card--enabled');
+                            $statCard.find('.aisales-stat-card__value').html('<span class="aisales-status-dot aisales-status-dot--success"></span> ON');
+                        } else {
+                            $options.addClass('aisales-setting-row--disabled');
+                            $threshold.prop('disabled', true);
+                            $product.prop('disabled', true);
+                            $statCard.removeClass('aisales-stat-card--enabled').addClass('aisales-stat-card--disabled');
+                            $statCard.find('.aisales-stat-card__value').html('<span class="aisales-status-dot aisales-status-dot--muted"></span> OFF');
+                        }
+
+                        self.showRichToast({
+                            type: 'success',
+                            icon: 'dashicons-yes-alt',
+                            title: enabled ? 'Auto Top-Up Enabled' : 'Auto Top-Up Disabled',
+                            message: enabled ? 'Your balance will be topped up automatically.' : 'Automatic top-ups have been turned off.',
+                            duration: 3000
+                        });
+                    } else {
+                        // Revert toggle
+                        $toggle.prop('checked', !enabled);
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Update Failed',
+                            message: response.data.message || 'Could not update auto top-up settings.',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    // Revert toggle
+                    $toggle.prop('checked', !enabled);
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to server.',
+                        duration: 4000
+                    });
+                },
+                complete: function() {
+                    $toggle.prop('disabled', false);
+                }
+            });
+        },
+
+        /**
+         * Update auto top-up settings (threshold/product)
+         */
+        updateAutoTopupSettings: function() {
+            var self = this;
+            var $threshold = $('#aisales-autotopup-threshold');
+            var $product = $('#aisales-autotopup-product');
+
+            // Only update if enabled
+            if (!$('#aisales-autotopup-enabled').is(':checked')) return;
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_update_auto_topup',
+                    nonce: aisalesAdmin.nonce,
+                    enabled: 1,
+                    threshold: $threshold.val(),
+                    product_slug: $product.val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Update stat card detail
+                        var threshold = $threshold.val();
+                        $('.aisales-stat-card--autotopup .aisales-stat-card__detail').text('When below ' + parseInt(threshold).toLocaleString() + ' tokens');
+
+                        self.showRichToast({
+                            type: 'success',
+                            icon: 'dashicons-saved',
+                            title: 'Settings Saved',
+                            message: 'Auto top-up settings updated.',
+                            duration: 2000
+                        });
+                    } else {
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Update Failed',
+                            message: response.data.message || 'Could not save settings.',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to server.',
+                        duration: 4000
+                    });
+                }
+            });
+        },
+
+        /**
+         * Setup payment method via Stripe
+         */
+        setupPaymentMethod: function($btn) {
+            var self = this;
+            
+            $btn.prop('disabled', true).addClass('aisales-btn--loading');
+
+            // Build return URL
+            var returnUrl = window.location.href.split('?')[0] + '?page=aisales-billing&payment_setup=success';
+            var cancelUrl = window.location.href.split('?')[0] + '?page=aisales-billing&payment_setup=cancelled';
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_setup_payment_method',
+                    nonce: aisalesAdmin.nonce,
+                    success_url: returnUrl,
+                    cancel_url: cancelUrl
+                },
+                success: function(response) {
+                    if (response.success && response.data.setup_url) {
+                        window.location.href = response.data.setup_url;
+                    } else {
+                        $btn.prop('disabled', false).removeClass('aisales-btn--loading');
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Setup Failed',
+                            message: response.data.message || 'Could not initiate payment setup.',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    $btn.prop('disabled', false).removeClass('aisales-btn--loading');
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to payment service.',
+                        duration: 4000
+                    });
+                }
+            });
+        },
+
+        /**
+         * Remove payment method
+         */
+        removePaymentMethod: function($btn) {
+            var self = this;
+
+            // Confirm removal
+            if (!confirm('Remove this payment method? Auto top-up will be disabled.')) {
+                return;
+            }
+
+            $btn.prop('disabled', true).addClass('aisales-btn--loading');
+
+            $.ajax({
+                url: aisalesAdmin.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'aisales_remove_payment_method',
+                    nonce: aisalesAdmin.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Reload page to show updated state
+                        self.showRichToast({
+                            type: 'success',
+                            icon: 'dashicons-yes-alt',
+                            title: 'Card Removed',
+                            message: 'Refreshing page...',
+                            duration: 2000
+                        });
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        $btn.prop('disabled', false).removeClass('aisales-btn--loading');
+                        self.showRichToast({
+                            type: 'error',
+                            icon: 'dashicons-warning',
+                            title: 'Removal Failed',
+                            message: response.data.message || 'Could not remove payment method.',
+                            duration: 4000
+                        });
+                    }
+                },
+                error: function() {
+                    $btn.prop('disabled', false).removeClass('aisales-btn--loading');
+                    self.showRichToast({
+                        type: 'error',
+                        icon: 'dashicons-warning',
+                        title: 'Connection Error',
+                        message: 'Failed to connect to server.',
+                        duration: 4000
+                    });
+                }
+            });
         },
 
         /**

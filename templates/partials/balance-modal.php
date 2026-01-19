@@ -14,6 +14,12 @@ defined( 'ABSPATH' ) || exit;
 $aisales_current_balance = isset( $balance ) ? $balance : 0;
 $aisales_is_low_balance  = $aisales_current_balance < 1000;
 
+// Get auto top-up status
+$aisales_api             = AISales_API_Client::instance();
+$aisales_auto_topup      = $aisales_api->get_auto_topup_settings();
+$aisales_auto_topup_on   = ! is_wp_error( $aisales_auto_topup ) && ! empty( $aisales_auto_topup['enabled'] );
+$aisales_billing_url     = admin_url( 'admin.php?page=aisales-billing' );
+
 // Plan data - single plan for now (fetched from API at runtime via JS)
 // Default fallback shown before JS loads
 $aisales_default_plan = array(
@@ -112,6 +118,42 @@ $aisales_default_plan = array(
 					<span class="aisales-usage-estimate__label"><?php esc_html_e( 'Image generations', 'ai-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 			</div>
+		</div>
+
+		<!-- Auto Top-Up Status -->
+		<div class="aisales-auto-topup-notice <?php echo $aisales_auto_topup_on ? 'aisales-auto-topup-notice--enabled' : 'aisales-auto-topup-notice--disabled'; ?>">
+			<?php if ( $aisales_auto_topup_on ) : ?>
+				<div class="aisales-auto-topup-notice__icon">
+					<span class="dashicons dashicons-yes-alt"></span>
+				</div>
+				<div class="aisales-auto-topup-notice__content">
+					<span class="aisales-auto-topup-notice__title"><?php esc_html_e( 'Auto top-up is enabled', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-auto-topup-notice__desc">
+						<?php
+						/* translators: %s: threshold tokens */
+						printf(
+							esc_html__( 'When below %s tokens', 'ai-sales-manager-for-woocommerce' ),
+							esc_html( number_format( $aisales_auto_topup['threshold'] ) )
+						);
+						?>
+					</span>
+				</div>
+				<a href="<?php echo esc_url( $aisales_billing_url ); ?>" class="aisales-auto-topup-notice__link">
+					<?php esc_html_e( 'Manage', 'ai-sales-manager-for-woocommerce' ); ?>
+					<span class="dashicons dashicons-arrow-right-alt2"></span>
+				</a>
+			<?php else : ?>
+				<div class="aisales-auto-topup-notice__icon">
+					<span class="dashicons dashicons-update"></span>
+				</div>
+				<div class="aisales-auto-topup-notice__content">
+					<span class="aisales-auto-topup-notice__title"><?php esc_html_e( 'Never run out of tokens', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-auto-topup-notice__desc"><?php esc_html_e( 'Enable auto top-up to keep your balance ready', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				</div>
+				<a href="<?php echo esc_url( $aisales_billing_url ); ?>" class="aisales-btn aisales-btn--secondary aisales-btn--sm">
+					<?php esc_html_e( 'Set Up', 'ai-sales-manager-for-woocommerce' ); ?>
+				</a>
+			<?php endif; ?>
 		</div>
 	</div>
 

@@ -94,15 +94,28 @@ class AISales_API_Client {
 				'X-API-Key'    => $api_key,
 			),
 			'timeout' => 30,
+			// Allow SSL verification to be disabled for local development
+			'sslverify' => apply_filters( 'aisales_api_sslverify', true ),
 		);
 
 		if ( ! empty( $body ) && in_array( $method, array( 'POST', 'PUT', 'PATCH' ), true ) ) {
 			$args['body'] = wp_json_encode( $body );
 		}
 
-		$response = wp_remote_request( $this->api_url . $endpoint, $args );
+		$url = $this->api_url . $endpoint;
+		
+		// Log request in debug mode
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			error_log( sprintf( 'AISales API request: %s %s', $method, $url ) );
+		}
+		
+		$response = wp_remote_request( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
+			// Log connection errors for debugging
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'AISales API connection error to %s: %s', $url, $response->get_error_message() ) );
+			}
 			return $response;
 		}
 
@@ -111,8 +124,22 @@ class AISales_API_Client {
 
 		$status_code = wp_remote_retrieve_response_code( $response );
 		if ( $status_code >= 400 ) {
-			$error_message = isset( $data['message'] ) ? $data['message'] : __( 'API request failed', 'ai-sales-manager-for-woocommerce' );
-			return new WP_Error( 'api_error', $error_message, array( 'status' => $status_code ) );
+			// Log API errors for debugging
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'AISales API error %d from %s: %s', $status_code, $url, $body ) );
+			}
+			// Try to get error message from response, with fallback showing status code
+			$error_message = __( 'API request failed', 'ai-sales-manager-for-woocommerce' );
+			if ( isset( $data['message'] ) ) {
+				$error_message = $data['message'];
+			} elseif ( isset( $data['error'] ) ) {
+				$error_message = $data['error'];
+			} elseif ( ! empty( $body ) && strlen( $body ) < 200 ) {
+				$error_message = sprintf( __( 'API error %d: %s', 'ai-sales-manager-for-woocommerce' ), $status_code, $body );
+			} else {
+				$error_message = sprintf( __( 'API error %d', 'ai-sales-manager-for-woocommerce' ), $status_code );
+			}
+			return new WP_Error( 'api_error', $error_message, array( 'status' => $status_code, 'body' => $body ) );
 		}
 
 		return $data;
@@ -317,6 +344,96 @@ class AISales_API_Client {
 		}
 
 		return $this->request( '/ai/category/subcategories', 'POST', $category_data );
+	}
+
+	// =========================================================================
+	// BILLING & AUTO TOP-UP METHODS
+	// =========================================================================
+
+	/**
+	 * Get auto top-up settings
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_auto_topup_settings() {
+		if ( $this->use_mock ) {
+			return $this->mock_get_auto_topup_settings();
+		}
+
+		return $this->request( '/billing/auto-topup' );
+	}
+
+	/**
+	 * Update auto top-up settings
+	 *
+	 * @param array $settings Settings to update (enabled, threshold, product_slug).
+	 * @return array|WP_Error
+	 */
+	public function update_auto_topup_settings( $settings ) {
+		if ( $this->use_mock ) {
+			return $this->mock_update_auto_topup_settings( $settings );
+		}
+
+		return $this->request( '/billing/auto-topup', 'PUT', $settings );
+	}
+
+	/**
+	 * Get saved payment method details
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_payment_method() {
+		if ( $this->use_mock ) {
+			return $this->mock_get_payment_method();
+		}
+
+		return $this->request( '/billing/payment-method' );
+	}
+
+	/**
+	 * Create setup session for adding payment method
+	 *
+	 * @param string $success_url URL to redirect on success.
+	 * @param string $cancel_url  URL to redirect on cancel.
+	 * @return array|WP_Error
+	 */
+	public function setup_payment_method( $success_url, $cancel_url ) {
+		if ( $this->use_mock ) {
+			return $this->mock_setup_payment_method( $success_url );
+		}
+
+		return $this->request( '/billing/setup-payment-method', 'POST', array(
+			'success_url' => $success_url,
+			'cancel_url'  => $cancel_url,
+		) );
+	}
+
+	/**
+	 * Remove saved payment method
+	 *
+	 * @return array|WP_Error
+	 */
+	public function remove_payment_method() {
+		if ( $this->use_mock ) {
+			return $this->mock_remove_payment_method();
+		}
+
+		return $this->request( '/billing/payment-method', 'DELETE' );
+	}
+
+	/**
+	 * Get purchase history (top-ups only)
+	 *
+	 * @param int $limit  Number of records.
+	 * @param int $offset Offset for pagination.
+	 * @return array|WP_Error
+	 */
+	public function get_purchases( $limit = 20, $offset = 0 ) {
+		if ( $this->use_mock ) {
+			return $this->mock_get_purchases( $limit, $offset );
+		}
+
+		return $this->request( "/billing/purchases?limit={$limit}&offset={$offset}" );
 	}
 
 	// =========================================================================
@@ -666,5 +783,191 @@ class AISales_API_Client {
 		$balance = get_option( 'aisales_balance', 7432 );
 		$new_balance = max( 0, $balance - $tokens );
 		update_option( 'aisales_balance', $new_balance );
+	}
+
+	// =========================================================================
+	// MOCK BILLING & AUTO TOP-UP METHODS
+	// =========================================================================
+
+	/**
+	 * Mock get auto top-up settings response
+	 *
+	 * @return array
+	 */
+	private function mock_get_auto_topup_settings() {
+		return array(
+			'enabled'      => get_option( 'aisales_auto_topup_enabled', false ),
+			'threshold'    => get_option( 'aisales_auto_topup_threshold', 1000 ),
+			'product_slug' => get_option( 'aisales_auto_topup_product', 'standard_plan' ),
+		);
+	}
+
+	/**
+	 * Mock update auto top-up settings response
+	 *
+	 * @param array $settings Settings to update.
+	 * @return array
+	 */
+	private function mock_update_auto_topup_settings( $settings ) {
+		if ( isset( $settings['enabled'] ) ) {
+			update_option( 'aisales_auto_topup_enabled', $settings['enabled'] );
+		}
+		if ( isset( $settings['threshold'] ) ) {
+			update_option( 'aisales_auto_topup_threshold', $settings['threshold'] );
+		}
+		if ( isset( $settings['product_slug'] ) ) {
+			update_option( 'aisales_auto_topup_product', $settings['product_slug'] );
+		}
+
+		return $this->mock_get_auto_topup_settings();
+	}
+
+	/**
+	 * Mock get payment method response
+	 *
+	 * @return array
+	 */
+	private function mock_get_payment_method() {
+		$has_method = get_option( 'aisales_mock_payment_method', false );
+
+		if ( ! $has_method ) {
+			return array( 'payment_method' => null );
+		}
+
+		return array(
+			'payment_method' => array(
+				'id'        => 'pm_mock_1234567890',
+				'brand'     => 'visa',
+				'last4'     => '4242',
+				'exp_month' => 12,
+				'exp_year'  => 2027,
+			),
+		);
+	}
+
+	/**
+	 * Mock setup payment method response
+	 *
+	 * @param string $success_url Success URL.
+	 * @return array
+	 */
+	private function mock_setup_payment_method( $success_url ) {
+		// In mock mode, just save a mock payment method
+		update_option( 'aisales_mock_payment_method', true );
+
+		return array(
+			'checkout_url' => add_query_arg( 'payment_setup', 'success', $success_url ),
+			'session_id'   => 'mock_setup_session_' . time(),
+		);
+	}
+
+	/**
+	 * Mock remove payment method response
+	 *
+	 * @return array
+	 */
+	private function mock_remove_payment_method() {
+		delete_option( 'aisales_mock_payment_method' );
+		update_option( 'aisales_auto_topup_enabled', false );
+
+		return array( 'removed' => true );
+	}
+
+	/**
+	 * Mock get purchases response
+	 *
+	 * @param int $limit  Limit.
+	 * @param int $offset Offset.
+	 * @return array
+	 */
+	private function mock_get_purchases( $limit, $offset ) {
+		$mock_purchases = array(
+			array(
+				'id'            => 1,
+				'type'          => 'topup',
+				'amount_tokens' => 10000,
+				'amount_usd'    => 900,
+				'balance_after' => 10000,
+				'description'   => 'Token top-up: 10,000 tokens',
+				'created_at'    => gmdate( 'Y-m-d H:i:s', strtotime( '-7 days' ) ),
+			),
+			array(
+				'id'            => 2,
+				'type'          => 'auto_topup',
+				'amount_tokens' => 10000,
+				'amount_usd'    => 900,
+				'balance_after' => 12500,
+				'description'   => 'Auto top-up: 10,000 tokens',
+				'created_at'    => gmdate( 'Y-m-d H:i:s', strtotime( '-3 days' ) ),
+			),
+			array(
+				'id'            => 3,
+				'type'          => 'topup',
+				'amount_tokens' => 10000,
+				'amount_usd'    => 900,
+				'balance_after' => 17432,
+				'description'   => 'Token top-up: 10,000 tokens',
+				'created_at'    => gmdate( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			),
+		);
+
+		// Sort by date descending
+		usort( $mock_purchases, function( $a, $b ) {
+			return strtotime( $b['created_at'] ) - strtotime( $a['created_at'] );
+		});
+
+		return array(
+			'purchases' => array_slice( $mock_purchases, $offset, $limit ),
+			'total'     => count( $mock_purchases ),
+			'limit'     => $limit,
+			'offset'    => $offset,
+		);
+	}
+
+	/**
+	 * Mock generate category content response
+	 *
+	 * @param array $category_data Category data.
+	 * @return array
+	 */
+	private function mock_generate_category_content( $category_data ) {
+		$name = isset( $category_data['name'] ) ? $category_data['name'] : 'Category';
+
+		$this->deduct_mock_tokens( 200 );
+
+		return array(
+			'result'      => array(
+				'description' => "Discover our exceptional {$name} collection. Carefully curated to bring you the finest products in this category.",
+			),
+			'tokens_used' => array(
+				'input'  => 100,
+				'output' => 100,
+				'total'  => 200,
+			),
+		);
+	}
+
+	/**
+	 * Mock suggest subcategories response
+	 *
+	 * @param array $category_data Category data.
+	 * @return array
+	 */
+	private function mock_suggest_subcategories( $category_data ) {
+		$this->deduct_mock_tokens( 150 );
+
+		return array(
+			'subcategories' => array(
+				'Featured Items',
+				'New Arrivals',
+				'Best Sellers',
+				'Sale Items',
+			),
+			'tokens_used'   => array(
+				'input'  => 75,
+				'output' => 75,
+				'total'  => 150,
+			),
+		);
 	}
 }

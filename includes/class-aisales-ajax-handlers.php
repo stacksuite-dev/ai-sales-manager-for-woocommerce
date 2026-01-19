@@ -40,6 +40,9 @@ class AISales_Ajax_Handlers {
 
 		// Billing actions
 		add_action( 'wp_ajax_aisales_topup', array( $this, 'handle_topup' ) );
+		add_action( 'wp_ajax_aisales_update_auto_topup', array( $this, 'handle_update_auto_topup' ) );
+		add_action( 'wp_ajax_aisales_setup_payment_method', array( $this, 'handle_setup_payment_method' ) );
+		add_action( 'wp_ajax_aisales_remove_payment_method', array( $this, 'handle_remove_payment_method' ) );
 
 		// AI actions
 		add_action( 'wp_ajax_aisales_generate_content', array( $this, 'handle_generate_content' ) );
@@ -119,7 +122,19 @@ class AISales_Ajax_Handlers {
 		$result = $api->connect( $email, $domain );
 
 		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			$error_data = $result->get_error_data();
+			$status     = isset( $error_data['status'] ) ? $error_data['status'] : 'unknown';
+			$message    = $result->get_error_message();
+
+			// Log for debugging
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'AISales connect failed - Status: %s, Message: %s', $status, $message ) );
+			}
+
+			wp_send_json_error( array(
+				'message' => $message,
+				'status'  => $status,
+			) );
 		}
 
 		// Store credentials
@@ -158,6 +173,99 @@ class AISales_Ajax_Handlers {
 
 		wp_send_json_success( array(
 			'checkout_url' => $result['checkout_url'],
+		) );
+	}
+
+	/**
+	 * Handle update auto top-up settings
+	 */
+	public function handle_update_auto_topup() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$enabled      = isset( $_POST['enabled'] ) && '1' === $_POST['enabled'];
+		$threshold    = isset( $_POST['threshold'] ) ? absint( wp_unslash( $_POST['threshold'] ) ) : 1000;
+		$product_slug = isset( $_POST['product_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['product_slug'] ) ) : 'standard_plan';
+
+		// Validate threshold
+		$allowed_thresholds = array( 500, 1000, 2000, 5000 );
+		if ( ! in_array( $threshold, $allowed_thresholds, true ) ) {
+			$threshold = 1000;
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->update_auto_topup_settings( array(
+			'enabled'     => $enabled,
+			'threshold'   => $threshold,
+			'productSlug' => $product_slug,
+		) );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( array(
+			'message'  => $enabled
+				? __( 'Auto top-up enabled.', 'ai-sales-manager-for-woocommerce' )
+				: __( 'Auto top-up disabled.', 'ai-sales-manager-for-woocommerce' ),
+			'settings' => $result,
+		) );
+	}
+
+	/**
+	 * Handle setup payment method
+	 */
+	public function handle_setup_payment_method() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$success_url = isset( $_POST['success_url'] ) ? esc_url_raw( wp_unslash( $_POST['success_url'] ) ) : '';
+		$cancel_url  = isset( $_POST['cancel_url'] ) ? esc_url_raw( wp_unslash( $_POST['cancel_url'] ) ) : '';
+
+		if ( empty( $success_url ) ) {
+			$success_url = admin_url( 'admin.php?page=aisales-billing&payment_setup=success' );
+		}
+		if ( empty( $cancel_url ) ) {
+			$cancel_url = admin_url( 'admin.php?page=aisales-billing&payment_setup=cancelled' );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->setup_payment_method( $success_url, $cancel_url );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( array(
+			'setup_url' => $result['setup_url'],
+		) );
+	}
+
+	/**
+	 * Handle remove payment method
+	 */
+	public function handle_remove_payment_method() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->remove_payment_method();
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( array(
+			'message' => __( 'Payment method removed.', 'ai-sales-manager-for-woocommerce' ),
 		) );
 	}
 
