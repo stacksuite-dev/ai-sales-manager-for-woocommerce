@@ -385,6 +385,31 @@
 	font-weight: 500;
 }
 
+.aisales-bundle-savings__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.aisales-bundle-savings__item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+.aisales-bundle-savings__item::before {
+	content: '';
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #6a1b9a;
+	flex-shrink: 0;
+}
+
 /* ==========================================================================
    CART URGENCY WIDGET (placeholder)
    ========================================================================== */
@@ -395,6 +420,22 @@
 	padding: 8px 14px;
 	border-radius: 4px;
 	font-weight: 500;
+}
+
+.aisales-cart-urgency {
+	--aisales-cart-urgency-accent: #e65100;
+}
+
+.aisales-cart-urgency__icon {
+	display: inline-flex;
+	align-items: center;
+	color: var(--aisales-cart-urgency-accent, #e65100);
+}
+
+.aisales-cart-urgency__timer {
+	font-weight: 700;
+	color: var(--aisales-cart-urgency-accent, #e65100);
+	letter-spacing: 0.3px;
 }
 
 /* ==========================================================================

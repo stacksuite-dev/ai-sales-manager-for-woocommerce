@@ -344,6 +344,46 @@ class AISales_Shortcodes {
 				'show_section_title' => true,
 				'custom_class'       => '',
 			),
+			'bought_together' => array(
+				'margin_top'         => 20,
+				'margin_bottom'      => 20,
+				'limit'              => 4,
+				'columns'            => 4,
+				'layout'             => 'grid',
+				'exclude_current'    => true,
+				'show_title'         => true,
+				'show_price'         => true,
+				'show_rating'        => true,
+				'show_badge'         => true,
+				'badge_text'         => 'Bundle',
+				'title_text'         => 'Frequently Bought Together',
+				'show_section_title' => true,
+				'custom_class'       => '',
+			),
+			'bundle_savings'  => array(
+				'margin_top'       => 10,
+				'margin_bottom'    => 10,
+				'format'           => 'Buy {qty}, save {amount} ({percent}%)',
+				'tiers'            => "2:5\n3:10\n4:15",
+				'text_color'       => '',
+				'bg_color'         => '',
+				'custom_class'     => '',
+				'exclude_products' => '',
+			),
+			'cart_urgency'    => array(
+				'margin_top'    => 10,
+				'margin_bottom' => 10,
+				'duration'      => 15,
+				'format'        => 'Items reserved for {time}',
+				'end_action'    => 'hide',
+				'show_hours'    => true,
+				'show_minutes'  => true,
+				'show_seconds'  => true,
+				'text_color'    => '',
+				'bg_color'      => '',
+				'accent_color'  => '#e65100',
+				'custom_class'  => '',
+			),
 		);
 
 		return isset( $defaults[ $widget_key ] ) ? $defaults[ $widget_key ] : array();
@@ -1118,8 +1158,83 @@ class AISales_Shortcodes {
 	 * @return string HTML output.
 	 */
 	public function render_bundle_savings( $atts ) {
-		// TODO: Implement bundle savings.
-		return '';
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'bundle_savings' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'product_id' => '',
+				'format'     => isset( $config['format'] ) ? $config['format'] : 'Buy {qty}, save {amount} ({percent}%)',
+			),
+			$atts,
+			'aisales_bundle_savings'
+		);
+
+		$product_id = $this->get_product_id( $atts );
+		if ( ! $product_id ) {
+			return '';
+		}
+
+		// Check exclusions.
+		$exclude_products = isset( $config['exclude_products'] ) ? $config['exclude_products'] : '';
+		if ( ! empty( $exclude_products ) ) {
+			$excluded_ids = array_map( 'absint', array_filter( explode( ',', $exclude_products ) ) );
+			if ( in_array( $product_id, $excluded_ids, true ) ) {
+				return '';
+			}
+		}
+
+		$product = $this->get_product( $product_id );
+		if ( ! $product ) {
+			return '';
+		}
+
+		$price = (float) $product->get_price();
+		if ( $price <= 0 ) {
+			return '';
+		}
+
+		// Parse discount tiers from config (format: qty:percent per line).
+		$tiers_raw = isset( $config['tiers'] ) ? $config['tiers'] : "2:5\n3:10\n4:15";
+		$tiers     = $this->parse_bundle_tiers( $tiers_raw );
+
+		if ( empty( $tiers ) ) {
+			return '';
+		}
+
+		// Build savings list.
+		$list_items = '';
+		foreach ( $tiers as $qty => $percent ) {
+			$savings_amount = ( $price * $qty ) * ( $percent / 100 );
+			$line_text      = str_replace(
+				array( '{qty}', '{amount}', '{percent}' ),
+				array( $qty, wc_price( $savings_amount ), $percent ),
+				$atts['format']
+			);
+
+			$list_items .= '<li class="aisales-bundle-savings__item">' . wp_kses_post( $line_text ) . '</li>';
+		}
+
+		$content = '<ul class="aisales-bundle-savings__list">' . $list_items . '</ul>';
+
+		// Build classes.
+		$classes      = array();
+		$custom_class = isset( $config['custom_class'] ) ? $config['custom_class'] : '';
+		if ( ! empty( $custom_class ) ) {
+			$classes[] = sanitize_html_class( $custom_class );
+		}
+
+		// Build styles.
+		$inline_style = $this->build_margin_style( $config );
+		if ( ! empty( $config['text_color'] ) ) {
+			$inline_style .= 'color:' . esc_attr( $config['text_color'] ) . ';';
+		}
+		if ( ! empty( $config['bg_color'] ) ) {
+			$inline_style .= 'background-color:' . esc_attr( $config['bg_color'] ) . ';';
+		}
+
+		return $this->wrap_output( 'bundle_savings', $content, $classes, $inline_style );
 	}
 
 	/**
@@ -1129,8 +1244,78 @@ class AISales_Shortcodes {
 	 * @return string HTML output.
 	 */
 	public function render_cart_urgency( $atts ) {
-		// TODO: Implement cart urgency.
-		return '';
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'cart_urgency' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'duration' => isset( $config['duration'] ) ? $config['duration'] : 15,
+				'format'   => isset( $config['format'] ) ? $config['format'] : 'Items reserved for {time}',
+			),
+			$atts,
+			'aisales_cart_urgency'
+		);
+
+		$duration_minutes = absint( $atts['duration'] );
+		if ( $duration_minutes <= 0 ) {
+			return '';
+		}
+
+		// Determine cart expiration timestamp using session/cookie.
+		$expires_at = $this->get_cart_urgency_expiry( $duration_minutes );
+		if ( ! $expires_at ) {
+			return '';
+		}
+
+		// If already expired, follow end_action.
+		if ( $expires_at <= time() ) {
+			$end_action = isset( $config['end_action'] ) ? $config['end_action'] : 'hide';
+			if ( 'hide' === $end_action ) {
+				return '';
+			}
+		}
+
+		$show_hours   = isset( $config['show_hours'] ) ? $config['show_hours'] : true;
+		$show_minutes = isset( $config['show_minutes'] ) ? $config['show_minutes'] : true;
+		$show_seconds = isset( $config['show_seconds'] ) ? $config['show_seconds'] : true;
+
+		// Build timer placeholder.
+		$timer_html  = '<span class="aisales-cart-urgency__timer" data-end="' . esc_attr( date( 'c', $expires_at ) ) . '" ';
+		$timer_html .= 'data-show-hours="' . ( $show_hours ? '1' : '0' ) . '" ';
+		$timer_html .= 'data-show-minutes="' . ( $show_minutes ? '1' : '0' ) . '" ';
+		$timer_html .= 'data-show-seconds="' . ( $show_seconds ? '1' : '0' ) . '">';
+		$timer_html .= '00:00';
+		$timer_html .= '</span>';
+
+		// Replace placeholder.
+		$text = str_replace( '{time}', $timer_html, $atts['format'] );
+
+		$content  = '<span class="aisales-cart-urgency__icon">';
+		$content .= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 6v6l4 2 .75-1.23-3.25-1.52V6z"/><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"/></svg>';
+		$content .= '</span>';
+		$content .= '<span class="aisales-cart-urgency__text">' . wp_kses_post( $text ) . '</span>';
+
+		// Build classes.
+		$classes      = array();
+		$custom_class = isset( $config['custom_class'] ) ? $config['custom_class'] : '';
+		if ( ! empty( $custom_class ) ) {
+			$classes[] = sanitize_html_class( $custom_class );
+		}
+
+		// Build styles.
+		$inline_style = $this->build_margin_style( $config );
+		if ( ! empty( $config['text_color'] ) ) {
+			$inline_style .= 'color:' . esc_attr( $config['text_color'] ) . ';';
+		}
+		if ( ! empty( $config['bg_color'] ) ) {
+			$inline_style .= 'background-color:' . esc_attr( $config['bg_color'] ) . ';';
+		}
+		if ( ! empty( $config['accent_color'] ) ) {
+			$inline_style .= '--aisales-cart-urgency-accent:' . esc_attr( $config['accent_color'] ) . ';';
+		}
+
+		return $this->wrap_output( 'cart_urgency', $content, $classes, $inline_style );
 	}
 
 	/**
@@ -1370,8 +1555,92 @@ class AISales_Shortcodes {
 	 * @return string HTML output.
 	 */
 	public function render_bought_together( $atts ) {
-		// TODO: Implement bought together.
-		return '';
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'bought_together' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'product_id'      => '',
+				'limit'           => isset( $config['limit'] ) ? $config['limit'] : 4,
+				'columns'         => isset( $config['columns'] ) ? $config['columns'] : 4,
+				'exclude_current' => isset( $config['exclude_current'] ) ? ( $config['exclude_current'] ? 'true' : 'false' ) : 'true',
+				'layout'          => isset( $config['layout'] ) ? $config['layout'] : 'grid',
+			),
+			$atts,
+			'aisales_bought_together'
+		);
+
+		$product_id = $this->get_product_id( $atts );
+		if ( ! $product_id ) {
+			return '';
+		}
+
+		$exclude_current = filter_var( $atts['exclude_current'], FILTER_VALIDATE_BOOLEAN );
+
+		global $wpdb;
+
+		// Find products that were purchased together with the current product.
+		$related_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT order_item_meta.meta_value as product_id
+				FROM {$wpdb->prefix}woocommerce_order_items as order_items
+				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
+					ON order_items.order_item_id = order_item_meta.order_item_id
+				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta2
+					ON order_items.order_item_id = order_item_meta2.order_item_id
+				INNER JOIN {$wpdb->posts} as posts
+					ON order_items.order_id = posts.ID
+				WHERE posts.post_type = 'shop_order'
+				AND posts.post_status IN ('wc-completed', 'wc-processing')
+				AND order_item_meta.meta_key = '_product_id'
+				AND order_item_meta2.meta_key = '_product_id'
+				AND order_item_meta2.meta_value = %d
+				AND order_item_meta.meta_value != %d
+				GROUP BY order_item_meta.meta_value
+				ORDER BY COUNT(*) DESC
+				LIMIT %d",
+				$product_id,
+				$product_id,
+				absint( $atts['limit'] ) * 2
+			)
+		);
+
+		if ( empty( $related_ids ) ) {
+			return '';
+		}
+
+		$related_ids = array_map( 'absint', $related_ids );
+
+		if ( $exclude_current ) {
+			$related_ids = array_diff( $related_ids, array( $product_id ) );
+		}
+
+		$related_ids = array_values( array_unique( $related_ids ) );
+		$related_ids = array_slice( $related_ids, 0, absint( $atts['limit'] ) );
+
+		if ( empty( $related_ids ) ) {
+			return '';
+		}
+
+		// Query args for related products.
+		$query_args = array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => absint( $atts['limit'] ),
+			'post__in'       => $related_ids,
+			'orderby'        => 'post__in',
+		);
+
+		// Only show visible products.
+		$query_args['tax_query'][] = array(
+			'taxonomy' => 'product_visibility',
+			'field'    => 'name',
+			'terms'    => array( 'exclude-from-catalog' ),
+			'operator' => 'NOT IN',
+		);
+
+		return $this->render_product_grid( 'bought_together', $query_args, $atts, $config );
 	}
 
 	/**
@@ -1618,5 +1887,66 @@ class AISales_Shortcodes {
 		$html .= '</span>';
 
 		return $html;
+	}
+
+	/**
+	 * Parse bundle tiers string into an array
+	 *
+	 * Format: "2:5\n3:10" (qty:percent)
+	 *
+	 * @param string $tiers_raw Raw tiers string.
+	 * @return array Parsed tiers sorted by quantity.
+	 */
+	private function parse_bundle_tiers( $tiers_raw ) {
+		$tiers = array();
+
+		$lines = preg_split( '/\r\n|\r|\n/', trim( (string) $tiers_raw ) );
+		foreach ( $lines as $line ) {
+			$line = trim( $line );
+			if ( empty( $line ) || false === strpos( $line, ':' ) ) {
+				continue;
+			}
+			list( $qty, $percent ) = array_map( 'trim', explode( ':', $line, 2 ) );
+			$qty     = absint( $qty );
+			$percent = absint( $percent );
+			if ( $qty > 0 && $percent > 0 ) {
+				$tiers[ $qty ] = $percent;
+			}
+		}
+
+		if ( empty( $tiers ) ) {
+			return array();
+		}
+
+		ksort( $tiers );
+		return $tiers;
+	}
+
+	/**
+	 * Get or set cart urgency expiry timestamp
+	 *
+	 * @param int $duration_minutes Duration in minutes.
+	 * @return int|false Unix timestamp or false.
+	 */
+	private function get_cart_urgency_expiry( $duration_minutes ) {
+		$duration_minutes = absint( $duration_minutes );
+		if ( $duration_minutes <= 0 ) {
+			return false;
+		}
+
+		$cookie_name = 'aisales_cart_urgency_expiry';
+		$expiry      = 0;
+
+		if ( ! empty( $_COOKIE[ $cookie_name ] ) ) {
+			$expiry = absint( $_COOKIE[ $cookie_name ] );
+		}
+
+		if ( $expiry <= 0 || $expiry < time() ) {
+			$expiry = time() + ( $duration_minutes * 60 );
+			setcookie( $cookie_name, (string) $expiry, $expiry, COOKIEPATH, COOKIE_DOMAIN );
+			$_COOKIE[ $cookie_name ] = $expiry;
+		}
+
+		return $expiry;
 	}
 }

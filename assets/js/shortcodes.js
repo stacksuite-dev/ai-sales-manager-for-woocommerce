@@ -17,7 +17,19 @@
 		 */
 		init: function() {
 			this.initCountdowns();
+			this.initCartUrgency();
 			this.initAnimatedCounts();
+		},
+
+		/**
+		 * Initialize cart urgency timers
+		 */
+		initCartUrgency: function() {
+			var self = this;
+
+			$('.aisales-cart-urgency__timer').each(function() {
+				self.startCountdown($(this), 'inline');
+			});
 		},
 
 		/**
@@ -48,10 +60,10 @@
 			var endDate = new Date($el.data('end')).getTime();
 
 			// Get display options
-			var showDays = $el.data('show-days') !== 0;
-			var showHours = $el.data('show-hours') !== 0;
-			var showMinutes = $el.data('show-minutes') !== 0;
-			var showSeconds = $el.data('show-seconds') !== 0;
+			var showDays = $el.data('show-days') !== 0 && $el.data('show-days') !== undefined;
+			var showHours = $el.data('show-hours') !== 0 && $el.data('show-hours') !== undefined;
+			var showMinutes = $el.data('show-minutes') !== 0 && $el.data('show-minutes') !== undefined;
+			var showSeconds = $el.data('show-seconds') !== 0 && $el.data('show-seconds') !== undefined;
 
 			// Update immediately
 			self.updateCountdown($el, endDate, style, showDays, showHours, showMinutes, showSeconds);

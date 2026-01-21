@@ -970,6 +970,65 @@ class AISales_Widgets_Page {
 						'description' => __( 'Savings message format', 'ai-sales-manager-for-woocommerce' ),
 					),
 				),
+				'settings'    => array(
+					'appearance' => array(
+						'margin_top'    => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Top', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 10,
+							'min'     => 0,
+							'max'     => 50,
+							'unit'    => 'px',
+						),
+						'margin_bottom' => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Bottom', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 10,
+							'min'     => 0,
+							'max'     => 50,
+							'unit'    => 'px',
+						),
+						'custom_class'  => array(
+							'type'    => 'text',
+							'label'   => __( 'Custom CSS Class', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+						'text_color'    => array(
+							'type'    => 'color',
+							'label'   => __( 'Text Color', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+						'bg_color'      => array(
+							'type'    => 'color',
+							'label'   => __( 'Background Color', 'ai-sales-manager-for-woocommerce' ),
+							'help'    => __( 'Leave empty for default', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+					),
+					'display'    => array(
+						'format'          => array(
+							'type'         => 'text',
+							'label'        => __( 'Display Format', 'ai-sales-manager-for-woocommerce' ),
+							'help'         => __( 'Use {qty}, {amount}, {percent} placeholders', 'ai-sales-manager-for-woocommerce' ),
+							'default'      => 'Buy {qty}, save {amount} ({percent}%)',
+							'placeholders' => array( '{qty}', '{amount}', '{percent}' ),
+						),
+						'tiers'           => array(
+							'type'    => 'textarea',
+							'label'   => __( 'Discount Tiers', 'ai-sales-manager-for-woocommerce' ),
+							'help'    => __( 'Enter one per line: qty:percent (e.g. 2:5)', 'ai-sales-manager-for-woocommerce' ),
+							'default' => "2:5\n3:10\n4:15",
+						),
+					),
+					'advanced'   => array(
+						'exclude_products' => array(
+							'type'    => 'text',
+							'label'   => __( 'Exclude Products', 'ai-sales-manager-for-woocommerce' ),
+							'help'    => __( 'Comma-separated product IDs to exclude', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+					),
+				),
 				'preview'     => array(
 					'icon'    => 'dashicons-products',
 					'message' => 'Buy 3, save $15!',
@@ -992,6 +1051,87 @@ class AISales_Widgets_Page {
 						'type'        => 'text',
 						'default'     => 'Items reserved for {time}',
 						'description' => __( 'Urgency message', 'ai-sales-manager-for-woocommerce' ),
+					),
+				),
+				'settings'    => array(
+					'appearance' => array(
+						'margin_top'    => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Top', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 10,
+							'min'     => 0,
+							'max'     => 50,
+							'unit'    => 'px',
+						),
+						'margin_bottom' => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Bottom', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 10,
+							'min'     => 0,
+							'max'     => 50,
+							'unit'    => 'px',
+						),
+						'custom_class'  => array(
+							'type'    => 'text',
+							'label'   => __( 'Custom CSS Class', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+						'text_color'    => array(
+							'type'    => 'color',
+							'label'   => __( 'Text Color', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+						'bg_color'      => array(
+							'type'    => 'color',
+							'label'   => __( 'Background Color', 'ai-sales-manager-for-woocommerce' ),
+							'help'    => __( 'Leave empty for default', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+						'accent_color'  => array(
+							'type'    => 'color',
+							'label'   => __( 'Accent Color', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '#e65100',
+						),
+					),
+					'display'    => array(
+						'duration'     => array(
+							'type'    => 'number',
+							'label'   => __( 'Reservation Time (minutes)', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 15,
+							'min'     => 1,
+							'max'     => 120,
+						),
+						'format'       => array(
+							'type'         => 'text',
+							'label'        => __( 'Display Format', 'ai-sales-manager-for-woocommerce' ),
+							'help'         => __( 'Use {time} placeholder for timer', 'ai-sales-manager-for-woocommerce' ),
+							'default'      => 'Items reserved for {time}',
+							'placeholders' => array( '{time}' ),
+						),
+						'show_hours'   => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Hours', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_minutes' => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Minutes', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_seconds' => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Seconds', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'end_action'   => array(
+							'type'    => 'select',
+							'label'   => __( 'When Timer Ends', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 'hide',
+							'options' => array(
+								'hide' => __( 'Hide widget', 'ai-sales-manager-for-woocommerce' ),
+								'show_ended' => __( 'Show ended state', 'ai-sales-manager-for-woocommerce' ),
+							),
+						),
 					),
 				),
 				'preview'     => array(
@@ -1399,6 +1539,101 @@ class AISales_Widgets_Page {
 						'type'        => 'number',
 						'default'     => 3,
 						'description' => __( 'Number of suggestions', 'ai-sales-manager-for-woocommerce' ),
+					),
+				),
+				'settings'    => array(
+					'appearance' => array(
+						'margin_top'         => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Top', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 20,
+							'min'     => 0,
+							'max'     => 100,
+							'unit'    => 'px',
+						),
+						'margin_bottom'      => array(
+							'type'    => 'range',
+							'label'   => __( 'Margin Bottom', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 20,
+							'min'     => 0,
+							'max'     => 100,
+							'unit'    => 'px',
+						),
+						'columns'            => array(
+							'type'    => 'select',
+							'label'   => __( 'Columns', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 4,
+							'options' => array(
+								2 => '2',
+								3 => '3',
+								4 => '4',
+								5 => '5',
+								6 => '6',
+							),
+						),
+						'layout'             => array(
+							'type'    => 'select',
+							'label'   => __( 'Layout', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 'grid',
+							'options' => array(
+								'grid' => __( 'Grid', 'ai-sales-manager-for-woocommerce' ),
+								'list' => __( 'List', 'ai-sales-manager-for-woocommerce' ),
+							),
+						),
+						'custom_class'       => array(
+							'type'    => 'text',
+							'label'   => __( 'Custom CSS Class', 'ai-sales-manager-for-woocommerce' ),
+							'default' => '',
+						),
+					),
+					'display'    => array(
+						'limit'              => array(
+							'type'    => 'number',
+							'label'   => __( 'Number of Products', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 3,
+							'min'     => 1,
+							'max'     => 24,
+						),
+						'exclude_current'    => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Exclude Current Product', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_section_title' => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Section Title', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'title_text'         => array(
+							'type'    => 'text',
+							'label'   => __( 'Section Title', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 'Frequently Bought Together',
+						),
+						'show_title'         => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Product Titles', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_price'         => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Prices', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_rating'        => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Ratings', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'show_badge'         => array(
+							'type'    => 'toggle',
+							'label'   => __( 'Show Badge', 'ai-sales-manager-for-woocommerce' ),
+							'default' => true,
+						),
+						'badge_text'         => array(
+							'type'    => 'text',
+							'label'   => __( 'Badge Text', 'ai-sales-manager-for-woocommerce' ),
+							'default' => 'Bundle',
+						),
 					),
 				),
 				'preview'     => array(
