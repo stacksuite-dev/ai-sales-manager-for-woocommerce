@@ -56,12 +56,15 @@ class AISales_Shortcodes {
 		add_shortcode( 'aisales_total_sold', array( $this, 'render_total_sold' ) );
 		add_shortcode( 'aisales_stock_urgency', array( $this, 'render_stock_urgency' ) );
 		add_shortcode( 'aisales_review_summary', array( $this, 'render_review_summary' ) );
+		add_shortcode( 'aisales_recent_purchase', array( $this, 'render_recent_purchase' ) );
+		add_shortcode( 'aisales_live_viewers', array( $this, 'render_live_viewers' ) );
 
 		// Conversion.
 		add_shortcode( 'aisales_countdown', array( $this, 'render_countdown' ) );
 		add_shortcode( 'aisales_price_drop', array( $this, 'render_price_drop' ) );
 		add_shortcode( 'aisales_bundle_savings', array( $this, 'render_bundle_savings' ) );
 		add_shortcode( 'aisales_cart_urgency', array( $this, 'render_cart_urgency' ) );
+		add_shortcode( 'aisales_shipping_bar', array( $this, 'render_shipping_bar' ) );
 
 		// Discovery.
 		add_shortcode( 'aisales_bestsellers', array( $this, 'render_bestsellers' ) );
@@ -384,6 +387,43 @@ class AISales_Shortcodes {
 				'accent_color'  => '#e65100',
 				'custom_class'  => '',
 			),
+			'recent_purchase' => array(
+				'margin_top'     => 0,
+				'margin_bottom'  => 0,
+				'position'       => 'bottom-left',
+				'show_image'     => true,
+				'privacy_level'  => 'first_city',
+				'show_location'  => true,
+				'limit'          => 5,
+				'interval'       => 8,
+				'duration'       => 5,
+				'animation'      => 'slide',
+				'custom_class'   => '',
+				'include_guests' => true,
+			),
+			'live_viewers'    => array(
+				'margin_top'     => 10,
+				'margin_bottom'  => 10,
+				'format'         => '{count} people are viewing this product',
+				'min_to_show'    => 1,
+				'max_viewers'    => 25,
+				'refresh_interval' => 12,
+				'text_color'     => '',
+				'bg_color'       => '',
+				'accent_color'   => '#2563eb',
+				'custom_class'   => '',
+			),
+			'shipping_bar'   => array(
+				'margin_top'    => 10,
+				'margin_bottom' => 10,
+				'threshold'     => 0,
+				'bar_color'     => '#22c55e',
+				'bg_color'      => '#e5e7eb',
+				'text_color'    => '',
+				'message'       => 'Add {amount} more for FREE shipping!',
+				'success'       => 'You qualify for FREE shipping!',
+				'custom_class'  => '',
+			),
 		);
 
 		return isset( $defaults[ $widget_key ] ) ? $defaults[ $widget_key ] : array();
@@ -675,6 +715,184 @@ class AISales_Shortcodes {
 		$style = $this->build_margin_style( $config );
 
 		return $this->wrap_output( 'stock_urgency', $content, $classes, $style );
+	}
+
+	/**
+	 * Render [aisales_recent_purchase] shortcode
+	 *
+	 * Displays recent purchase notifications as popups or inline.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function render_recent_purchase( $atts ) {
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'recent_purchase' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'limit'         => isset( $config['limit'] ) ? $config['limit'] : 5,
+				'display'       => 'popup',
+				'show_location' => isset( $config['show_location'] ) ? ( $config['show_location'] ? 'true' : 'false' ) : 'true',
+			),
+			$atts,
+			'aisales_recent_purchase'
+		);
+
+		$recent_orders = $this->get_recent_purchases( absint( $atts['limit'] ) );
+		if ( empty( $recent_orders ) ) {
+			return '';
+		}
+
+		$show_location = filter_var( $atts['show_location'], FILTER_VALIDATE_BOOLEAN );
+		$privacy_level = isset( $config['privacy_level'] ) ? $config['privacy_level'] : 'first_city';
+		$show_image    = isset( $config['show_image'] ) ? $config['show_image'] : true;
+		$position      = isset( $config['position'] ) ? $config['position'] : 'bottom-left';
+		$animation     = isset( $config['animation'] ) ? $config['animation'] : 'slide';
+
+		// Build notification items.
+		$items_html = '';
+		foreach ( $recent_orders as $order_data ) {
+			$customer_name = $this->format_customer_name( $order_data['name'], $privacy_level );
+			$location      = $show_location ? $order_data['location'] : '';
+
+			$text = sprintf(
+				/* translators: 1: customer name, 2: product name */
+				__( '%1$s purchased %2$s', 'ai-sales-manager-for-woocommerce' ),
+				esc_html( $customer_name ),
+				esc_html( $order_data['product_name'] )
+			);
+
+			if ( ! empty( $location ) ) {
+				$text .= ' ' . sprintf(
+					/* translators: %s: customer location */
+					__( 'from %s', 'ai-sales-manager-for-woocommerce' ),
+					esc_html( $location )
+				);
+			}
+
+			$items_html .= '<div class="aisales-recent-purchase__item" data-timestamp="' . esc_attr( $order_data['timestamp'] ) . '">';
+			if ( $show_image && ! empty( $order_data['image'] ) ) {
+				$items_html .= '<div class="aisales-recent-purchase__image">' . $order_data['image'] . '</div>';
+			}
+			$items_html .= '<div class="aisales-recent-purchase__content">';
+			$items_html .= '<div class="aisales-recent-purchase__text">' . esc_html( $text ) . '</div>';
+			$items_html .= '<div class="aisales-recent-purchase__time">' . esc_html( $order_data['time_ago'] ) . '</div>';
+			$items_html .= '</div>';
+			$items_html .= '</div>';
+		}
+
+		$content = '<div class="aisales-recent-purchase__list">' . $items_html . '</div>';
+
+		// Build classes.
+		$classes      = array( 'aisales-recent-purchase--' . $position, 'aisales-recent-purchase--' . $animation );
+		$custom_class = isset( $config['custom_class'] ) ? $config['custom_class'] : '';
+		if ( ! empty( $custom_class ) ) {
+			$classes[] = sanitize_html_class( $custom_class );
+		}
+
+		// Build styles.
+		$style = '';
+
+		// Data attributes for JS rotation.
+		$interval = isset( $config['interval'] ) ? absint( $config['interval'] ) : 8;
+		$duration = isset( $config['duration'] ) ? absint( $config['duration'] ) : 5;
+
+		return $this->wrap_recent_purchase_output( $content, $classes, $style, $interval, $duration );
+	}
+
+	/**
+	 * Render [aisales_live_viewers] shortcode
+	 *
+	 * Displays live viewer count with randomized refresh.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function render_live_viewers( $atts ) {
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'live_viewers' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'product_id' => '',
+				'format'     => isset( $config['format'] ) ? $config['format'] : '{count} people are viewing this product',
+			),
+			$atts,
+			'aisales_live_viewers'
+		);
+
+		$product_id = $this->get_product_id( $atts );
+		if ( ! $product_id ) {
+			return '';
+		}
+
+		$min_viewers     = isset( $config['min_to_show'] ) ? absint( $config['min_to_show'] ) : 1;
+		$max_viewers     = isset( $config['max_viewers'] ) ? absint( $config['max_viewers'] ) : 25;
+		$update_interval = isset( $config['refresh_interval'] ) ? absint( $config['refresh_interval'] ) : 12;
+		$show_pulse      = isset( $config['show_pulse'] ) ? (bool) $config['show_pulse'] : false;
+
+		// Backward-compatible aliases (if older config keys exist).
+		if ( isset( $config['min_viewers'] ) && ! isset( $config['min_to_show'] ) ) {
+			$min_viewers = absint( $config['min_viewers'] );
+		}
+		if ( isset( $config['update_interval'] ) && ! isset( $config['refresh_interval'] ) ) {
+			$update_interval = absint( $config['update_interval'] );
+		}
+
+		if ( $max_viewers < $min_viewers ) {
+			$max_viewers = $min_viewers;
+		}
+
+		$count = $this->get_live_viewer_count( $product_id, $min_viewers, $max_viewers );
+
+		if ( $count < $min_viewers ) {
+			return '';
+		}
+
+		$text = str_replace( '{count}', $count, $atts['format'] );
+
+		$content  = '<span class="aisales-live-viewers__icon">';
+		$content .= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 6a9.77 9.77 0 019.26 6 9.77 9.77 0 01-18.52 0A9.77 9.77 0 0112 6zm0-2C6 4 1.73 7.11 0 12c1.73 4.89 6 8 12 8s10.27-3.11 12-8c-1.73-4.89-6-8-12-8zm0 5a3 3 0 100 6 3 3 0 000-6z"/></svg>';
+		$content .= '</span>';
+		$content .= '<span class="aisales-live-viewers__text">' . esc_html( $text ) . '</span>';
+
+		// Build classes.
+		$classes      = array();
+		$custom_class = isset( $config['custom_class'] ) ? $config['custom_class'] : '';
+		if ( ! empty( $custom_class ) ) {
+			$classes[] = sanitize_html_class( $custom_class );
+		}
+		if ( $show_pulse ) {
+			$classes[] = 'aisales-live-viewers--pulse';
+		}
+
+		// Build styles.
+		$inline_style = $this->build_margin_style( $config );
+		if ( ! empty( $config['text_color'] ) ) {
+			$inline_style .= 'color:' . esc_attr( $config['text_color'] ) . ';';
+		}
+		if ( ! empty( $config['bg_color'] ) ) {
+			$inline_style .= 'background-color:' . esc_attr( $config['bg_color'] ) . ';';
+		}
+		if ( ! empty( $config['accent_color'] ) ) {
+			$inline_style .= '--aisales-live-viewers-accent:' . esc_attr( $config['accent_color'] ) . ';';
+		}
+
+		// Wrap with data attributes for JS refresh.
+		return sprintf(
+			'<div class="%s" style="%s" data-product="%d" data-min="%d" data-max="%d" data-interval="%d" data-format="%s">%s</div>',
+			esc_attr( 'aisales-widget aisales-live-viewers' . ( ! empty( $classes ) ? ' ' . implode( ' ', $classes ) : '' ) ),
+			esc_attr( $inline_style ),
+			$product_id,
+			$min_viewers,
+			$max_viewers,
+			$update_interval,
+			esc_attr( $atts['format'] ),
+			$content
+		);
 	}
 
 	/* =========================================================================
@@ -1319,6 +1537,79 @@ class AISales_Shortcodes {
 	}
 
 	/**
+	 * Render [aisales_shipping_bar] shortcode
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function render_shipping_bar( $atts ) {
+		// Get saved widget configuration.
+		$config = $this->get_widget_config( 'shipping_bar' );
+
+		// Shortcode attributes with config defaults.
+		$atts = shortcode_atts(
+			array(
+				'threshold' => isset( $config['threshold'] ) ? $config['threshold'] : 0,
+				'message'   => isset( $config['message'] ) ? $config['message'] : 'Add {amount} more for FREE shipping!',
+				'success'   => isset( $config['success'] ) ? $config['success'] : 'You qualify for FREE shipping!',
+			),
+			$atts,
+			'aisales_shipping_bar'
+		);
+
+		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+			return '';
+		}
+
+		$cart_total = (float) WC()->cart->get_subtotal();
+		$threshold  = (float) $atts['threshold'];
+
+		// If threshold not set, try to get from WooCommerce free shipping method.
+		if ( $threshold <= 0 ) {
+			$threshold = $this->get_free_shipping_threshold();
+		}
+
+		if ( $threshold <= 0 ) {
+			return '';
+		}
+
+		$remaining = max( 0, $threshold - $cart_total );
+		$progress  = min( 100, ( $cart_total / $threshold ) * 100 );
+
+		if ( $remaining <= 0 ) {
+			$message = $atts['success'];
+		} else {
+			$message = str_replace( '{amount}', wc_price( $remaining ), $atts['message'] );
+		}
+
+		$content  = '<div class="aisales-shipping-bar__message">' . wp_kses_post( $message ) . '</div>';
+		$content .= '<div class="aisales-shipping-bar__track">';
+		$content .= '<div class="aisales-shipping-bar__fill" style="width:' . esc_attr( round( $progress ) ) . '%"></div>';
+		$content .= '</div>';
+
+		// Build classes.
+		$classes      = array();
+		$custom_class = isset( $config['custom_class'] ) ? $config['custom_class'] : '';
+		if ( ! empty( $custom_class ) ) {
+			$classes[] = sanitize_html_class( $custom_class );
+		}
+
+		// Build styles.
+		$inline_style = $this->build_margin_style( $config );
+		if ( ! empty( $config['text_color'] ) ) {
+			$inline_style .= 'color:' . esc_attr( $config['text_color'] ) . ';';
+		}
+		if ( ! empty( $config['bg_color'] ) ) {
+			$inline_style .= '--aisales-shipping-bar-bg:' . esc_attr( $config['bg_color'] ) . ';';
+		}
+		if ( ! empty( $config['bar_color'] ) ) {
+			$inline_style .= '--aisales-shipping-bar-fill:' . esc_attr( $config['bar_color'] ) . ';';
+		}
+
+		return $this->wrap_output( 'shipping_bar', $content, $classes, $inline_style );
+	}
+
+	/**
 	 * Render [aisales_bestsellers] shortcode
 	 *
 	 * Displays top-selling products in a grid layout.
@@ -1948,5 +2239,185 @@ class AISales_Shortcodes {
 		}
 
 		return $expiry;
+	}
+
+	/**
+	 * Get recent purchases for social proof
+	 *
+	 * @param int $limit Number of purchases.
+	 * @return array Recent purchase data.
+	 */
+	private function get_recent_purchases( $limit ) {
+		$limit = absint( $limit );
+		if ( $limit <= 0 ) {
+			return array();
+		}
+
+		$include_guests = true;
+		$config         = $this->get_widget_config( 'recent_purchase' );
+		if ( isset( $config['include_guests'] ) ) {
+			$include_guests = (bool) $config['include_guests'];
+		}
+
+		$orders = wc_get_orders(
+			array(
+				'limit'        => $limit,
+				'status'       => array( 'wc-completed', 'wc-processing' ),
+				'orderby'      => 'date',
+				'order'        => 'DESC',
+				'customer_id'  => $include_guests ? '' : 0,
+				'return'       => 'objects',
+			)
+		);
+
+		if ( empty( $orders ) ) {
+			return array();
+		}
+
+		$results = array();
+		foreach ( $orders as $order ) {
+			if ( ! $order instanceof WC_Order ) {
+				continue;
+			}
+
+			$items = $order->get_items();
+			if ( empty( $items ) ) {
+				continue;
+			}
+
+			$first_item = reset( $items );
+			$product    = $first_item ? $first_item->get_product() : false;
+
+			if ( ! $product ) {
+				continue;
+			}
+
+			$image = $product->get_image( 'thumbnail', array( 'class' => 'aisales-recent-purchase__img' ) );
+
+			$results[] = array(
+				'name'         => trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ),
+				'location'     => trim( $order->get_billing_city() ),
+				'product_name' => $product->get_name(),
+				'image'        => $image,
+				'timestamp'    => $order->get_date_created() ? $order->get_date_created()->getTimestamp() : time(),
+				'time_ago'     => human_time_diff( $order->get_date_created() ? $order->get_date_created()->getTimestamp() : time(), time() ) . ' ago',
+			);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Format customer name according to privacy setting
+	 *
+	 * @param string $name Customer name.
+	 * @param string $privacy Privacy level.
+	 * @return string Formatted name.
+	 */
+	private function format_customer_name( $name, $privacy ) {
+		$name = trim( (string) $name );
+		if ( empty( $name ) ) {
+			return __( 'Someone', 'ai-sales-manager-for-woocommerce' );
+		}
+
+		if ( 'anonymous' === $privacy ) {
+			return __( 'Someone', 'ai-sales-manager-for-woocommerce' );
+		}
+
+		if ( 'first_city' === $privacy ) {
+			$parts = explode( ' ', $name );
+			return $parts[0];
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Wrap recent purchase output with custom attributes
+	 *
+	 * @param string $content Content HTML.
+	 * @param array  $classes Additional classes.
+	 * @param string $style Inline style.
+	 * @param int    $interval Interval seconds.
+	 * @param int    $duration Duration seconds.
+	 * @return string HTML output.
+	 */
+	private function wrap_recent_purchase_output( $content, $classes, $style, $interval, $duration ) {
+		$this->enqueue_assets();
+
+		$base_class = 'aisales-widget aisales-recent-purchase';
+		if ( ! empty( $classes ) ) {
+			$base_class .= ' ' . implode( ' ', $classes );
+		}
+
+		$style_attr = '';
+		if ( ! empty( $style ) ) {
+			$style_attr = sprintf( ' style="%s"', esc_attr( $style ) );
+		}
+
+		return sprintf(
+			'<div class="%s"%s data-interval="%d" data-duration="%d">%s</div>',
+			esc_attr( $base_class ),
+			$style_attr,
+			$interval,
+			$duration,
+			$content
+		);
+	}
+
+	/**
+	 * Get live viewer count for a product
+	 *
+	 * Uses transient to keep counts stable per product for a short period.
+	 *
+	 * @param int $product_id Product ID.
+	 * @param int $min Minimum viewers.
+	 * @param int $max Maximum viewers.
+	 * @return int Viewer count.
+	 */
+	private function get_live_viewer_count( $product_id, $min, $max ) {
+		$min = absint( $min );
+		$max = absint( $max );
+		if ( $max < $min ) {
+			$max = $min;
+		}
+
+		$transient_key = 'aisales_live_viewers_' . absint( $product_id );
+		$cached        = get_transient( $transient_key );
+		if ( false !== $cached ) {
+			return absint( $cached );
+		}
+
+		$count = wp_rand( $min, $max );
+		set_transient( $transient_key, $count, 60 );
+
+		return $count;
+	}
+
+	/**
+	 * Get free shipping threshold from WooCommerce settings
+	 *
+	 * @return float Threshold amount.
+	 */
+	private function get_free_shipping_threshold() {
+		$zones = WC_Shipping_Zones::get_zones();
+		$zones[] = array( 'shipping_methods' => WC_Shipping_Zones::get_zone( 0 )->get_shipping_methods() );
+
+		foreach ( $zones as $zone ) {
+			if ( empty( $zone['shipping_methods'] ) ) {
+				continue;
+			}
+
+			foreach ( $zone['shipping_methods'] as $method ) {
+				if ( 'free_shipping' === $method->id && $method->enabled ) {
+					$min_amount = isset( $method->min_amount ) ? (float) $method->min_amount : 0;
+					if ( $min_amount > 0 ) {
+						return $min_amount;
+					}
+				}
+			}
+		}
+
+		return 0;
 	}
 }

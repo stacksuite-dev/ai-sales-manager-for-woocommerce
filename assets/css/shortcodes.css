@@ -48,6 +48,105 @@
 }
 
 /* ==========================================================================
+   RECENT PURCHASE POPUPS
+   ========================================================================== */
+
+.aisales-recent-purchase {
+	position: fixed;
+	max-width: 320px;
+	z-index: 9999;
+	font-family: inherit;
+}
+
+.aisales-recent-purchase--bottom-left {
+	left: 20px;
+	bottom: 20px;
+}
+
+.aisales-recent-purchase--bottom-right {
+	right: 20px;
+	bottom: 20px;
+}
+
+.aisales-recent-purchase--top-left {
+	left: 20px;
+	top: 20px;
+}
+
+.aisales-recent-purchase--top-right {
+	right: 20px;
+	top: 20px;
+}
+
+.aisales-recent-purchase__list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.aisales-recent-purchase__item {
+	display: flex;
+	gap: 10px;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	padding: 10px 12px;
+	align-items: center;
+}
+
+.aisales-recent-purchase__image img {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 6px;
+}
+
+.aisales-recent-purchase__content {
+	flex: 1;
+}
+
+.aisales-recent-purchase__text {
+	font-size: 13px;
+	color: #111827;
+	line-height: 1.4;
+}
+
+.aisales-recent-purchase__time {
+	font-size: 11px;
+	color: #6b7280;
+	margin-top: 4px;
+}
+
+.aisales-recent-purchase--slide .aisales-recent-purchase__item {
+	animation: aisales-slide-in 0.3s ease;
+}
+
+.aisales-recent-purchase--fade .aisales-recent-purchase__item {
+	animation: aisales-fade-in 0.3s ease;
+}
+
+@keyframes aisales-slide-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes aisales-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* ==========================================================================
    STOCK URGENCY WIDGET
    ========================================================================== */
 
@@ -157,6 +256,36 @@
 .aisales-review-summary__count {
 	color: #6b7280;
 	font-weight: 400;
+}
+
+/* ==========================================================================
+   LIVE VIEWERS WIDGET
+   ========================================================================== */
+
+.aisales-live-viewers {
+	--aisales-live-viewers-accent: #2563eb;
+	color: #1f2937;
+	background: #eff6ff;
+	padding: 6px 12px;
+	border-radius: 6px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.aisales-live-viewers__icon {
+	color: var(--aisales-live-viewers-accent, #2563eb);
+	display: inline-flex;
+	align-items: center;
+}
+
+.aisales-live-viewers__text {
+	/* Inherits from parent */
+}
+
+.aisales-live-viewers--pulse {
+	animation: aisales-pulse 2s ease-in-out infinite;
 }
 
 /* Rating Breakdown */
@@ -298,6 +427,40 @@
 
 .aisales-countdown__unit {
 	position: relative;
+}
+
+/* ==========================================================================
+   SHIPPING BAR
+   ========================================================================== */
+
+.aisales-shipping-bar {
+	--aisales-shipping-bar-bg: #e5e7eb;
+	--aisales-shipping-bar-fill: #22c55e;
+	background: #f9fafb;
+	padding: 10px 14px;
+	border-radius: 8px;
+	font-weight: 500;
+}
+
+.aisales-shipping-bar__message {
+	font-size: 13px;
+	color: inherit;
+	margin-bottom: 8px;
+}
+
+.aisales-shipping-bar__track {
+	width: 100%;
+	height: 8px;
+	background: var(--aisales-shipping-bar-bg, #e5e7eb);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.aisales-shipping-bar__fill {
+	height: 100%;
+	background: var(--aisales-shipping-bar-fill, #22c55e);
+	border-radius: inherit;
+	transition: width 0.3s ease;
 }
 
 /* Ended state */

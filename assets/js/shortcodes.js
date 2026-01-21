@@ -18,7 +18,69 @@
 		init: function() {
 			this.initCountdowns();
 			this.initCartUrgency();
+			this.initRecentPurchases();
+			this.initLiveViewers();
 			this.initAnimatedCounts();
+		},
+
+		/**
+		 * Initialize live viewers widget
+		 */
+		initLiveViewers: function() {
+			$('.aisales-live-viewers').each(function() {
+				var $widget = $(this);
+				var min = parseInt($widget.data('min'), 10) || 1;
+				var max = parseInt($widget.data('max'), 10) || 25;
+				var interval = parseInt($widget.data('interval'), 10) || 12;
+				var $text = $widget.find('.aisales-live-viewers__text');
+				var template = $widget.data('format') || $text.text();
+
+				if ($text.length === 0) {
+					return;
+				}
+
+				setInterval(function() {
+					var count = Math.floor(Math.random() * (max - min + 1)) + min;
+					var text = template.replace('{count}', count);
+					$text.text(text);
+				}, interval * 1000);
+			});
+		},
+
+		/**
+		 * Initialize recent purchase popups
+		 */
+		initRecentPurchases: function() {
+			$('.aisales-recent-purchase').each(function() {
+				var $widget = $(this);
+				var $items = $widget.find('.aisales-recent-purchase__item');
+				var interval = parseInt($widget.data('interval'), 10) || 8;
+				var duration = parseInt($widget.data('duration'), 10) || 5;
+
+				if ($items.length === 0) {
+					return;
+				}
+
+				var index = 0;
+				var cycleTime = Math.max(interval, duration + 1);
+
+				$items.hide().eq(0).addClass('is-active').show();
+
+				var cycle = function() {
+					var $current = $items.eq(index);
+					$current.addClass('is-active').fadeIn(200);
+
+					setTimeout(function() {
+						$current.removeClass('is-active').fadeOut(200, function() {
+							index = (index + 1) % $items.length;
+						});
+					}, duration * 1000);
+
+					setTimeout(cycle, cycleTime * 1000);
+				};
+
+				setTimeout(cycle, cycleTime * 1000);
+			});
 		},
 
 		/**
