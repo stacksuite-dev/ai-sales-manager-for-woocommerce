@@ -21,6 +21,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+register_activation_hook( __FILE__, 'aisales_activate' );
+register_deactivation_hook( __FILE__, 'aisales_deactivate' );
+
 // Plugin constants
 define( 'AISALES_VERSION', '1.2.0' );
 define( 'AISALES_PLUGIN_FILE', __FILE__ );
@@ -101,13 +104,34 @@ final class AISales_Sales_Manager {
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-api-client.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-admin-settings.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-ajax-handlers.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-email-manager.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-branding-extractor.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-db.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-settings.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-tracker.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-emails.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-scheduler.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-restore.php';
 
 		// Only load admin components
 		if ( is_admin() ) {
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-product-metabox.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-category-metabox.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-chat-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-email-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-settings-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-report-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-support-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-support-ui.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-brand-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/widgets/class-aisales-widgets-page.php';
 		}
+
+		// Frontend shortcodes (load on both admin and frontend for preview support)
+		require_once AISALES_PLUGIN_DIR . 'includes/widgets/class-aisales-shortcodes.php';
+
+		// Widget injector (auto-inject widgets into WooCommerce pages)
+		require_once AISALES_PLUGIN_DIR . 'includes/widgets/class-aisales-widget-injector.php';
 	}
 
 	/**
@@ -120,12 +144,31 @@ final class AISales_Sales_Manager {
 		// Initialize components
 		AISales_Admin_Settings::instance();
 		AISales_Ajax_Handlers::instance();
+		AISales_Email_Manager::instance();
+		AISales_Abandoned_Cart_Tracker::instance();
+		AISales_Abandoned_Cart_Scheduler::instance();
+		AISales_Abandoned_Cart_Restore::instance();
 
 		if ( is_admin() ) {
 			AISales_Product_Metabox::instance();
 			AISales_Category_Metabox::instance();
 			AISales_Chat_Page::instance();
+			AISales_Email_Page::instance();
+			AISales_Abandoned_Cart_Settings_Page::instance();
+			AISales_Abandoned_Cart_Report_Page::instance();
+			AISales_Support_Page::instance();
+			AISales_Support_UI::instance();
+			AISales_Brand_Page::instance();
+			AISales_Widgets_Page::instance();
 		}
+
+		add_action( 'admin_menu', array( $this, 'reorder_submenu_items' ), 999 );
+
+		// Frontend shortcodes (always load for frontend and admin preview)
+		AISales_Shortcodes::instance();
+
+		// Widget auto-injection (frontend only)
+		AISales_Widget_Injector::instance();
 	}
 
 	/**
@@ -149,6 +192,12 @@ final class AISales_Sales_Manager {
 		$js_version = defined( 'WP_DEBUG' ) && WP_DEBUG
 			? filemtime( AISALES_PLUGIN_DIR . 'assets/js/admin.js' )
 			: AISALES_VERSION;
+		$support_css_version = defined( 'WP_DEBUG' ) && WP_DEBUG
+			? filemtime( AISALES_PLUGIN_DIR . 'assets/css/support-page.css' )
+			: AISALES_VERSION;
+		$support_js_version = defined( 'WP_DEBUG' ) && WP_DEBUG
+			? filemtime( AISALES_PLUGIN_DIR . 'assets/js/support-modal.js' )
+			: AISALES_VERSION;
 
 		// Shared components CSS (store context button, balance indicator, etc.)
 		wp_enqueue_style(
@@ -170,6 +219,21 @@ final class AISales_Sales_Manager {
 			AISALES_PLUGIN_URL . 'assets/js/admin.js',
 			array( 'jquery' ),
 			$js_version,
+			true
+		);
+
+		wp_enqueue_style(
+			'aisales-support-page',
+			AISALES_PLUGIN_URL . 'assets/css/support-page.css',
+			array( 'aisales-admin' ),
+			$support_css_version
+		);
+
+		wp_enqueue_script(
+			'aisales-support-modal',
+			AISALES_PLUGIN_URL . 'assets/js/support-modal.js',
+			array( 'jquery' ),
+			$support_js_version,
 			true
 		);
 
@@ -203,7 +267,7 @@ final class AISales_Sales_Manager {
 	 */
 	private function should_load_admin_assets( $hook ) {
 		// Plugin pages.
-		if ( in_array( $hook, array( 'toplevel_page_ai-sales-manager', 'ai-sales-manager_page_ai-sales-agent' ), true ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_ai-sales-manager', 'ai-sales-manager_page_ai-sales-agent', 'ai-sales-manager_page_ai-sales-emails', 'ai-sales-manager_page_ai-sales-support', 'ai-sales-manager_page_ai-sales-brand', 'ai-sales-manager_page_ai-sales-widgets' ), true ) ) {
 			return true;
 		}
 
@@ -222,6 +286,35 @@ final class AISales_Sales_Manager {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Ensure Support Center appears last in submenu
+	 */
+	public function reorder_submenu_items() {
+		global $submenu;
+
+		if ( empty( $submenu['ai-sales-manager'] ) ) {
+			return;
+		}
+
+		$items = $submenu['ai-sales-manager'];
+		$support_item = null;
+
+		foreach ( $items as $index => $item ) {
+			if ( isset( $item[2] ) && 'ai-sales-support' === $item[2] ) {
+				$support_item = $item;
+				unset( $items[ $index ] );
+				break;
+			}
+		}
+
+		if ( null === $support_item ) {
+			return;
+		}
+
+		$items[] = $support_item;
+		$submenu['ai-sales-manager'] = $items;
 	}
 
 	/**
@@ -269,6 +362,28 @@ function aisales_init() {
 	}
 
 	aisales();
+}
+
+/**
+ * Plugin activation tasks.
+ */
+function aisales_activate() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+
+	require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-db.php';
+	AISales_Abandoned_Cart_DB::create_tables();
+}
+
+/**
+ * Plugin deactivation tasks.
+ */
+function aisales_deactivate() {
+	$timestamp = wp_next_scheduled( 'aisales_abandoned_cart_cron' );
+	if ( $timestamp ) {
+		wp_unschedule_event( $timestamp, 'aisales_abandoned_cart_cron' );
+	}
 }
 
 // Initialize plugin after all plugins are loaded.

@@ -34,6 +34,8 @@ $aisales_options_to_delete = array(
 	'aisales_balance',
 	'aisales_domain',
 	'aisales_store_context',
+	'aisales_abandoned_cart_settings',
+	'aisales_abandoned_cart_email_templates',
 );
 
 foreach ( $aisales_options_to_delete as $aisales_option ) {
@@ -83,6 +85,15 @@ $aisales_transients_to_delete = array(
 foreach ( $aisales_transients_to_delete as $aisales_transient ) {
 	delete_transient( $aisales_transient );
 }
+
+// =============================================================================
+// ABANDONED CART TABLE CLEANUP
+// =============================================================================
+
+global $wpdb;
+
+$aisales_cart_table = $wpdb->prefix . 'aisales_abandoned_carts';
+$wpdb->query( "DROP TABLE IF EXISTS {$aisales_cart_table}" );
 
 // Clear any object cache data.
 wp_cache_delete( 'aisales_empty_desc_count' );
