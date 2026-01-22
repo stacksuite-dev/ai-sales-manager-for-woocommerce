@@ -104,6 +104,7 @@ final class AISales_Sales_Manager {
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-api-client.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-admin-settings.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-ajax-handlers.php';
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-mail-provider.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-email-manager.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-branding-extractor.php';
 		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-db.php';
@@ -119,12 +120,14 @@ final class AISales_Sales_Manager {
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-category-metabox.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-chat-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-email-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-mail-provider-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-settings-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-abandoned-cart-report-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-support-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-support-ui.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-brand-page.php';
 			require_once AISALES_PLUGIN_DIR . 'includes/widgets/class-aisales-widgets-page.php';
+			require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-batch-page.php';
 		}
 
 		// Frontend shortcodes (load on both admin and frontend for preview support)
@@ -144,7 +147,9 @@ final class AISales_Sales_Manager {
 		// Initialize components
 		AISales_Admin_Settings::instance();
 		AISales_Ajax_Handlers::instance();
+		AISales_Mail_Provider::instance();
 		AISales_Email_Manager::instance();
+		AISales_Abandoned_Cart_DB::maybe_create_tables();
 		AISales_Abandoned_Cart_Tracker::instance();
 		AISales_Abandoned_Cart_Scheduler::instance();
 		AISales_Abandoned_Cart_Restore::instance();
@@ -154,12 +159,14 @@ final class AISales_Sales_Manager {
 			AISales_Category_Metabox::instance();
 			AISales_Chat_Page::instance();
 			AISales_Email_Page::instance();
+			AISales_Mail_Provider_Page::instance();
 			AISales_Abandoned_Cart_Settings_Page::instance();
 			AISales_Abandoned_Cart_Report_Page::instance();
 			AISales_Support_Page::instance();
 			AISales_Support_UI::instance();
 			AISales_Brand_Page::instance();
 			AISales_Widgets_Page::instance();
+			AISales_Batch_Page::instance();
 		}
 
 		add_action( 'admin_menu', array( $this, 'reorder_submenu_items' ), 999 );
@@ -267,7 +274,7 @@ final class AISales_Sales_Manager {
 	 */
 	private function should_load_admin_assets( $hook ) {
 		// Plugin pages.
-		if ( in_array( $hook, array( 'toplevel_page_ai-sales-manager', 'ai-sales-manager_page_ai-sales-agent', 'ai-sales-manager_page_ai-sales-emails', 'ai-sales-manager_page_ai-sales-support', 'ai-sales-manager_page_ai-sales-brand', 'ai-sales-manager_page_ai-sales-widgets' ), true ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_ai-sales-manager', 'ai-sales-manager_page_ai-sales-agent', 'ai-sales-manager_page_ai-sales-emails', 'ai-sales-manager_page_ai-sales-support', 'ai-sales-manager_page_ai-sales-brand', 'ai-sales-manager_page_ai-sales-widgets', 'ai-sales-manager_page_ai-sales-abandoned-carts', 'ai-sales-manager_page_ai-sales-abandoned-cart-settings', 'ai-sales-manager_page_ai-sales-bulk', 'ai-sales-manager_page_ai-sales-email-delivery' ), true ) ) {
 			return true;
 		}
 

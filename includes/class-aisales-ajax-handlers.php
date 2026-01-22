@@ -87,6 +87,9 @@ class AISales_Ajax_Handlers {
 		add_action( 'wp_ajax_aisales_preview_email_template', array( $this, 'handle_preview_email_template' ) );
 		add_action( 'wp_ajax_aisales_toggle_email_template', array( $this, 'handle_toggle_email_template' ) );
 		add_action( 'wp_ajax_aisales_delete_email_template', array( $this, 'handle_delete_email_template' ) );
+		add_action( 'wp_ajax_aisales_send_test_email', array( $this, 'handle_send_test_email' ) );
+		add_action( 'wp_ajax_aisales_save_mail_provider_settings', array( $this, 'handle_save_mail_provider_settings' ) );
+		add_action( 'wp_ajax_aisales_send_mail_provider_test', array( $this, 'handle_send_mail_provider_test' ) );
 
 		// Bulk enhancement actions
 		add_action( 'wp_ajax_aisales_apply_batch_result', array( $this, 'handle_apply_batch_result' ) );
@@ -95,11 +98,330 @@ class AISales_Ajax_Handlers {
 		add_action( 'wp_ajax_aisales_save_wizard_context', array( $this, 'handle_save_wizard_context' ) );
 		add_action( 'wp_ajax_aisales_complete_email_wizard', array( $this, 'handle_complete_email_wizard' ) );
 
+		// Abandoned cart actions
+		add_action( 'wp_ajax_aisales_create_abandoned_cart_order', array( $this, 'handle_create_abandoned_cart_order' ) );
+
+		// Brand settings page actions
+		add_action( 'wp_ajax_aisales_save_brand_settings', array( $this, 'handle_save_brand_settings' ) );
+		add_action( 'wp_ajax_aisales_analyze_brand', array( $this, 'handle_analyze_brand' ) );
+
+		// Support actions
+		add_action( 'wp_ajax_aisales_support_draft', array( $this, 'handle_support_draft' ) );
+		add_action( 'wp_ajax_aisales_support_clarify', array( $this, 'handle_support_clarify' ) );
+		add_action( 'wp_ajax_aisales_support_submit', array( $this, 'handle_support_submit' ) );
+		add_action( 'wp_ajax_aisales_support_list', array( $this, 'handle_support_list' ) );
+		add_action( 'wp_ajax_aisales_support_stats', array( $this, 'handle_support_stats' ) );
+		add_action( 'wp_ajax_aisales_support_upload', array( $this, 'handle_support_upload' ) );
+
 		// API key recovery actions (no auth required for recovery request)
 		add_action( 'wp_ajax_aisales_request_api_key_recovery', array( $this, 'handle_request_api_key_recovery' ) );
 		add_action( 'wp_ajax_nopriv_aisales_request_api_key_recovery', array( $this, 'handle_request_api_key_recovery' ) );
 		add_action( 'wp_ajax_aisales_validate_recovery_token', array( $this, 'handle_validate_recovery_token' ) );
 		add_action( 'wp_ajax_nopriv_aisales_validate_recovery_token', array( $this, 'handle_validate_recovery_token' ) );
+	}
+
+	/**
+	 * Handle support draft creation
+	 */
+	public function handle_support_draft() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+		$description = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
+		$category    = isset( $_POST['category'] ) ? sanitize_key( wp_unslash( $_POST['category'] ) ) : 'support';
+		$attachments_raw = isset( $_POST['attachments'] ) ? wp_unslash( $_POST['attachments'] ) : '';
+		$attachments = array();
+		if ( ! empty( $attachments_raw ) ) {
+			$decoded = json_decode( $attachments_raw, true );
+			if ( is_array( $decoded ) ) {
+				foreach ( $decoded as $attachment ) {
+					if ( empty( $attachment['filename'] ) || empty( $attachment['url'] ) ) {
+						continue;
+					}
+					$attachments[] = array(
+						'filename'  => sanitize_file_name( $attachment['filename'] ),
+						'mime_type' => isset( $attachment['mime_type'] ) ? sanitize_text_field( $attachment['mime_type'] ) : 'application/octet-stream',
+						'url'       => esc_url_raw( $attachment['url'] ),
+						'size_bytes' => isset( $attachment['size_bytes'] ) ? absint( $attachment['size_bytes'] ) : 0,
+					);
+				}
+			}
+		}
+
+		if ( empty( $title ) || empty( $description ) ) {
+			wp_send_json_error( array( 'message' => __( 'Title and description are required.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->create_support_draft( array(
+			'title'       => $title,
+			'description' => $description,
+			'category'    => $category,
+			'attachments' => $attachments,
+		) );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Handle support attachment upload
+	 */
+	public function handle_support_upload() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		if ( empty( $_FILES['attachment'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'No file uploaded.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$file = $_FILES['attachment'];
+		if ( $file['size'] > 7 * 1024 * 1024 ) {
+			wp_send_json_error( array( 'message' => __( 'File exceeds 7MB limit.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$attachment_id = media_handle_upload( 'attachment', 0 );
+		if ( is_wp_error( $attachment_id ) ) {
+			wp_send_json_error( array( 'message' => $attachment_id->get_error_message() ) );
+		}
+
+		$url = wp_get_attachment_url( $attachment_id );
+		$mime = get_post_mime_type( $attachment_id );
+		$filename = get_the_title( $attachment_id );
+
+		wp_send_json_success( array(
+			'id'       => $attachment_id,
+			'url'      => $url,
+			'filename' => $filename,
+			'mime_type' => $mime,
+			'size'     => isset( $file['size'] ) ? absint( $file['size'] ) : 0,
+		) );
+	}
+
+	/**
+	 * Handle support clarification
+	 */
+	public function handle_support_clarify() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$draft_id = isset( $_POST['draft_id'] ) ? sanitize_text_field( wp_unslash( $_POST['draft_id'] ) ) : '';
+		$answers  = isset( $_POST['answers'] ) ? (array) wp_unslash( $_POST['answers'] ) : array();
+
+		if ( empty( $draft_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->clarify_support_draft( $draft_id, $answers );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Handle support ticket submission
+	 */
+	public function handle_support_submit() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$draft_id = isset( $_POST['draft_id'] ) ? sanitize_text_field( wp_unslash( $_POST['draft_id'] ) ) : '';
+
+		if ( empty( $draft_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->submit_support_ticket( $draft_id );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Handle support ticket list
+	 */
+	public function handle_support_list() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$filters = array();
+		if ( isset( $_POST['status'] ) ) {
+			$filters['status'] = sanitize_key( wp_unslash( $_POST['status'] ) );
+		}
+		if ( isset( $_POST['search'] ) ) {
+			$filters['search'] = sanitize_text_field( wp_unslash( $_POST['search'] ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->get_support_tickets( $filters );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Handle support stats
+	 */
+	public function handle_support_stats() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api    = AISales_API_Client::instance();
+		$result = $api->get_support_stats();
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Handle creating an order from an abandoned cart.
+	 */
+	public function handle_create_abandoned_cart_order() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$cart_id = isset( $_POST['cart_id'] ) ? absint( wp_unslash( $_POST['cart_id'] ) ) : 0;
+		if ( ! $cart_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid cart ID.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		global $wpdb;
+		$table = AISales_Abandoned_Cart_DB::get_table_name();
+		$cart  = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $cart_id ),
+			ARRAY_A
+		);
+
+		if ( empty( $cart ) ) {
+			wp_send_json_error( array( 'message' => __( 'Cart not found.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		if ( ! empty( $cart['order_id'] ) ) {
+			$order = wc_get_order( absint( $cart['order_id'] ) );
+			if ( $order ) {
+				wp_send_json_success( $this->build_abandoned_cart_order_response( $order, $cart_id ) );
+			}
+		}
+
+		$cart_items = isset( $cart['cart_items'] ) ? $cart['cart_items'] : '';
+		if ( function_exists( 'wp_json_decode' ) ) {
+			$items = $cart_items ? wp_json_decode( $cart_items, true ) : array();
+		} else {
+			$items = $cart_items ? json_decode( $cart_items, true ) : array();
+		}
+		if ( empty( $items ) || ! is_array( $items ) ) {
+			wp_send_json_error( array( 'message' => __( 'No cart items found for this cart.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$order = wc_create_order();
+		if ( is_wp_error( $order ) ) {
+			wp_send_json_error( array( 'message' => $order->get_error_message() ) );
+		}
+
+		foreach ( $items as $item ) {
+			$product_id = isset( $item['product_id'] ) ? absint( $item['product_id'] ) : 0;
+			$quantity   = isset( $item['quantity'] ) ? absint( $item['quantity'] ) : 1;
+			if ( ! $product_id ) {
+				continue;
+			}
+			$product = wc_get_product( $product_id );
+			if ( ! $product ) {
+				continue;
+			}
+			$order->add_product( $product, max( 1, $quantity ) );
+		}
+
+		if ( $order->get_item_count() === 0 ) {
+			wp_send_json_error( array( 'message' => __( 'No valid products found for this cart.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$email = isset( $cart['email'] ) ? sanitize_email( $cart['email'] ) : '';
+		if ( $email ) {
+			$order->set_billing_email( $email );
+		}
+		if ( ! empty( $cart['user_id'] ) ) {
+			$order->set_customer_id( absint( $cart['user_id'] ) );
+		}
+
+		$order->calculate_totals();
+		$order->update_status( 'pending', __( 'Created from abandoned cart.', 'ai-sales-manager-for-woocommerce' ) );
+		$order->save();
+
+		$wpdb->update(
+			$table,
+			array(
+				'order_id'   => $order->get_id(),
+				'status'     => 'order_created',
+				'updated_at' => current_time( 'mysql' ),
+			),
+			array( 'id' => $cart_id ),
+			array( '%d', '%s', '%s' ),
+			array( '%d' )
+		);
+
+		update_post_meta( $order->get_id(), '_aisales_abandoned_cart_id', $cart_id );
+
+		wp_send_json_success( $this->build_abandoned_cart_order_response( $order, $cart_id ) );
+	}
+
+	/**
+	 * Build response payload for created abandoned cart orders.
+	 *
+	 * @param WC_Order $order Order instance.
+	 * @param int      $cart_id Cart ID.
+	 * @return array
+	 */
+	private function build_abandoned_cart_order_response( $order, $cart_id ) {
+		return array(
+			'order_id'    => $order->get_id(),
+			'cart_id'     => $cart_id,
+			'payment_url' => $order->get_checkout_payment_url(),
+			'edit_url'    => admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ),
+			'success'     => __( 'Order created. Share the payment link with the customer.', 'ai-sales-manager-for-woocommerce' ),
+		);
 	}
 
 	/**
@@ -1845,6 +2167,107 @@ class AISales_Ajax_Handlers {
 	}
 
 	/**
+	 * Handle send test email
+	 */
+	public function handle_send_test_email() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$recipient     = isset( $_POST['recipient'] ) ? sanitize_email( wp_unslash( $_POST['recipient'] ) ) : '';
+		$subject_input = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '';
+		$heading_input = isset( $_POST['heading'] ) ? sanitize_text_field( wp_unslash( $_POST['heading'] ) ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$content_input = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+
+		if ( empty( $recipient ) || ! is_email( $recipient ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$email_manager = AISales_Email_Manager::instance();
+		$preview       = $email_manager->preview_template( array(
+			'subject' => $subject_input,
+			'heading' => $heading_input,
+			'content' => $content_input,
+		) );
+
+		if ( empty( $preview['subject'] ) ) {
+			$preview['subject'] = __( 'Test Email Preview', 'ai-sales-manager-for-woocommerce' );
+		}
+
+		$html    = $this->generate_email_preview_html( $preview );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		$sent    = wp_mail( $recipient, $preview['subject'], $html, $headers );
+
+		if ( $sent ) {
+			wp_send_json_success( array(
+				'message' => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ),
+			) );
+		}
+
+		wp_send_json_error( array( 'message' => __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ) ) );
+	}
+
+	/**
+	 * Handle save mail provider settings
+	 */
+	public function handle_save_mail_provider_settings() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$settings_raw = isset( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : array();
+		if ( is_string( $settings_raw ) ) {
+			$decoded = json_decode( $settings_raw, true );
+			$settings = is_array( $decoded ) ? $decoded : array();
+		} else {
+			$settings = is_array( $settings_raw ) ? $settings_raw : array();
+		}
+
+		$mail_provider = AISales_Mail_Provider::instance();
+		$success       = $mail_provider->save_settings( $settings );
+
+		if ( ! $success ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to save settings.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		wp_send_json_success( array(
+			'message' => __( 'Email delivery settings saved.', 'ai-sales-manager-for-woocommerce' ),
+		) );
+	}
+
+	/**
+	 * Handle send mail provider test
+	 */
+	public function handle_send_mail_provider_test() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$recipient = isset( $_POST['recipient'] ) ? sanitize_email( wp_unslash( $_POST['recipient'] ) ) : '';
+		if ( empty( $recipient ) || ! is_email( $recipient ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$subject = __( 'Email Delivery Test', 'ai-sales-manager-for-woocommerce' );
+		$body    = __( 'This is a test email sent from AI Sales Manager to verify your email delivery settings.', 'ai-sales-manager-for-woocommerce' );
+		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+
+		$sent = wp_mail( $recipient, $subject, $body, $headers );
+		if ( $sent ) {
+			wp_send_json_success( array( 'message' => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		wp_send_json_error( array( 'message' => __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ) ) );
+	}
+
+	/**
 	 * Generate HTML preview for email template
 	 *
 	 * @param array $preview Preview data with subject, heading, content.
@@ -2631,5 +3054,101 @@ class AISales_Ajax_Handlers {
 			'message' => __( 'Wizard completed.', 'ai-sales-manager-for-woocommerce' ),
 		) );
 	}
-}
 
+	// =============================================================================
+	// Brand Settings Page Handlers
+	// =============================================================================
+
+	/**
+	 * Handle save brand settings
+	 * Saves brand identity settings from the dedicated Brand Settings page
+	 */
+	public function handle_save_brand_settings() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		// Get existing context to preserve other fields
+		$existing = get_option( 'aisales_store_context', array() );
+
+		// Build new context with brand settings
+		$store_context = array_merge( $existing, array(
+			// Store Identity
+			'store_name'       => isset( $_POST['store_name'] ) ? sanitize_text_field( wp_unslash( $_POST['store_name'] ) ) : '',
+			'tagline'          => isset( $_POST['tagline'] ) ? sanitize_text_field( wp_unslash( $_POST['tagline'] ) ) : '',
+			'business_niche'   => isset( $_POST['business_niche'] ) ? sanitize_key( wp_unslash( $_POST['business_niche'] ) ) : '',
+
+			// Audience & Positioning
+			'target_audience'  => isset( $_POST['target_audience'] ) ? sanitize_textarea_field( wp_unslash( $_POST['target_audience'] ) ) : '',
+			'price_position'   => isset( $_POST['price_position'] ) ? sanitize_key( wp_unslash( $_POST['price_position'] ) ) : '',
+			'differentiator'   => isset( $_POST['differentiator'] ) ? sanitize_textarea_field( wp_unslash( $_POST['differentiator'] ) ) : '',
+			'pain_points'      => isset( $_POST['pain_points'] ) ? sanitize_textarea_field( wp_unslash( $_POST['pain_points'] ) ) : '',
+
+			// Brand Voice
+			'brand_tone'       => isset( $_POST['brand_tone'] ) ? sanitize_key( wp_unslash( $_POST['brand_tone'] ) ) : 'friendly',
+			'words_to_avoid'   => isset( $_POST['words_to_avoid'] ) ? sanitize_text_field( wp_unslash( $_POST['words_to_avoid'] ) ) : '',
+			'promotion_style'  => isset( $_POST['promotion_style'] ) ? sanitize_key( wp_unslash( $_POST['promotion_style'] ) ) : 'moderate',
+
+			// Visual Style
+			'primary_color'    => isset( $_POST['primary_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['primary_color'] ) ) : '#7f54b3',
+			'text_color'       => isset( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : '#3c3c3c',
+			'bg_color'         => isset( $_POST['bg_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color'] ) ) : '#f7f7f7',
+			'font_family'      => isset( $_POST['font_family'] ) ? sanitize_key( wp_unslash( $_POST['font_family'] ) ) : 'system',
+
+			'updated_at'       => current_time( 'mysql' ),
+		) );
+
+		update_option( 'aisales_store_context', $store_context );
+		update_option( 'aisales_brand_setup_complete', true );
+
+		wp_send_json_success( array(
+			'message' => __( 'Brand settings saved successfully.', 'ai-sales-manager-for-woocommerce' ),
+		) );
+	}
+
+	/**
+	 * Handle AI brand analysis
+	 * Calls the API to analyze the store and suggest brand settings
+	 */
+	public function handle_analyze_brand() {
+		check_ajax_referer( 'aisales_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		$api = AISales_API_Client::instance();
+
+		if ( ! $api->is_connected() ) {
+			wp_send_json_error( array( 'message' => __( 'Please connect to AI Sales Manager first.', 'ai-sales-manager-for-woocommerce' ) ) );
+		}
+
+		// Get analysis context from brand page
+		require_once AISALES_PLUGIN_DIR . 'includes/class-aisales-brand-page.php';
+		$brand_page = AISales_Brand_Page::instance();
+		$context    = $brand_page->get_analysis_context();
+
+		// Call API for AI analysis
+		$result = $api->analyze_brand( $context );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		// Update local balance if returned
+		if ( isset( $result['tokens_used']['total'] ) ) {
+			$this->update_local_balance_from_tokens( $result['tokens_used'] );
+		}
+
+		// Get current balance to return to frontend
+		$current_balance = get_option( 'aisales_balance', 0 );
+
+		wp_send_json_success( array(
+			'suggestions' => isset( $result['suggestions'] ) ? $result['suggestions'] : array(),
+			'tokens_used' => isset( $result['tokens_used'] ) ? $result['tokens_used'] : array(),
+			'balance'     => intval( $current_balance ),
+		) );
+	}
+}
