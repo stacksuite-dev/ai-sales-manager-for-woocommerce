@@ -155,6 +155,9 @@
 				closeTestModal();
 			}
 		});
+
+		// Tab switching (Templates / Settings)
+		$('.aisales-email-tab').on('click', handleTabSwitch);
 	}
 
 	/**
@@ -954,26 +957,21 @@
 	/**
 	 * Handle tab switching between Templates and Settings
 	 */
-	function handleTabSwitch() {
-		$('.aisales-email-tab').on('click', function () {
-			var $tab = $(this);
-			var tabId = $tab.data('tab');
+	function handleTabSwitch(e) {
+		var $tab = $(e.currentTarget);
+		var tabId = $tab.data('tab');
 
-			// Update tab states
-			$('.aisales-email-tab').removeClass('aisales-email-tab--active');
-			$tab.addClass('aisales-email-tab--active');
+		// Update tab states
+		$('.aisales-email-tab').removeClass('aisales-email-tab--active');
+		$tab.addClass('aisales-email-tab--active');
 
-			// Update panel visibility
-			$('.aisales-email-tab-panel').removeClass('aisales-email-tab-panel--active').hide();
-			$('.aisales-email-tab-panel[data-tab-panel="' + tabId + '"]').addClass('aisales-email-tab-panel--active').show();
-		});
+		// Update panel visibility
+		$('.aisales-email-tab-panel').removeClass('aisales-email-tab-panel--active');
+		$('.aisales-email-tab-panel[data-tab-panel="' + tabId + '"]').addClass('aisales-email-tab-panel--active');
 	}
 
 	// Initialize when document is ready
-	$(document).ready(function () {
-		init();
-		handleTabSwitch();
-	});
+	$(document).ready(init);
 
 	// CSS for spinning animation
 	$('<style>')

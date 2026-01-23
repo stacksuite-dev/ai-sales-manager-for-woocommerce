@@ -128,44 +128,39 @@ class AISales_Email_Page {
 	 * Enqueue mail provider assets for Settings tab
 	 */
 	private function enqueue_mail_provider_assets() {
+		$is_debug = defined( 'WP_DEBUG' ) && WP_DEBUG;
+
+		// CSS.
 		$css_path = AISALES_PLUGIN_DIR . 'assets/css/mail-provider-page.css';
 		if ( file_exists( $css_path ) ) {
-			$css_version = ( defined( 'WP_DEBUG' ) && WP_DEBUG )
-				? filemtime( $css_path )
-				: AISALES_VERSION;
-
 			wp_enqueue_style(
 				'aisales-mail-provider',
 				AISALES_PLUGIN_URL . 'assets/css/mail-provider-page.css',
 				array( 'aisales-admin' ),
-				$css_version
+				$is_debug ? filemtime( $css_path ) : AISALES_VERSION
 			);
 		}
 
+		// JS.
 		$js_path = AISALES_PLUGIN_DIR . 'assets/js/mail-provider-page.js';
 		if ( file_exists( $js_path ) ) {
-			$js_version = ( defined( 'WP_DEBUG' ) && WP_DEBUG )
-				? filemtime( $js_path )
-				: AISALES_VERSION;
-
 			wp_enqueue_script(
 				'aisales-mail-provider',
 				AISALES_PLUGIN_URL . 'assets/js/mail-provider-page.js',
 				array( 'jquery' ),
-				$js_version,
+				$is_debug ? filemtime( $js_path ) : AISALES_VERSION,
 				true
 			);
 		}
 
-		$settings = AISales_Mail_Provider::instance()->get_settings();
-
+		// Localize.
 		wp_localize_script(
 			'aisales-mail-provider',
 			'aisalesMailProvider',
 			array(
 				'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 				'nonce'      => wp_create_nonce( 'aisales_nonce' ),
-				'settings'   => $settings,
+				'settings'   => AISales_Mail_Provider::instance()->get_settings(),
 				'adminEmail' => get_option( 'admin_email' ),
 				'i18n'       => array(
 					'save'         => __( 'Save Settings', 'ai-sales-manager-for-woocommerce' ),

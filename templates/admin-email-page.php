@@ -414,7 +414,7 @@ defined( 'ABSPATH' ) || exit;
 		</div><!-- /.aisales-email-tab-panel[templates] -->
 
 		<!-- Tab Panel: Settings -->
-		<div class="aisales-email-tab-panel" data-tab-panel="settings" style="display: none;">
+		<div class="aisales-email-tab-panel" data-tab-panel="settings">
 			<?php
 			$mail_settings = AISales_Mail_Provider::instance()->get_settings();
 			include AISALES_PLUGIN_DIR . 'templates/partials/email-settings-panel.php';

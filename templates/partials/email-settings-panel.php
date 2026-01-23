@@ -11,49 +11,59 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = $mail_settings;
+// Helper to safely get nested array values with defaults.
+$get = function ( $arr, $key, $default = '' ) {
+	return isset( $arr[ $key ] ) ? $arr[ $key ] : $default;
+};
 
-$provider = isset( $settings['provider'] ) ? $settings['provider'] : 'default';
-$smtp     = isset( $settings['smtp'] ) && is_array( $settings['smtp'] ) ? $settings['smtp'] : array();
-$sendgrid = isset( $settings['sendgrid'] ) && is_array( $settings['sendgrid'] ) ? $settings['sendgrid'] : array();
-$resend   = isset( $settings['resend'] ) && is_array( $settings['resend'] ) ? $settings['resend'] : array();
-$mailgun  = isset( $settings['mailgun'] ) && is_array( $settings['mailgun'] ) ? $settings['mailgun'] : array();
-$postmark = isset( $settings['postmark'] ) && is_array( $settings['postmark'] ) ? $settings['postmark'] : array();
-$ses      = isset( $settings['ses'] ) && is_array( $settings['ses'] ) ? $settings['ses'] : array();
+// Extract provider settings with defaults.
+$provider = $get( $mail_settings, 'provider', 'default' );
+$smtp     = is_array( $get( $mail_settings, 'smtp' ) ) ? $mail_settings['smtp'] : array();
+$sendgrid = is_array( $get( $mail_settings, 'sendgrid' ) ) ? $mail_settings['sendgrid'] : array();
+$resend   = is_array( $get( $mail_settings, 'resend' ) ) ? $mail_settings['resend'] : array();
+$mailgun  = is_array( $get( $mail_settings, 'mailgun' ) ) ? $mail_settings['mailgun'] : array();
+$postmark = is_array( $get( $mail_settings, 'postmark' ) ) ? $mail_settings['postmark'] : array();
+$ses      = is_array( $get( $mail_settings, 'ses' ) ) ? $mail_settings['ses'] : array();
 
-$smtp_host       = isset( $smtp['host'] ) ? $smtp['host'] : '';
-$smtp_port       = isset( $smtp['port'] ) ? (int) $smtp['port'] : 587;
-$smtp_encryption = isset( $smtp['encryption'] ) ? $smtp['encryption'] : 'tls';
+// SMTP settings.
+$smtp_host       = $get( $smtp, 'host' );
+$smtp_port       = (int) $get( $smtp, 'port', 587 );
+$smtp_encryption = $get( $smtp, 'encryption', 'tls' );
 $smtp_auth       = ! empty( $smtp['auth'] );
-$smtp_username   = isset( $smtp['username'] ) ? $smtp['username'] : '';
-$smtp_password   = isset( $smtp['password'] ) ? $smtp['password'] : '';
-$from_email      = isset( $smtp['from_email'] ) ? $smtp['from_email'] : '';
-$from_name       = isset( $smtp['from_name'] ) ? $smtp['from_name'] : '';
+$smtp_username   = $get( $smtp, 'username' );
+$smtp_password   = $get( $smtp, 'password' );
+$from_email      = $get( $smtp, 'from_email' );
+$from_name       = $get( $smtp, 'from_name' );
 
-$sendgrid_api_key    = isset( $sendgrid['api_key'] ) ? $sendgrid['api_key'] : '';
-$sendgrid_from_email = isset( $sendgrid['from_email'] ) ? $sendgrid['from_email'] : '';
-$sendgrid_from_name  = isset( $sendgrid['from_name'] ) ? $sendgrid['from_name'] : '';
+// SendGrid settings.
+$sendgrid_api_key    = $get( $sendgrid, 'api_key' );
+$sendgrid_from_email = $get( $sendgrid, 'from_email' );
+$sendgrid_from_name  = $get( $sendgrid, 'from_name' );
 
-$resend_api_key    = isset( $resend['api_key'] ) ? $resend['api_key'] : '';
-$resend_domain     = isset( $resend['domain'] ) ? $resend['domain'] : '';
-$resend_from_email = isset( $resend['from_email'] ) ? $resend['from_email'] : '';
-$resend_from_name  = isset( $resend['from_name'] ) ? $resend['from_name'] : '';
+// Resend settings.
+$resend_api_key    = $get( $resend, 'api_key' );
+$resend_domain     = $get( $resend, 'domain' );
+$resend_from_email = $get( $resend, 'from_email' );
+$resend_from_name  = $get( $resend, 'from_name' );
 
-$mailgun_api_key    = isset( $mailgun['api_key'] ) ? $mailgun['api_key'] : '';
-$mailgun_domain     = isset( $mailgun['domain'] ) ? $mailgun['domain'] : '';
-$mailgun_region     = isset( $mailgun['region'] ) ? $mailgun['region'] : 'us';
-$mailgun_from_email = isset( $mailgun['from_email'] ) ? $mailgun['from_email'] : '';
-$mailgun_from_name  = isset( $mailgun['from_name'] ) ? $mailgun['from_name'] : '';
+// Mailgun settings.
+$mailgun_api_key    = $get( $mailgun, 'api_key' );
+$mailgun_domain     = $get( $mailgun, 'domain' );
+$mailgun_region     = $get( $mailgun, 'region', 'us' );
+$mailgun_from_email = $get( $mailgun, 'from_email' );
+$mailgun_from_name  = $get( $mailgun, 'from_name' );
 
-$postmark_server_token = isset( $postmark['server_token'] ) ? $postmark['server_token'] : '';
-$postmark_from_email   = isset( $postmark['from_email'] ) ? $postmark['from_email'] : '';
-$postmark_from_name    = isset( $postmark['from_name'] ) ? $postmark['from_name'] : '';
+// Postmark settings.
+$postmark_server_token = $get( $postmark, 'server_token' );
+$postmark_from_email   = $get( $postmark, 'from_email' );
+$postmark_from_name    = $get( $postmark, 'from_name' );
 
-$ses_access_key = isset( $ses['access_key'] ) ? $ses['access_key'] : '';
-$ses_secret_key = isset( $ses['secret_key'] ) ? $ses['secret_key'] : '';
-$ses_region     = isset( $ses['region'] ) ? $ses['region'] : '';
-$ses_from_email = isset( $ses['from_email'] ) ? $ses['from_email'] : '';
-$ses_from_name  = isset( $ses['from_name'] ) ? $ses['from_name'] : '';
+// Amazon SES settings.
+$ses_access_key = $get( $ses, 'access_key' );
+$ses_secret_key = $get( $ses, 'secret_key' );
+$ses_region     = $get( $ses, 'region' );
+$ses_from_email = $get( $ses, 'from_email' );
+$ses_from_name  = $get( $ses, 'from_name' );
 ?>
 
 <div class="aisales-email-settings-panel">
