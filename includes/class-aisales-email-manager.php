@@ -84,6 +84,28 @@ class AISales_Email_Manager {
 			'wc_email_id' => 'customer_refunded_order',
 			'is_mvp'      => false,
 		),
+		// Phase 3: Admin Notification Emails.
+		'new_order_admin'         => array(
+			'label'       => 'New Order (Admin)',
+			'description' => 'Sent to admin when a new order is placed',
+			'wc_email_id' => 'new_order',
+			'is_mvp'      => false,
+			'is_admin'    => true,
+		),
+		'cancelled_order_admin'   => array(
+			'label'       => 'Cancelled Order (Admin)',
+			'description' => 'Sent to admin when an order is cancelled',
+			'wc_email_id' => 'cancelled_order',
+			'is_mvp'      => false,
+			'is_admin'    => true,
+		),
+		'failed_order_admin'      => array(
+			'label'       => 'Failed Order (Admin)',
+			'description' => 'Sent to admin when a payment fails',
+			'wc_email_id' => 'failed_order',
+			'is_mvp'      => false,
+			'is_admin'    => true,
+		),
 	);
 
 	/**
@@ -143,6 +165,14 @@ class AISales_Email_Manager {
 			'{refund_reason}'  => 'Reason for refund (if provided)',
 			'{refund_date}'    => 'Date of refund',
 		),
+		'admin'     => array(
+			'{admin_order_url}'    => 'Link to view order in admin',
+			'{order_edit_url}'     => 'Link to edit order in admin',
+			'{payment_gateway}'    => 'Payment gateway used',
+			'{order_item_count}'   => 'Number of items in order',
+			'{customer_ip}'        => 'Customer IP address',
+			'{order_currency}'     => 'Order currency code',
+		),
 	);
 
 	/**
@@ -195,6 +225,16 @@ class AISales_Email_Manager {
 		add_filter( 'woocommerce_email_heading_customer_invoice', array( $this, 'filter_invoice_heading' ), 10, 2 );
 		add_filter( 'woocommerce_email_heading_customer_note', array( $this, 'filter_customer_note_heading' ), 10, 2 );
 		add_filter( 'woocommerce_email_heading_customer_refunded_order', array( $this, 'filter_refunded_order_heading' ), 10, 2 );
+
+		// Phase 3: Admin notification emails - Subject filters.
+		add_filter( 'woocommerce_email_subject_new_order', array( $this, 'filter_new_order_admin_subject' ), 10, 2 );
+		add_filter( 'woocommerce_email_subject_cancelled_order', array( $this, 'filter_cancelled_order_admin_subject' ), 10, 2 );
+		add_filter( 'woocommerce_email_subject_failed_order', array( $this, 'filter_failed_order_admin_subject' ), 10, 2 );
+
+		// Phase 3: Admin notification emails - Heading filters.
+		add_filter( 'woocommerce_email_heading_new_order', array( $this, 'filter_new_order_admin_heading' ), 10, 2 );
+		add_filter( 'woocommerce_email_heading_cancelled_order', array( $this, 'filter_cancelled_order_admin_heading' ), 10, 2 );
+		add_filter( 'woocommerce_email_heading_failed_order', array( $this, 'filter_failed_order_admin_heading' ), 10, 2 );
 
 		// Content hooks - inject custom content before order table.
 		add_action( 'woocommerce_email_before_order_table', array( $this, 'inject_custom_content' ), 10, 4 );
@@ -393,6 +433,14 @@ class AISales_Email_Manager {
 			'{refund_amount}' => isset( $extra['refund_amount'] ) ? wc_price( $extra['refund_amount'] ) : '',
 			'{refund_reason}' => isset( $extra['refund_reason'] ) ? $extra['refund_reason'] : '',
 			'{refund_date}'   => isset( $extra['refund_date'] ) ? $extra['refund_date'] : wp_date( get_option( 'date_format' ) ),
+
+			// Admin (Phase 3).
+			'{admin_order_url}'  => admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ),
+			'{order_edit_url}'   => admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ),
+			'{payment_gateway}'  => $order->get_payment_method(),
+			'{order_item_count}' => $order->get_item_count(),
+			'{customer_ip}'      => $order->get_customer_ip_address(),
+			'{order_currency}'   => $order->get_currency(),
 		);
 
 		// Merge with any extra values
@@ -688,6 +736,108 @@ class AISales_Email_Manager {
 	}
 
 	/**
+	 * Filter new order admin email subject
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_new_order_admin_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'new_order_admin' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter new order admin email heading
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_new_order_admin_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'new_order_admin' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
+	 * Filter cancelled order admin email subject
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_cancelled_order_admin_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'cancelled_order_admin' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter cancelled order admin email heading
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_cancelled_order_admin_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'cancelled_order_admin' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
+	 * Filter failed order admin email subject
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_failed_order_admin_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'failed_order_admin' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter failed order admin email heading
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_failed_order_admin_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'failed_order_admin' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
 	 * Replace placeholders for user-based emails (no order context)
 	 *
 	 * @param string  $template The template string with placeholders.
@@ -732,13 +882,8 @@ class AISales_Email_Manager {
 	 * @param WC_Email $email         Email object.
 	 */
 	public function inject_custom_content( $order, $sent_to_admin, $plain_text, $email ) {
-		// Only apply to customer emails.
-		if ( $sent_to_admin ) {
-			return;
-		}
-
 		// Map WooCommerce email IDs to our template types.
-		$email_type_map = array(
+		$customer_email_map = array(
 			// Phase 1: Transactional.
 			'customer_processing_order' => 'order_processing',
 			'customer_completed_order'  => 'order_completed',
@@ -748,7 +893,20 @@ class AISales_Email_Manager {
 			'customer_refunded_order'   => 'customer_refunded_order',
 		);
 
-		$template_type = isset( $email_type_map[ $email->id ] ) ? $email_type_map[ $email->id ] : null;
+		$admin_email_map = array(
+			// Phase 3: Admin notifications.
+			'new_order'       => 'new_order_admin',
+			'cancelled_order' => 'cancelled_order_admin',
+			'failed_order'    => 'failed_order_admin',
+		);
+
+		// Determine template type based on admin flag and email ID.
+		$template_type = null;
+		if ( $sent_to_admin && isset( $admin_email_map[ $email->id ] ) ) {
+			$template_type = $admin_email_map[ $email->id ];
+		} elseif ( ! $sent_to_admin && isset( $customer_email_map[ $email->id ] ) ) {
+			$template_type = $customer_email_map[ $email->id ];
+		}
 
 		if ( ! $template_type ) {
 			return;
@@ -847,6 +1005,14 @@ class AISales_Email_Manager {
 			'{refund_amount}'        => wc_price( 45.00 ),
 			'{refund_reason}'        => 'Item returned - customer preference',
 			'{refund_date}'          => wp_date( get_option( 'date_format' ) ),
+
+			// Admin placeholders (Phase 3).
+			'{admin_order_url}'      => admin_url( 'post.php?post=1234&action=edit' ),
+			'{order_edit_url}'       => admin_url( 'post.php?post=1234&action=edit' ),
+			'{payment_gateway}'      => 'stripe',
+			'{order_item_count}'     => '2',
+			'{customer_ip}'          => '192.168.1.100',
+			'{order_currency}'       => get_woocommerce_currency(),
 		);
 	}
 

@@ -406,6 +406,10 @@ class AISales_Email_Page {
 			'customer_invoice'        => 'customer',
 			'customer_note'           => 'customer',
 			'customer_refunded_order' => 'customer',
+			// Phase 3: Admin Notifications.
+			'new_order_admin'         => 'admin',
+			'cancelled_order_admin'   => 'admin',
+			'failed_order_admin'      => 'admin',
 		);
 
 		foreach ( $templates as $type => $template ) {
@@ -471,10 +475,10 @@ class AISales_Email_Page {
 			'customer_invoice'        => 'dashicons-media-text',
 			'customer_note'           => 'dashicons-format-aside',
 			'customer_refunded_order' => 'dashicons-money-alt',
-			// Future types.
+			// Phase 3: Admin Notifications.
 			'new_order_admin'         => 'dashicons-store',
-			'cancelled_order'         => 'dashicons-dismiss',
-			'failed_order'            => 'dashicons-warning',
+			'cancelled_order_admin'   => 'dashicons-dismiss',
+			'failed_order_admin'      => 'dashicons-warning',
 		);
 
 		return isset( $icons[ $type ] ) ? $icons[ $type ] : 'dashicons-email-alt';
