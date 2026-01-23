@@ -106,6 +106,25 @@ class AISales_Email_Manager {
 			'is_mvp'      => false,
 			'is_admin'    => true,
 		),
+		// Phase 4: Order Status Emails (Customer).
+		'order_on_hold'           => array(
+			'label'       => 'Order On Hold',
+			'description' => 'Sent when an order is placed on hold awaiting payment',
+			'wc_email_id' => 'customer_on_hold_order',
+			'is_mvp'      => false,
+		),
+		'order_cancelled'         => array(
+			'label'       => 'Order Cancelled',
+			'description' => 'Sent when a customer order is cancelled',
+			'wc_email_id' => 'customer_cancelled_order',
+			'is_mvp'      => false,
+		),
+		'order_failed'            => array(
+			'label'       => 'Payment Failed',
+			'description' => 'Sent when a customer payment fails',
+			'wc_email_id' => 'customer_failed_order',
+			'is_mvp'      => false,
+		),
 	);
 
 	/**
@@ -235,6 +254,16 @@ class AISales_Email_Manager {
 		add_filter( 'woocommerce_email_heading_new_order', array( $this, 'filter_new_order_admin_heading' ), 10, 2 );
 		add_filter( 'woocommerce_email_heading_cancelled_order', array( $this, 'filter_cancelled_order_admin_heading' ), 10, 2 );
 		add_filter( 'woocommerce_email_heading_failed_order', array( $this, 'filter_failed_order_admin_heading' ), 10, 2 );
+
+		// Phase 4: Order status emails - Subject filters.
+		add_filter( 'woocommerce_email_subject_customer_on_hold_order', array( $this, 'filter_on_hold_subject' ), 10, 2 );
+		add_filter( 'woocommerce_email_subject_customer_cancelled_order', array( $this, 'filter_cancelled_subject' ), 10, 2 );
+		add_filter( 'woocommerce_email_subject_customer_failed_order', array( $this, 'filter_failed_subject' ), 10, 2 );
+
+		// Phase 4: Order status emails - Heading filters.
+		add_filter( 'woocommerce_email_heading_customer_on_hold_order', array( $this, 'filter_on_hold_heading' ), 10, 2 );
+		add_filter( 'woocommerce_email_heading_customer_cancelled_order', array( $this, 'filter_cancelled_heading' ), 10, 2 );
+		add_filter( 'woocommerce_email_heading_customer_failed_order', array( $this, 'filter_failed_heading' ), 10, 2 );
 
 		// Content hooks - inject custom content before order table.
 		add_action( 'woocommerce_email_before_order_table', array( $this, 'inject_custom_content' ), 10, 4 );
@@ -838,6 +867,108 @@ class AISales_Email_Manager {
 	}
 
 	/**
+	 * Filter on hold order email subject
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_on_hold_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'order_on_hold' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter on hold order email heading
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_on_hold_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'order_on_hold' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
+	 * Filter cancelled order email subject (customer)
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_cancelled_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'order_cancelled' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter cancelled order email heading (customer)
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_cancelled_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'order_cancelled' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
+	 * Filter failed order email subject (customer)
+	 *
+	 * @param string   $subject Default subject.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered subject.
+	 */
+	public function filter_failed_subject( $subject, $order ) {
+		$template = $this->get_active_template( 'order_failed' );
+
+		if ( $template && ! empty( $template['subject'] ) ) {
+			return $this->replace_placeholders( $template['subject'], $order );
+		}
+
+		return $subject;
+	}
+
+	/**
+	 * Filter failed order email heading (customer)
+	 *
+	 * @param string   $heading Default heading.
+	 * @param WC_Order $order   Order object.
+	 * @return string Filtered heading.
+	 */
+	public function filter_failed_heading( $heading, $order ) {
+		$template = $this->get_active_template( 'order_failed' );
+
+		if ( $template && ! empty( $template['heading'] ) ) {
+			return $this->replace_placeholders( $template['heading'], $order );
+		}
+
+		return $heading;
+	}
+
+	/**
 	 * Replace placeholders for user-based emails (no order context)
 	 *
 	 * @param string  $template The template string with placeholders.
@@ -891,6 +1022,10 @@ class AISales_Email_Manager {
 			'customer_invoice'          => 'customer_invoice',
 			'customer_note'             => 'customer_note',
 			'customer_refunded_order'   => 'customer_refunded_order',
+			// Phase 4: Order status (customer).
+			'customer_on_hold_order'    => 'order_on_hold',
+			'customer_cancelled_order'  => 'order_cancelled',
+			'customer_failed_order'     => 'order_failed',
 		);
 
 		$admin_email_map = array(

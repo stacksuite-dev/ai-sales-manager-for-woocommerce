@@ -410,6 +410,10 @@ class AISales_Email_Page {
 			'new_order_admin'         => 'admin',
 			'cancelled_order_admin'   => 'admin',
 			'failed_order_admin'      => 'admin',
+			// Phase 4: Order Status (Customer).
+			'order_on_hold'           => 'transactional',
+			'order_cancelled'         => 'transactional',
+			'order_failed'            => 'transactional',
 		);
 
 		foreach ( $templates as $type => $template ) {
@@ -479,6 +483,10 @@ class AISales_Email_Page {
 			'new_order_admin'         => 'dashicons-store',
 			'cancelled_order_admin'   => 'dashicons-dismiss',
 			'failed_order_admin'      => 'dashicons-warning',
+			// Phase 4: Order Status (Customer).
+			'order_on_hold'           => 'dashicons-clock',
+			'order_cancelled'         => 'dashicons-no-alt',
+			'order_failed'            => 'dashicons-thumbs-down',
 		);
 
 		return isset( $icons[ $type ] ) ? $icons[ $type ] : 'dashicons-email-alt';
