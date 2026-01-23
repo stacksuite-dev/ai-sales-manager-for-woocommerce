@@ -125,6 +125,28 @@ class AISales_Email_Manager {
 			'wc_email_id' => 'customer_failed_order',
 			'is_mvp'      => false,
 		),
+		// Phase 5: Abandoned Cart Recovery Emails.
+		'abandoned_cart_1'        => array(
+			'label'       => 'Cart Reminder (1st)',
+			'description' => 'First reminder sent after cart abandonment',
+			'wc_email_id' => 'aisales_abandoned_cart_1',
+			'is_mvp'      => false,
+			'is_recovery' => true,
+		),
+		'abandoned_cart_2'        => array(
+			'label'       => 'Cart Reminder (2nd)',
+			'description' => 'Second follow-up reminder for abandoned cart',
+			'wc_email_id' => 'aisales_abandoned_cart_2',
+			'is_mvp'      => false,
+			'is_recovery' => true,
+		),
+		'abandoned_cart_3'        => array(
+			'label'       => 'Cart Reminder (Final)',
+			'description' => 'Final reminder before cart expires',
+			'wc_email_id' => 'aisales_abandoned_cart_3',
+			'is_mvp'      => false,
+			'is_recovery' => true,
+		),
 	);
 
 	/**
@@ -191,6 +213,13 @@ class AISales_Email_Manager {
 			'{order_item_count}'   => 'Number of items in order',
 			'{customer_ip}'        => 'Customer IP address',
 			'{order_currency}'     => 'Order currency code',
+		),
+		'cart'      => array(
+			'{cart_items}'         => 'List of items left in cart',
+			'{cart_total}'         => 'Total value of abandoned cart',
+			'{restore_link}'       => 'Link to restore cart and checkout',
+			'{cart_item_count}'    => 'Number of items in cart',
+			'{cart_abandoned_date}' => 'Date cart was abandoned',
 		),
 	);
 
@@ -1148,6 +1177,13 @@ class AISales_Email_Manager {
 			'{order_item_count}'     => '2',
 			'{customer_ip}'          => '192.168.1.100',
 			'{order_currency}'       => get_woocommerce_currency(),
+
+			// Cart placeholders (Phase 5 - Abandoned Cart).
+			'{cart_items}'           => '<ul><li>1x Wireless Bluetooth Headphones</li><li>1x Phone Case - Black</li></ul>',
+			'{cart_total}'           => wc_price( 109.98 ),
+			'{restore_link}'         => home_url( '/?action=aisales_restore_cart&token=abc123&key=xyz789' ),
+			'{cart_item_count}'      => '2',
+			'{cart_abandoned_date}'  => wp_date( get_option( 'date_format' ), strtotime( '-2 days' ) ),
 		);
 	}
 

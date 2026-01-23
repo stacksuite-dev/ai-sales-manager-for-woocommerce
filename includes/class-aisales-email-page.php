@@ -392,6 +392,11 @@ class AISales_Email_Page {
 				'icon'      => 'dashicons-admin-tools',
 				'templates' => array(),
 			),
+			'recovery'      => array(
+				'label'     => __( 'Cart Recovery', 'ai-sales-manager-for-woocommerce' ),
+				'icon'      => 'dashicons-update',
+				'templates' => array(),
+			),
 		);
 
 		// Category mapping.
@@ -414,6 +419,10 @@ class AISales_Email_Page {
 			'order_on_hold'           => 'transactional',
 			'order_cancelled'         => 'transactional',
 			'order_failed'            => 'transactional',
+			// Phase 5: Abandoned Cart Recovery.
+			'abandoned_cart_1'        => 'recovery',
+			'abandoned_cart_2'        => 'recovery',
+			'abandoned_cart_3'        => 'recovery',
 		);
 
 		foreach ( $templates as $type => $template ) {
@@ -487,6 +496,10 @@ class AISales_Email_Page {
 			'order_on_hold'           => 'dashicons-clock',
 			'order_cancelled'         => 'dashicons-no-alt',
 			'order_failed'            => 'dashicons-thumbs-down',
+			// Phase 5: Abandoned Cart Recovery.
+			'abandoned_cart_1'        => 'dashicons-cart',
+			'abandoned_cart_2'        => 'dashicons-megaphone',
+			'abandoned_cart_3'        => 'dashicons-flag',
 		);
 
 		return isset( $icons[ $type ] ) ? $icons[ $type ] : 'dashicons-email-alt';
