@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
@@ -114,6 +114,9 @@ By using the AI features, you agree to these terms.
 
 == Changelog ==
 
+= 1.4.4 =
+* Fixed: Sanitize $_POST values directly at point of access in AJAX base class per InputNotSanitized rule
+
 = 1.4.3 =
 * Fixed: Eliminated all phpcs:ignore suppressions — replaced with proper code-level fixes across 26 files
 * Fixed: All direct database queries now use wp_cache_get/wp_cache_set for WordPress object cache compliance
@@ -187,6 +190,9 @@ By using the AI features, you agree to these terms.
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.4.4 =
+Compliance patch fixing InputNotSanitized warning in AJAX base class — each $_POST access now wrapped in type-appropriate sanitization function.
 
 = 1.4.3 =
 Third compliance patch eliminating all phpcs:ignore suppressions. All PHPCS rules now satisfied with proper code-level fixes — object caching for direct queries, nonce verification for superglobals, wp_trigger_error for logging, and %i placeholders for table names. Requires WordPress 6.2+.
