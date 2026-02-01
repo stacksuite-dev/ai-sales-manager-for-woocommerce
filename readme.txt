@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.4.4
+Stable tag: 1.5.0
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
