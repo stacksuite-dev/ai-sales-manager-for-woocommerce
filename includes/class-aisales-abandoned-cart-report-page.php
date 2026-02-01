@@ -60,7 +60,10 @@ class AISales_Abandoned_Cart_Report_Page {
 			<!-- WordPress Admin Notices Anchor -->
 			<h1 class="aisales-notices-anchor"></h1>
 
-			<?php if ( isset( $_GET['aisales_saved'] ) ) : // phpcs:ignore ?>
+			<?php
+			$aisales_saved_nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+			if ( isset( $_GET['aisales_saved'] ) && wp_verify_nonce( $aisales_saved_nonce, 'aisales_settings_saved' ) ) :
+			?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Settings saved.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 				</div>
@@ -263,12 +266,9 @@ class AISales_Abandoned_Cart_Report_Page {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
-		$abandoned = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'abandoned'" );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
-		$recovered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'recovered'" );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
-		$revenue   = (float) $wpdb->get_var( "SELECT SUM(total) FROM {$table} WHERE status = 'recovered'" );
+		$abandoned = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'abandoned'", $table ) );
+		$recovered = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'recovered'", $table ) );
+		$revenue   = (float) $wpdb->get_var( $wpdb->prepare( "SELECT SUM(total) FROM %i WHERE status = 'recovered'", $table ) );
 
 		$rate = $abandoned + $recovered > 0
 			? round( ( $recovered / ( $abandoned + $recovered ) ) * 100, 2 )
@@ -292,22 +292,31 @@ class AISales_Abandoned_Cart_Report_Page {
 	 * @return array
 	 */
 	private function get_recent_carts() {
+		$cached = wp_cache_get( 'aisales_recent_carts', 'aisales_carts' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table, not cacheable (recent carts list).
 		$rows = $wpdb->get_results(
-			"SELECT email, status, total, currency, last_activity_at
-			, id, cart_items, order_id, user_id
-			 FROM {$table}
-			 ORDER BY last_activity_at DESC
-			 LIMIT 25",
+			$wpdb->prepare(
+				"SELECT email, status, total, currency, last_activity_at,
+				 id, cart_items, order_id, user_id
+				 FROM %i
+				 ORDER BY last_activity_at DESC
+				 LIMIT 25",
+				$table
+			),
 			ARRAY_A
 		);
 
 		foreach ( $rows as &$row ) {
 			$row['total'] = wc_price( (float) $row['total'], array( 'currency' => $row['currency'] ) );
 		}
+
+		wp_cache_set( 'aisales_recent_carts', $rows, 'aisales_carts', 60 );
 
 		return $rows;
 	}

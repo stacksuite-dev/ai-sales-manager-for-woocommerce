@@ -51,7 +51,8 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 	 * @param string $capability Required capability.
 	 */
 	protected function verify_chat_request( $capability = 'manage_woocommerce' ) {
-		check_ajax_referer( $this->chat_nonce_action, $this->nonce_field );
+		$this->nonce_action = $this->chat_nonce_action;
+		check_ajax_referer( $this->nonce_action, $this->nonce_field );
 
 		if ( ! current_user_can( $capability ) ) {
 			$this->error( __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) );
@@ -64,9 +65,8 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 	public function handle_save_store_context() {
 		$this->verify_chat_request();
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$context_raw = isset( $_POST['context'] ) ? map_deep( wp_unslash( $_POST['context'] ), 'sanitize_textarea_field' ) : array();
-		$context     = is_array( $context_raw ) ? $context_raw : array();
+		$context_raw = $this->get_post( 'context', 'raw' );
+		$context     = is_array( $context_raw ) ? map_deep( $context_raw, 'sanitize_textarea_field' ) : array();
 
 		$store_context = array(
 			'store_name'          => isset( $context['store_name'] ) ? sanitize_text_field( $context['store_name'] ) : '',

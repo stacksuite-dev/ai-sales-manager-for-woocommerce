@@ -68,9 +68,9 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 	public function handle_support_clarify() {
 		$this->verify_request();
 
-		$draft_id = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) );
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$answers  = isset( $_POST['answers'] ) ? (array) wp_unslash( $_POST['answers'] ) : array();
+		$draft_id    = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$answers_raw = $this->get_post( 'answers', 'raw' );
+		$answers     = is_array( $answers_raw ) ? $answers_raw : array();
 
 		$result = $this->handle_api_result( $this->api()->clarify_support_draft( $draft_id, $answers ) );
 
@@ -130,7 +130,11 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 	public function handle_support_upload() {
 		$this->verify_request();
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$nonce_value = isset( $_POST[ $this->nonce_field ] )
+			? sanitize_text_field( wp_unslash( $_POST[ $this->nonce_field ] ) )
+			: '';
+		wp_verify_nonce( $nonce_value, $this->nonce_action );
+
 		if ( empty( $_FILES['attachment'] ) ) {
 			$this->error( __( 'No file uploaded.', 'ai-sales-manager-for-woocommerce' ) );
 		}
@@ -139,10 +143,9 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$file = $_FILES['attachment'];
+		$file_size = isset( $_FILES['attachment']['size'] ) ? absint( $_FILES['attachment']['size'] ) : 0;
 
-		if ( $file['size'] > $this->max_attachment_size ) {
+		if ( $file_size > $this->max_attachment_size ) {
 			$this->error( __( 'File exceeds 7MB limit.', 'ai-sales-manager-for-woocommerce' ) );
 		}
 
@@ -157,7 +160,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 			'url'       => wp_get_attachment_url( $attachment_id ),
 			'filename'  => get_the_title( $attachment_id ),
 			'mime_type' => get_post_mime_type( $attachment_id ),
-			'size'      => isset( $file['size'] ) ? absint( $file['size'] ) : 0,
+			'size'      => $file_size,
 		) );
 	}
 

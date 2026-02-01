@@ -51,12 +51,10 @@ class AISales_SEO_Checker_Page {
 	 */
 	public function handle_debug_actions_early() {
 		// Only run on our page.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! isset( $_GET['page'] ) || 'ai-sales-seo-checker' !== $_GET['page'] ) {
+		if ( ! isset( $_GET['page'] ) || 'ai-sales-seo-checker' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$debug_action = isset( $_GET['debug'] ) ? sanitize_text_field( wp_unslash( $_GET['debug'] ) ) : '';
 
 		if ( empty( $debug_action ) ) {
@@ -65,6 +63,12 @@ class AISales_SEO_Checker_Page {
 
 		// Require manage_woocommerce capability.
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		// Verify nonce for debug actions.
+		$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'aisales_seo_debug' ) ) {
 			return;
 		}
 
@@ -94,7 +98,7 @@ class AISales_SEO_Checker_Page {
 			admin_url( 'admin.php' )
 		);
 
-		wp_safe_redirect( $redirect_url );
+		wp_safe_redirect( wp_nonce_url( $redirect_url, 'aisales_seo_debug_success' ) );
 		exit;
 	}
 
@@ -359,8 +363,17 @@ class AISales_SEO_Checker_Page {
 	 */
 	private function handle_debug_actions() {
 		// Check for success message from redirect.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$debug_success = isset( $_GET['debug_success'] ) ? sanitize_text_field( wp_unslash( $_GET['debug_success'] ) ) : '';
+		if ( ! isset( $_GET['debug_success'] ) ) {
+			return null;
+		}
+
+		// Verify nonce for debug success display.
+		$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'aisales_seo_debug_success' ) ) {
+			return null;
+		}
+
+		$debug_success = sanitize_text_field( wp_unslash( $_GET['debug_success'] ) );
 
 		if ( ! empty( $debug_success ) ) {
 			switch ( $debug_success ) {

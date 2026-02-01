@@ -130,8 +130,8 @@ $aisales_default_plan = array(
 					<span class="aisales-auto-topup-notice__title"><?php esc_html_e( 'Auto top-up is enabled', 'ai-sales-manager-for-woocommerce' ); ?></span>
 					<span class="aisales-auto-topup-notice__desc">
 						<?php
-						/* translators: %s: threshold tokens */
 						printf(
+							/* translators: %s: threshold tokens */
 							esc_html__( 'When below %s tokens', 'ai-sales-manager-for-woocommerce' ),
 							esc_html( number_format( $aisales_auto_topup['threshold'] ) )
 						);

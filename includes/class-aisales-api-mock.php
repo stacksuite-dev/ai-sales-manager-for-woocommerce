@@ -334,9 +334,15 @@ class AISales_API_Mock {
 		}
 
 		// Fallback to inline SVG data URI (no external file needed).
-		// Simple gray placeholder with "AI Generated" text.
-		// phpcs:ignore Generic.Files.LineLength.TooLong
-		return 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800"><rect fill="#f0f0f0" width="800" height="800"/><text x="50%" y="50%" font-family="Arial,sans-serif" font-size="32" fill="#999" text-anchor="middle" dy=".3em">Mock Image</text></svg>' );
+		// Simple gray placeholder with "Mock Image" text.
+		$svg  = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">';
+		$svg .= '<rect fill="#f0f0f0" width="800" height="800"/>';
+		$svg .= '<text x="50%" y="50%" font-family="Arial,sans-serif" font-size="32" ';
+		$svg .= 'fill="#999" text-anchor="middle" dy=".3em">Mock Image</text>';
+		$svg .= '</svg>';
+
+		// Encode SVG as base64 data URI for inline placeholder image.
+		return 'data:image/svg+xml;base64,' . base64_encode( $svg );
 	}
 
 	/**

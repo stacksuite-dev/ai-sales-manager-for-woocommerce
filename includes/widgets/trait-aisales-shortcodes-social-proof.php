@@ -567,24 +567,27 @@ trait AISales_Shortcodes_Social_Proof {
 	 * @return string HTML output or empty string.
 	 */
 	private function get_rating_breakdown_html( $product_id ) {
-		global $wpdb;
+		$cache_key = 'aisales_rating_breakdown_' . absint( $product_id );
+		$ratings   = wp_cache_get( $cache_key, 'aisales_carts' );
+		if ( false === $ratings ) {
+			global $wpdb;
 
-		// Query to get rating distribution.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$ratings = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT meta_value as rating, COUNT(*) as count
-				FROM {$wpdb->comments} c
-				INNER JOIN {$wpdb->commentmeta} cm ON c.comment_ID = cm.comment_id
-				WHERE c.comment_post_ID = %d
-				AND c.comment_approved = '1'
-				AND c.comment_type = 'review'
-				AND cm.meta_key = 'rating'
-				GROUP BY meta_value
-				ORDER BY meta_value DESC",
-				$product_id
-			)
-		);
+			$ratings = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT meta_value as rating, COUNT(*) as count
+					FROM {$wpdb->comments} c
+					INNER JOIN {$wpdb->commentmeta} cm ON c.comment_ID = cm.comment_id
+					WHERE c.comment_post_ID = %d
+					AND c.comment_approved = '1'
+					AND c.comment_type = 'review'
+					AND cm.meta_key = 'rating'
+					GROUP BY meta_value
+					ORDER BY meta_value DESC",
+					$product_id
+				)
+			);
+			wp_cache_set( $cache_key, $ratings, 'aisales_carts', 300 );
+		}
 
 		if ( empty( $ratings ) ) {
 			return '';

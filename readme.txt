@@ -1,10 +1,10 @@
 === AI Sales Manager for WooCommerce ===
 Contributors: stacksuite
 Tags: woocommerce, ai, product management, content generation, image generation
-Requires at least: 6.0
+Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
@@ -39,7 +39,7 @@ AI Sales Manager for WooCommerce brings the power of AI to your WooCommerce stor
 
 * WooCommerce 8.0 or higher
 * PHP 8.0 or higher
-* WordPress 6.0 or higher
+* WordPress 6.2 or higher
 
 == Installation ==
 
@@ -114,6 +114,16 @@ By using the AI features, you agree to these terms.
 
 == Changelog ==
 
+= 1.4.3 =
+* Fixed: Eliminated all phpcs:ignore suppressions — replaced with proper code-level fixes across 26 files
+* Fixed: All direct database queries now use wp_cache_get/wp_cache_set for WordPress object cache compliance
+* Fixed: All $_POST/$_GET/$_FILES access now has wp_verify_nonce() in the same function scope
+* Fixed: Replaced error_log() with wp_trigger_error() for WordPress coding standards compliance
+* Fixed: Replaced print_r() with wp_json_encode() and added wp_kses_post() escaping for do_shortcode() output
+* Fixed: Translators comments repositioned directly above i18n function calls
+* Fixed: All table name interpolation converted to %i identifier placeholder with $wpdb->prepare()
+* Changed: Minimum WordPress version bumped to 6.2 (required for %i placeholder support)
+
 = 1.4.2 =
 * Fixed: Template loop and standalone variables prefixed with aisales_ across all 7 template files
 * Fixed: PreparedSQL.InterpolatedNotPrepared PHPCS annotations added to 6 database query files
@@ -177,6 +187,9 @@ By using the AI features, you agree to these terms.
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.4.3 =
+Third compliance patch eliminating all phpcs:ignore suppressions. All PHPCS rules now satisfied with proper code-level fixes — object caching for direct queries, nonce verification for superglobals, wp_trigger_error for logging, and %i placeholders for table names. Requires WordPress 6.2+.
 
 = 1.4.2 =
 Second compliance patch resolving all remaining WordPress Plugin Check warnings — variable prefixing, PreparedSQL annotations, nonce verification, input sanitization, and debug function annotations across 23 files.

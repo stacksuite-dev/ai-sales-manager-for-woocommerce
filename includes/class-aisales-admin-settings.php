@@ -385,16 +385,18 @@ class AISales_Admin_Settings {
 			'recovered' => 0,
 		);
 		if ( class_exists( 'AISales_Abandoned_Cart_DB' ) ) {
-			global $wpdb;
-			$table = AISales_Abandoned_Cart_DB::get_table_name();
-			// Check if table exists before querying.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-			if ( $table_exists ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$cart_stats['abandoned'] = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'abandoned'" );
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$cart_stats['recovered'] = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'recovered'" );
+			$cached = wp_cache_get( 'aisales_dashboard_cart_stats', 'aisales_carts' );
+			if ( false !== $cached ) {
+				$cart_stats = $cached;
+			} else {
+				global $wpdb;
+				$table        = AISales_Abandoned_Cart_DB::get_table_name();
+				$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+				if ( $table_exists ) {
+					$cart_stats['abandoned'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'abandoned'", $table ) );
+					$cart_stats['recovered'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'recovered'", $table ) );
+				}
+				wp_cache_set( 'aisales_dashboard_cart_stats', $cart_stats, 'aisales_carts', 300 );
 			}
 		}
 

@@ -78,8 +78,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$status        = $this->get_post( 'status', 'key', 'draft' );
 
 		// Allow HTML in content but sanitize it
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+		$content = wp_kses_post( $this->get_post( 'content', 'raw' ) );
 
 		$email_manager = $this->email_manager();
 		$valid_types   = array_keys( $email_manager->get_template_types() );
@@ -165,8 +164,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 
 		$subject = $this->get_post( 'subject', 'text' );
 		$heading = $this->get_post( 'heading', 'text' );
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+		$content = wp_kses_post( $this->get_post( 'content', 'raw' ) );
 
 		$preview = $this->email_manager()->preview_template( array(
 			'subject' => $subject,
@@ -190,8 +188,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$recipient = $this->get_post( 'recipient', 'email' );
 		$subject   = $this->get_post( 'subject', 'text' );
 		$heading   = $this->get_post( 'heading', 'text' );
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$content   = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+		$content   = wp_kses_post( $this->get_post( 'content', 'raw' ) );
 
 		if ( empty( $recipient ) || ! is_email( $recipient ) ) {
 			$this->error( __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) );

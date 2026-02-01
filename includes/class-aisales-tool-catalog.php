@@ -129,21 +129,24 @@ class AISales_Tool_Catalog {
 		$uncategorized       = get_term_by( 'slug', 'uncategorized', 'product_cat' );
 		$uncategorized_count = $uncategorized ? $uncategorized->count : 0;
 
-		// Count products in multiple categories
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$multi_cat_count = $wpdb->get_var(
-			"SELECT COUNT(*) FROM (
-				SELECT tr.object_id
-				FROM {$wpdb->term_relationships} tr
-				INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-				INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
-				WHERE tt.taxonomy = 'product_cat'
-				AND p.post_type = 'product'
-				AND p.post_status = 'publish'
-				GROUP BY tr.object_id
-				HAVING COUNT(*) > 1
-			) as multi_cat"
-		);
+		// Count products in multiple categories.
+		$multi_cat_count = wp_cache_get( 'aisales_multi_cat_count', 'aisales_carts' );
+		if ( false === $multi_cat_count ) {
+			$multi_cat_count = $wpdb->get_var(
+				"SELECT COUNT(*) FROM (
+					SELECT tr.object_id
+					FROM {$wpdb->term_relationships} tr
+					INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+					INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+					WHERE tt.taxonomy = 'product_cat'
+					AND p.post_type = 'product'
+					AND p.post_status = 'publish'
+					GROUP BY tr.object_id
+					HAVING COUNT(*) > 1
+				) as multi_cat"
+			);
+			wp_cache_set( 'aisales_multi_cat_count', $multi_cat_count, 'aisales_carts', 300 );
+		}
 
 		$avg_products = $total_categories > 0 ? round( $total_products / $total_categories, 1 ) : 0;
 

@@ -142,11 +142,11 @@ class AISales_Widget_Injector {
 
 		$settings = $this->get_settings();
 		add_action( 'wp_footer', function() use ( $settings ) {
+			$enabled  = isset( $settings['enabled_widgets'] ) ? $settings['enabled_widgets'] : 'NOT SET';
+			$positions = isset( $settings['widget_positions'] ) ? $settings['widget_positions'] : 'NOT SET';
 			echo "\n<!-- AISALES DEBUG:\n";
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			echo 'enabled_widgets: ' . esc_html( print_r( isset( $settings['enabled_widgets'] ) ? $settings['enabled_widgets'] : 'NOT SET', true ) ) . "\n";
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			echo 'widget_positions: ' . esc_html( print_r( isset( $settings['widget_positions'] ) ? $settings['widget_positions'] : 'NOT SET', true ) ) . "\n";
+			echo 'enabled_widgets: ' . esc_html( wp_json_encode( $enabled ) ) . "\n";
+			echo 'widget_positions: ' . esc_html( wp_json_encode( $positions ) ) . "\n";
 			global $product;
 			if ( $product ) {
 				echo 'product_id: ' . esc_html( $product->get_id() ) . "\n";
@@ -252,8 +252,7 @@ class AISales_Widget_Injector {
 
 		$shortcode = $shortcode_map[ $widget_key ];
 
-		// Render the shortcode.
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo do_shortcode( '[' . $shortcode . ']' );
+		// Render the shortcode (shortcode output contains trusted HTML from our own shortcodes).
+		echo wp_kses_post( do_shortcode( '[' . $shortcode . ']' ) );
 	}
 }

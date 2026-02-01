@@ -90,12 +90,17 @@ abstract class AISales_Ajax_Base {
 	 * @return mixed Sanitized value.
 	 */
 	protected function get_post( $key, $type = 'text', $default = '' ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$nonce_value = isset( $_POST[ $this->nonce_field ] )
+			? sanitize_text_field( wp_unslash( $_POST[ $this->nonce_field ] ) )
+			: '';
+		if ( ! wp_verify_nonce( $nonce_value, $this->nonce_action ) ) {
+			return $default;
+		}
+
 		if ( ! isset( $_POST[ $key ] ) ) {
 			return $default;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$value = wp_unslash( $_POST[ $key ] );
 
 		switch ( $type ) {

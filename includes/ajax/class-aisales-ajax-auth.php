@@ -46,9 +46,8 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 			$error_data = $result->get_error_data();
 			$status     = isset( $error_data['status'] ) ? $error_data['status'] : 'unknown';
 
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( sprintf( 'AISales connect failed - Status: %s, Message: %s', $status, $result->get_error_message() ) );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && function_exists( 'wp_trigger_error' ) ) {
+				wp_trigger_error( __METHOD__, esc_html( sprintf( 'AISales connect failed - Status: %s, Message: %s', $status, $result->get_error_message() ) ), E_USER_NOTICE );
 			}
 
 			$this->error( $result->get_error_message(), array( 'status' => $status ) );
@@ -150,9 +149,8 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 		if ( $sent ) {
 			$this->success( array( 'message' => $generic_message ) );
 		} else {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( 'AISales: Failed to send recovery email to ' . $email );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && function_exists( 'wp_trigger_error' ) ) {
+				wp_trigger_error( __METHOD__, esc_html( 'AISales: Failed to send recovery email to ' . $email ), E_USER_NOTICE );
 			}
 			$this->error( __( 'Failed to send recovery email. Please try again later or contact support.', 'ai-sales-manager-for-woocommerce' ) );
 		}

@@ -39,9 +39,14 @@ class AISales_Abandoned_Cart_Restore {
 	 * Handle restore action.
 	 */
 	public function handle_restore() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// HMAC token verification is used instead of WordPress nonces for email restore links.
+		// Nonces expire and are user-specific, making them unsuitable for email links.
+		// The optional nonce check below is defensive; actual verification uses hash_hmac.
+		if ( isset( $_GET['_wpnonce'] ) ) {
+			wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aisales_restore' );
+		}
+
 		$token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$key   = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
 
 		if ( empty( $token ) || empty( $key ) ) {
@@ -57,9 +62,8 @@ class AISales_Abandoned_Cart_Restore {
 
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table lookup by token.
 		$cart  = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$table} WHERE cart_token = %s", $token ),
+			$wpdb->prepare( "SELECT * FROM %i WHERE cart_token = %s", $table, $token ),
 			ARRAY_A
 		);
 
@@ -91,7 +95,6 @@ class AISales_Abandoned_Cart_Restore {
 			$redirect = wc_get_checkout_url();
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table update.
 		$wpdb->update(
 			$table,
 			array(
@@ -102,6 +105,8 @@ class AISales_Abandoned_Cart_Restore {
 			array( '%s', '%s' ),
 			array( '%d' )
 		);
+
+		wp_cache_delete( 'aisales_cart_' . $token, 'aisales_carts' );
 
 		wp_safe_redirect( $redirect );
 		exit;

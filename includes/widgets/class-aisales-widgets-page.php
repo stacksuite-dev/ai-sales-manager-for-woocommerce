@@ -2023,8 +2023,7 @@ class AISales_Widgets_Page {
 			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) ) );
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$settings_json = isset( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : '';
+		$settings_json = isset( $_POST['settings'] ) ? sanitize_text_field( wp_unslash( $_POST['settings'] ) ) : '';
 		$new_settings  = json_decode( $settings_json, true );
 
 		if ( ! is_array( $new_settings ) ) {
@@ -2146,8 +2145,7 @@ class AISales_Widgets_Page {
 		}
 
 		$widget_key  = isset( $_POST['widget'] ) ? sanitize_key( $_POST['widget'] ) : '';
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$config_json = isset( $_POST['config'] ) ? wp_unslash( $_POST['config'] ) : '';
+		$config_json = isset( $_POST['config'] ) ? sanitize_text_field( wp_unslash( $_POST['config'] ) ) : '';
 		$new_config  = json_decode( $config_json, true );
 
 		$widgets = $this->get_widgets();

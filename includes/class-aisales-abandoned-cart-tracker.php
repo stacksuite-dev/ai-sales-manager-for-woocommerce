@@ -85,6 +85,14 @@ class AISales_Abandoned_Cart_Tracker {
 			return;
 		}
 
+		// Verify WooCommerce checkout nonce before reading POST data.
+		$wc_nonce = isset( $_POST['woocommerce-process-checkout-nonce'] )
+			? sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) )
+			: '';
+		if ( ! wp_verify_nonce( $wc_nonce, 'woocommerce-process_checkout' ) ) {
+			return;
+		}
+
 		if ( ! isset( $_POST['billing_email'] ) ) {
 			return;
 		}
@@ -111,7 +119,6 @@ class AISales_Abandoned_Cart_Tracker {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table update on order completion.
 		$wpdb->update(
 			$table,
 			array(
@@ -124,6 +131,8 @@ class AISales_Abandoned_Cart_Tracker {
 			array( '%s', '%s', '%d', '%s' ),
 			array( '%s' )
 		);
+
+		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
 
 		update_post_meta( $order_id, '_aisales_abandoned_cart_token', $token );
 	}
@@ -144,9 +153,8 @@ class AISales_Abandoned_Cart_Tracker {
 		$now        = current_time( 'mysql' );
 		$restore_key = $this->get_restore_key( $token );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table lookup.
 		$existing = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM {$table} WHERE cart_token = %s", $token ),
+			$wpdb->prepare( "SELECT id, email FROM %i WHERE cart_token = %s", $table, $token ),
 			ARRAY_A
 		);
 
@@ -176,7 +184,6 @@ class AISales_Abandoned_Cart_Tracker {
 		$formats = array( '%s', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s' );
 
 		if ( $existing ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table upsert.
 			$wpdb->update(
 				$table,
 				$data,
@@ -188,9 +195,10 @@ class AISales_Abandoned_Cart_Tracker {
 			$data['created_at'] = $now;
 			$formats[]          = '%s';
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table insert.
 			$wpdb->insert( $table, $data, $formats );
 		}
+
+		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
 	}
 
 	/**

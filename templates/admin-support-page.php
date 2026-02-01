@@ -101,8 +101,8 @@ defined( 'ABSPATH' ) || exit;
 							$aisales_category  = isset( $aisales_ticket['category'] ) ? $aisales_ticket['category'] : 'support';
 							$aisales_priority  = isset( $aisales_ticket['priority'] ) ? $aisales_ticket['priority'] : 'normal';
 							$aisales_updated_at = ! empty( $aisales_ticket['updated_at'] ) ? strtotime( $aisales_ticket['updated_at'] ) : 0;
-							/* translators: %s: human-readable time difference */
 							$aisales_time_label = $aisales_updated_at
+								/* translators: %s: human-readable time difference */
 								? sprintf( __( 'Last update %s', 'ai-sales-manager-for-woocommerce' ), human_time_diff( $aisales_updated_at, current_time( 'timestamp' ) ) . ' ago' )
 								: __( 'Last update -', 'ai-sales-manager-for-woocommerce' );
 							$aisales_category_label = ucfirst( $aisales_category );

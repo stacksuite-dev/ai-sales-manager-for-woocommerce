@@ -107,19 +107,17 @@ class AISales_API_Client {
 
 		$url = $this->api_url . $endpoint;
 		
-		// Log request in debug mode
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( sprintf( 'AISales API request: %s %s', $method, $url ) );
+		// Log request in debug mode.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG && function_exists( 'wp_trigger_error' ) ) {
+			wp_trigger_error( __METHOD__, esc_html( sprintf( 'AISales API request: %s %s', $method, $url ) ), E_USER_NOTICE );
 		}
 		
 		$response = wp_remote_request( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
-			// Log connection errors for debugging
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( sprintf( 'AISales API connection error to %s: %s', $url, $response->get_error_message() ) );
+			// Log connection errors for debugging.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && function_exists( 'wp_trigger_error' ) ) {
+				wp_trigger_error( __METHOD__, esc_html( sprintf( 'AISales API connection error to %s: %s', $url, $response->get_error_message() ) ), E_USER_NOTICE );
 			}
 			return $response;
 		}
@@ -129,10 +127,9 @@ class AISales_API_Client {
 
 		$status_code = wp_remote_retrieve_response_code( $response );
 		if ( $status_code >= 400 ) {
-			// Log API errors for debugging
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( sprintf( 'AISales API error %d from %s: %s', $status_code, $url, $body ) );
+			// Log API errors for debugging.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && function_exists( 'wp_trigger_error' ) ) {
+				wp_trigger_error( __METHOD__, esc_html( sprintf( 'AISales API error %d from %s: %s', $status_code, $url, $body ) ), E_USER_NOTICE );
 			}
 			// Try to get error message from response, with fallback showing status code
 			$error_message = __( 'API request failed', 'ai-sales-manager-for-woocommerce' );

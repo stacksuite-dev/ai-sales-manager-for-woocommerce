@@ -591,9 +591,8 @@ trait AISales_Shortcodes_Conversion {
 		$cookie_name = 'aisales_cart_urgency_expiry';
 		$expiry      = 0;
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 		if ( ! empty( $_COOKIE[ $cookie_name ] ) ) {
-			$expiry = absint( $_COOKIE[ $cookie_name ] );
+			$expiry = absint( sanitize_text_field( wp_unslash( $_COOKIE[ $cookie_name ] ) ) );
 		}
 
 		if ( $expiry <= 0 || $expiry < time() ) {

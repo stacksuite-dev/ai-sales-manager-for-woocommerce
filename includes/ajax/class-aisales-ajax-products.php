@@ -74,7 +74,8 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 	 * @param string $capability Required capability.
 	 */
 	protected function verify_chat_request( $capability = 'edit_products' ) {
-		check_ajax_referer( $this->chat_nonce_action, $this->nonce_field );
+		$this->nonce_action = $this->chat_nonce_action;
+		check_ajax_referer( $this->nonce_action, $this->nonce_field );
 
 		if ( ! current_user_can( $capability ) ) {
 			$this->error( __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) );
@@ -97,8 +98,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		// Get value with appropriate sanitization
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$value_raw = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
+		$value_raw = $this->get_post( 'value', 'raw' );
 		$value     = in_array( $field, array( 'description', 'short_description' ), true )
 			? wp_kses_post( $value_raw )
 			: sanitize_text_field( $value_raw );
@@ -152,8 +152,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		// Get value with appropriate sanitization
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$value_raw = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
+		$value_raw = $this->get_post( 'value', 'raw' );
 		$value     = 'description' === $field
 			? wp_kses_post( $value_raw )
 			: sanitize_text_field( $value_raw );

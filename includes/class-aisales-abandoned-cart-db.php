@@ -76,14 +76,22 @@ class AISales_Abandoned_Cart_DB {
 	 * @return bool
 	 */
 	private static function table_exists() {
+		$cache_key = 'aisales_cart_table_exists';
+		$cached    = wp_cache_get( $cache_key, 'aisales_carts' );
+		if ( false !== $cached ) {
+			return (bool) $cached;
+		}
+
 		global $wpdb;
 		$table_name = self::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checking custom table existence.
-		$found = $wpdb->get_var(
+		$found  = $wpdb->get_var(
 			$wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name )
 		);
+		$exists = $found === $table_name;
 
-		return $found === $table_name;
+		wp_cache_set( $cache_key, $exists ? 1 : 0, 'aisales_carts', 300 );
+
+		return $exists;
 	}
 }

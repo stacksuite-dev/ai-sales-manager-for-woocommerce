@@ -124,26 +124,30 @@ trait AISales_Shortcodes_Discovery {
 		global $wpdb;
 
 		// Get product IDs from recent orders, ordered by frequency.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$recent_product_ids = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT DISTINCT order_item_meta.meta_value as product_id
-				FROM {$wpdb->prefix}woocommerce_order_items as order_items
-				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
-					ON order_items.order_item_id = order_item_meta.order_item_id
-				INNER JOIN {$wpdb->posts} as posts
-					ON order_items.order_id = posts.ID
-				WHERE posts.post_type = 'shop_order'
-				AND posts.post_status IN ('wc-completed', 'wc-processing')
-				AND posts.post_date >= %s
-				AND order_item_meta.meta_key = '_product_id'
-				GROUP BY order_item_meta.meta_value
-				ORDER BY COUNT(*) DESC
-				LIMIT %d",
-				$date_threshold,
-				absint( $atts['limit'] ) * 2 // Get extra to account for filtering.
-			)
-		);
+		$cache_key          = 'aisales_trending_' . md5( $date_threshold . '_' . absint( $atts['limit'] ) );
+		$recent_product_ids = wp_cache_get( $cache_key, 'aisales_carts' );
+		if ( false === $recent_product_ids ) {
+			$recent_product_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT order_item_meta.meta_value as product_id
+					FROM {$wpdb->prefix}woocommerce_order_items as order_items
+					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
+						ON order_items.order_item_id = order_item_meta.order_item_id
+					INNER JOIN {$wpdb->posts} as posts
+						ON order_items.order_id = posts.ID
+					WHERE posts.post_type = 'shop_order'
+					AND posts.post_status IN ('wc-completed', 'wc-processing')
+					AND posts.post_date >= %s
+					AND order_item_meta.meta_key = '_product_id'
+					GROUP BY order_item_meta.meta_value
+					ORDER BY COUNT(*) DESC
+					LIMIT %d",
+					$date_threshold,
+					absint( $atts['limit'] ) * 2
+				)
+			);
+			wp_cache_set( $cache_key, $recent_product_ids, 'aisales_carts', 300 );
+		}
 
 		if ( empty( $recent_product_ids ) ) {
 			// Fallback to bestsellers if no recent orders.
@@ -205,10 +209,8 @@ trait AISales_Shortcodes_Discovery {
 
 		// Get recently viewed products from WooCommerce cookie.
 		$viewed_products = array();
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( ! empty( $_COOKIE['woocommerce_recently_viewed'] ) ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$viewed_products = explode( '|', wp_unslash( $_COOKIE['woocommerce_recently_viewed'] ) );
+			$viewed_products = explode( '|', sanitize_text_field( wp_unslash( $_COOKIE['woocommerce_recently_viewed'] ) ) );
 		}
 
 		$viewed_products = array_map( 'absint', array_filter( $viewed_products ) );
@@ -289,31 +291,35 @@ trait AISales_Shortcodes_Discovery {
 		global $wpdb;
 
 		// Find products that were purchased together with the current product.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$related_ids = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT DISTINCT order_item_meta.meta_value as product_id
-				FROM {$wpdb->prefix}woocommerce_order_items as order_items
-				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
-					ON order_items.order_item_id = order_item_meta.order_item_id
-				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta2
-					ON order_items.order_item_id = order_item_meta2.order_item_id
-				INNER JOIN {$wpdb->posts} as posts
-					ON order_items.order_id = posts.ID
-				WHERE posts.post_type = 'shop_order'
-				AND posts.post_status IN ('wc-completed', 'wc-processing')
-				AND order_item_meta.meta_key = '_product_id'
-				AND order_item_meta2.meta_key = '_product_id'
-				AND order_item_meta2.meta_value = %d
-				AND order_item_meta.meta_value != %d
-				GROUP BY order_item_meta.meta_value
-				ORDER BY COUNT(*) DESC
-				LIMIT %d",
-				$product_id,
-				$product_id,
-				absint( $atts['limit'] ) * 2
-			)
-		);
+		$bt_cache_key = 'aisales_bought_together_' . $product_id . '_' . absint( $atts['limit'] );
+		$related_ids  = wp_cache_get( $bt_cache_key, 'aisales_carts' );
+		if ( false === $related_ids ) {
+			$related_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT order_item_meta.meta_value as product_id
+					FROM {$wpdb->prefix}woocommerce_order_items as order_items
+					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
+						ON order_items.order_item_id = order_item_meta.order_item_id
+					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta2
+						ON order_items.order_item_id = order_item_meta2.order_item_id
+					INNER JOIN {$wpdb->posts} as posts
+						ON order_items.order_id = posts.ID
+					WHERE posts.post_type = 'shop_order'
+					AND posts.post_status IN ('wc-completed', 'wc-processing')
+					AND order_item_meta.meta_key = '_product_id'
+					AND order_item_meta2.meta_key = '_product_id'
+					AND order_item_meta2.meta_value = %d
+					AND order_item_meta.meta_value != %d
+					GROUP BY order_item_meta.meta_value
+					ORDER BY COUNT(*) DESC
+					LIMIT %d",
+					$product_id,
+					$product_id,
+					absint( $atts['limit'] ) * 2
+				)
+			);
+			wp_cache_set( $bt_cache_key, $related_ids, 'aisales_carts', 300 );
+		}
 
 		if ( empty( $related_ids ) ) {
 			return '';

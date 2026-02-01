@@ -81,7 +81,8 @@ class AISales_Abandoned_Cart_Settings_Page {
 
 		update_option( AISales_Abandoned_Cart_Settings::OPTION_KEY, $settings );
 
-		wp_safe_redirect( admin_url( 'admin.php?page=ai-sales-abandoned-carts&aisales_saved=1' ) );
+		$redirect_url = admin_url( 'admin.php?page=ai-sales-abandoned-carts&aisales_saved=1' );
+		wp_safe_redirect( wp_nonce_url( $redirect_url, 'aisales_settings_saved' ) );
 		exit;
 	}
 
@@ -93,8 +94,10 @@ class AISales_Abandoned_Cart_Settings_Page {
 		?>
 		<section class="aisales-abandoned-carts-settings">
 			<h2><?php esc_html_e( 'Abandoned Cart Settings', 'ai-sales-manager-for-woocommerce' ); ?></h2>
-			<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-		<?php if ( isset( $_GET['aisales_saved'] ) ) : ?>
+			<?php
+		$aisales_saved_nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+		?>
+		<?php if ( isset( $_GET['aisales_saved'] ) && wp_verify_nonce( $aisales_saved_nonce, 'aisales_settings_saved' ) ) : ?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Settings saved.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 				</div>
