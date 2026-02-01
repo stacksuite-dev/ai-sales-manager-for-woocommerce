@@ -152,9 +152,9 @@ $aisales_branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label for="aisales-wizard-business-niche"><?php esc_html_e( 'What do you sell?', 'ai-sales-manager-for-woocommerce' ); ?></label>
 							<select id="aisales-wizard-business-niche">
-								<?php foreach ( $aisales_niche_options as $value => $label ) : ?>
-									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_context['business_niche'], $value ); ?>>
-										<?php echo esc_html( $label ); ?>
+								<?php foreach ( $aisales_niche_options as $aisales_value => $aisales_label ) : ?>
+									<option value="<?php echo esc_attr( $aisales_value ); ?>" <?php selected( $aisales_context['business_niche'], $aisales_value ); ?>>
+										<?php echo esc_html( $aisales_label ); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
@@ -164,14 +164,14 @@ $aisales_branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label><?php esc_html_e( 'How should your emails sound?', 'ai-sales-manager-for-woocommerce' ); ?></label>
 							<div class="aisales-wizard__tone-grid">
-								<?php foreach ( $aisales_tone_options as $value => $option ) : ?>
+								<?php foreach ( $aisales_tone_options as $aisales_value => $aisales_option ) : ?>
 									<label class="aisales-wizard__tone-option">
-										<input type="radio" name="wizard_brand_tone" value="<?php echo esc_attr( $value ); ?>" 
-											<?php checked( $aisales_context['brand_tone'], $value ); ?>>
+										<input type="radio" name="wizard_brand_tone" value="<?php echo esc_attr( $aisales_value ); ?>" 
+											<?php checked( $aisales_context['brand_tone'], $aisales_value ); ?>>
 										<div class="aisales-wizard__tone-card">
-											<span class="aisales-wizard__tone-icon"><?php echo esc_html( $option['icon'] ); ?></span>
-											<span class="aisales-wizard__tone-name"><?php echo esc_html( $option['label'] ); ?></span>
-											<span class="aisales-wizard__tone-desc"><?php echo esc_html( $option['desc'] ); ?></span>
+											<span class="aisales-wizard__tone-icon"><?php echo esc_html( $aisales_option['icon'] ); ?></span>
+											<span class="aisales-wizard__tone-name"><?php echo esc_html( $aisales_option['label'] ); ?></span>
+											<span class="aisales-wizard__tone-desc"><?php echo esc_html( $aisales_option['desc'] ); ?></span>
 										</div>
 									</label>
 								<?php endforeach; ?>
@@ -243,11 +243,11 @@ $aisales_branding_source_label = array(
 								<div class="aisales-wizard__font-field">
 									<label for="aisales-wizard-font-family"><?php esc_html_e( 'Font Family', 'ai-sales-manager-for-woocommerce' ); ?></label>
 									<select id="aisales-wizard-font-family" class="aisales-wizard__font-select">
-										<?php foreach ( $aisales_safe_fonts as $slug => $font_data ) : ?>
-											<option value="<?php echo esc_attr( $slug ); ?>" 
-												<?php selected( $aisales_context['font_family'], $slug ); ?>
-												data-family="<?php echo esc_attr( $font_data['family'] ); ?>">
-												<?php echo esc_html( $font_data['label'] ); ?>
+										<?php foreach ( $aisales_safe_fonts as $aisales_slug => $aisales_font_data ) : ?>
+											<option value="<?php echo esc_attr( $aisales_slug ); ?>" 
+												<?php selected( $aisales_context['font_family'], $aisales_slug ); ?>
+												data-family="<?php echo esc_attr( $aisales_font_data['family'] ); ?>">
+												<?php echo esc_html( $aisales_font_data['label'] ); ?>
 											</option>
 										<?php endforeach; ?>
 									</select>
@@ -298,17 +298,17 @@ $aisales_branding_source_label = array(
 				</div>
 
 				<div class="aisales-wizard__template-list">
-					<?php foreach ( $aisales_templates as $type => $template_data ) : ?>
-						<div class="aisales-wizard__template-item <?php echo $template_data['has_template'] ? 'is-disabled' : ''; ?>" 
-							data-template-type="<?php echo esc_attr( $type ); ?>">
+					<?php foreach ( $aisales_templates as $aisales_type => $aisales_template_data ) : ?>
+						<div class="aisales-wizard__template-item <?php echo $aisales_template_data['has_template'] ? 'is-disabled' : ''; ?>" 
+							data-template-type="<?php echo esc_attr( $aisales_type ); ?>">
 							<span class="aisales-wizard__template-checkbox">
 								<span class="dashicons dashicons-yes"></span>
 							</span>
 							<div class="aisales-wizard__template-info">
-								<span class="aisales-wizard__template-name"><?php echo esc_html( $template_data['label'] ); ?></span>
-								<span class="aisales-wizard__template-desc"><?php echo esc_html( $template_data['description'] ); ?></span>
+								<span class="aisales-wizard__template-name"><?php echo esc_html( $aisales_template_data['label'] ); ?></span>
+								<span class="aisales-wizard__template-desc"><?php echo esc_html( $aisales_template_data['description'] ); ?></span>
 							</div>
-							<?php if ( $template_data['has_template'] ) : ?>
+							<?php if ( $aisales_template_data['has_template'] ) : ?>
 								<span class="aisales-wizard__template-badge aisales-wizard__template-badge--existing">
 									<?php esc_html_e( 'Exists', 'ai-sales-manager-for-woocommerce' ); ?>
 								</span>

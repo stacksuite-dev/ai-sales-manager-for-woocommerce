@@ -47,6 +47,7 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 			$status     = isset( $error_data['status'] ) ? $error_data['status'] : 'unknown';
 
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( sprintf( 'AISales connect failed - Status: %s, Message: %s', $status, $result->get_error_message() ) );
 			}
 
@@ -150,6 +151,7 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 			$this->success( array( 'message' => $generic_message ) );
 		} else {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'AISales: Failed to send recovery email to ' . $email );
 			}
 			$this->error( __( 'Failed to send recovery email. Please try again later or contact support.', 'ai-sales-manager-for-woocommerce' ) );

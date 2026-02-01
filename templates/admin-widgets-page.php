@@ -54,11 +54,11 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'All Widgets', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			<span class="aisales-widgets-tab__count"><?php echo esc_html( $aisales_total_count ); ?></span>
 		</button>
-		<?php foreach ( $aisales_categories as $cat_slug => $cat_data ) : ?>
-		<button type="button" class="aisales-widgets-tab" data-category="<?php echo esc_attr( $cat_slug ); ?>">
-			<span class="dashicons <?php echo esc_attr( $cat_data['icon'] ); ?>"></span>
-			<span class="aisales-widgets-tab__text"><?php echo esc_html( $cat_data['name'] ); ?></span>
-			<span class="aisales-widgets-tab__count"><?php echo esc_html( count( $aisales_widgets_page->get_widgets_by_category( $cat_slug ) ) ); ?></span>
+		<?php foreach ( $aisales_categories as $aisales_cat_slug => $aisales_cat_data ) : ?>
+		<button type="button" class="aisales-widgets-tab" data-category="<?php echo esc_attr( $aisales_cat_slug ); ?>">
+			<span class="dashicons <?php echo esc_attr( $aisales_cat_data['icon'] ); ?>"></span>
+			<span class="aisales-widgets-tab__text"><?php echo esc_html( $aisales_cat_data['name'] ); ?></span>
+			<span class="aisales-widgets-tab__count"><?php echo esc_html( count( $aisales_widgets_page->get_widgets_by_category( $aisales_cat_slug ) ) ); ?></span>
 		</button>
 		<?php endforeach; ?>
 		<button type="button" class="aisales-widgets-tab" data-category="settings">
@@ -70,47 +70,47 @@ $aisales_total_count     = count( $aisales_all_widgets );
 	<!-- Widgets Grid -->
 	<div class="aisales-widgets-content">
 		<div class="aisales-widgets-grid" id="widgets-grid">
-		<?php foreach ( $aisales_all_widgets as $widget_key => $widget ) : 
-			$is_enabled    = in_array( $widget_key, $aisales_settings['enabled_widgets'], true );
-			$is_toggleable = in_array( $widget['type'], array( 'feature', 'injectable' ), true );
-			$is_injectable = 'injectable' === $widget['type'];
-			$card_class    = 'aisales-widget-card';
-			$card_class   .= $is_toggleable ? ' aisales-widget-card--toggleable' : ' aisales-widget-card--shortcode';
-			if ( $is_injectable ) {
-				$card_class .= ' aisales-widget-card--injectable';
+		<?php foreach ( $aisales_all_widgets as $aisales_widget_key => $aisales_widget ) :
+			$aisales_is_enabled    = in_array( $aisales_widget_key, $aisales_settings['enabled_widgets'], true );
+			$aisales_is_toggleable = in_array( $aisales_widget['type'], array( 'feature', 'injectable' ), true );
+			$aisales_is_injectable = 'injectable' === $aisales_widget['type'];
+			$aisales_card_class    = 'aisales-widget-card';
+			$aisales_card_class   .= $aisales_is_toggleable ? ' aisales-widget-card--toggleable' : ' aisales-widget-card--shortcode';
+			if ( $aisales_is_injectable ) {
+				$aisales_card_class .= ' aisales-widget-card--injectable';
 			}
 			// Get current position for injectable widgets.
-			$current_position = '';
-			if ( $is_injectable && isset( $aisales_settings['widget_positions'][ $widget_key ] ) ) {
-				$current_position = $aisales_settings['widget_positions'][ $widget_key ];
-			} elseif ( $is_injectable && isset( $widget['default_pos'] ) ) {
-				$current_position = $widget['default_pos'];
+			$aisales_current_position = '';
+			if ( $aisales_is_injectable && isset( $aisales_settings['widget_positions'][ $aisales_widget_key ] ) ) {
+				$aisales_current_position = $aisales_settings['widget_positions'][ $aisales_widget_key ];
+			} elseif ( $aisales_is_injectable && isset( $aisales_widget['default_pos'] ) ) {
+				$aisales_current_position = $aisales_widget['default_pos'];
 			}
 		?>
-			<div class="<?php echo esc_attr( $card_class ); ?>" data-widget="<?php echo esc_attr( $widget_key ); ?>" data-category="<?php echo esc_attr( $widget['category'] ); ?>" data-type="<?php echo esc_attr( $widget['type'] ); ?>">
+			<div class="<?php echo esc_attr( $aisales_card_class ); ?>" data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>" data-category="<?php echo esc_attr( $aisales_widget['category'] ); ?>" data-type="<?php echo esc_attr( $aisales_widget['type'] ); ?>">
 				<!-- Card Header -->
 				<div class="aisales-widget-card__header">
-					<div class="aisales-widget-card__icon aisales-widget-card__icon--<?php echo esc_attr( $widget['category'] ); ?>">
-						<span class="dashicons <?php echo esc_attr( $widget['icon'] ); ?>"></span>
+					<div class="aisales-widget-card__icon aisales-widget-card__icon--<?php echo esc_attr( $aisales_widget['category'] ); ?>">
+						<span class="dashicons <?php echo esc_attr( $aisales_widget['icon'] ); ?>"></span>
 					</div>
 					<div class="aisales-widget-card__info">
-						<h3 class="aisales-widget-card__name"><?php echo esc_html( $widget['name'] ); ?></h3>
-						<span class="aisales-widget-card__category"><?php echo esc_html( $aisales_categories[ $widget['category'] ]['name'] ); ?></span>
+						<h3 class="aisales-widget-card__name"><?php echo esc_html( $aisales_widget['name'] ); ?></h3>
+						<span class="aisales-widget-card__category"><?php echo esc_html( $aisales_categories[ $aisales_widget['category'] ]['name'] ); ?></span>
 					</div>
-					<?php if ( $is_toggleable ) : ?>
+					<?php if ( $aisales_is_toggleable ) : ?>
 					<label class="aisales-toggle-switch">
 						<input type="checkbox" 
-							   name="widget_enabled[<?php echo esc_attr( $widget_key ); ?>]" 
+							   name="widget_enabled[<?php echo esc_attr( $aisales_widget_key ); ?>]" 
 							   value="1" 
-							   <?php checked( $is_enabled ); ?>
-							   data-widget="<?php echo esc_attr( $widget_key ); ?>">
+							   <?php checked( $aisales_is_enabled ); ?>
+							   data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>">
 						<span class="aisales-toggle-switch__slider"></span>
 					</label>
 					<?php endif; ?>
 				</div>
 
 				<!-- Card Description -->
-				<p class="aisales-widget-card__description"><?php echo esc_html( $widget['description'] ); ?></p>
+				<p class="aisales-widget-card__description"><?php echo esc_html( $aisales_widget['description'] ); ?></p>
 
 				<!-- Live Preview -->
 				<div class="aisales-widget-card__preview">
@@ -119,7 +119,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 						<?php esc_html_e( 'Preview', 'ai-sales-manager-for-woocommerce' ); ?>
 					</div>
 					<div class="aisales-widget-card__preview-content">
-						<?php aisales_render_widget_preview( $widget_key, $widget ); ?>
+						<?php aisales_render_widget_preview( $aisales_widget_key, $aisales_widget ); ?>
 					</div>
 				</div>
 
@@ -127,8 +127,8 @@ $aisales_total_count     = count( $aisales_all_widgets );
 				<div class="aisales-widget-card__shortcode">
 					<div class="aisales-widget-card__shortcode-label"><?php esc_html_e( 'Shortcode', 'ai-sales-manager-for-woocommerce' ); ?></div>
 					<div class="aisales-widget-card__shortcode-box">
-						<code class="aisales-widget-card__shortcode-code">[<?php echo esc_html( $widget['shortcode'] ); ?>]</code>
-						<button type="button" class="aisales-widget-card__copy-btn" data-shortcode="[<?php echo esc_attr( $widget['shortcode'] ); ?>]" title="<?php esc_attr_e( 'Copy to clipboard', 'ai-sales-manager-for-woocommerce' ); ?>">
+						<code class="aisales-widget-card__shortcode-code">[<?php echo esc_html( $aisales_widget['shortcode'] ); ?>]</code>
+						<button type="button" class="aisales-widget-card__copy-btn" data-shortcode="[<?php echo esc_attr( $aisales_widget['shortcode'] ); ?>]" title="<?php esc_attr_e( 'Copy to clipboard', 'ai-sales-manager-for-woocommerce' ); ?>">
 							<span class="dashicons dashicons-admin-page"></span>
 						</button>
 					</div>
@@ -136,11 +136,11 @@ $aisales_total_count     = count( $aisales_all_widgets );
 
 				<!-- Card Actions -->
 				<div class="aisales-widget-card__actions">
-					<button type="button" class="aisales-btn aisales-btn--outline aisales-btn--sm aisales-widget-card__settings-btn" data-widget="<?php echo esc_attr( $widget_key ); ?>">
+					<button type="button" class="aisales-btn aisales-btn--outline aisales-btn--sm aisales-widget-card__settings-btn" data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>">
 						<span class="dashicons dashicons-admin-generic"></span>
 						<?php esc_html_e( 'Settings', 'ai-sales-manager-for-woocommerce' ); ?>
 					</button>
-					<button type="button" class="aisales-btn aisales-btn--text aisales-btn--sm aisales-widget-card__docs-btn" data-widget="<?php echo esc_attr( $widget_key ); ?>">
+					<button type="button" class="aisales-btn aisales-btn--text aisales-btn--sm aisales-widget-card__docs-btn" data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>">
 						<span class="dashicons dashicons-book"></span>
 						<?php esc_html_e( 'Docs', 'ai-sales-manager-for-woocommerce' ); ?>
 					</button>

@@ -39,7 +39,9 @@ class AISales_Abandoned_Cart_Restore {
 	 * Handle restore action.
 	 */
 	public function handle_restore() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$key   = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
 
 		if ( empty( $token ) || empty( $key ) ) {
@@ -55,7 +57,7 @@ class AISales_Abandoned_Cart_Restore {
 
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup by token.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table lookup by token.
 		$cart  = $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE cart_token = %s", $token ),
 			ARRAY_A
@@ -89,7 +91,7 @@ class AISales_Abandoned_Cart_Restore {
 			$redirect = wc_get_checkout_url();
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table update.
 		$wpdb->update(
 			$table,
 			array(

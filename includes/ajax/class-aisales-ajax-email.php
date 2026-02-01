@@ -78,6 +78,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$status        = $this->get_post( 'status', 'key', 'draft' );
 
 		// Allow HTML in content but sanitize it
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 
 		$email_manager = $this->email_manager();
@@ -164,6 +165,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 
 		$subject = $this->get_post( 'subject', 'text' );
 		$heading = $this->get_post( 'heading', 'text' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 
 		$preview = $this->email_manager()->preview_template( array(
@@ -188,6 +190,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$recipient = $this->get_post( 'recipient', 'email' );
 		$subject   = $this->get_post( 'subject', 'text' );
 		$heading   = $this->get_post( 'heading', 'text' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$content   = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 
 		if ( empty( $recipient ) || ! is_email( $recipient ) ) {

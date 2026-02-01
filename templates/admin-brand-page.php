@@ -225,9 +225,9 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 									<?php esc_html_e( 'Industry', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-industry" name="business_niche" class="aisales-form-select">
-									<?php foreach ( $aisales_industries as $value => $label ) : ?>
-										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_current_industry, $value ); ?>>
-											<?php echo esc_html( $label ); ?>
+									<?php foreach ( $aisales_industries as $aisales_value => $aisales_label ) : ?>
+										<option value="<?php echo esc_attr( $aisales_value ); ?>" <?php selected( $aisales_current_industry, $aisales_value ); ?>>
+											<?php echo esc_html( $aisales_label ); ?>
 										</option>
 									<?php endforeach; ?>
 								</select>
@@ -262,9 +262,9 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 									<?php esc_html_e( 'Price Positioning', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-price-position" name="price_position" class="aisales-form-select">
-									<?php foreach ( $aisales_price_positions as $value => $label ) : ?>
-										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_current_price_position, $value ); ?>>
-											<?php echo esc_html( $label ); ?>
+									<?php foreach ( $aisales_price_positions as $aisales_value => $aisales_label ) : ?>
+										<option value="<?php echo esc_attr( $aisales_value ); ?>" <?php selected( $aisales_current_price_position, $aisales_value ); ?>>
+											<?php echo esc_html( $aisales_label ); ?>
 										</option>
 									<?php endforeach; ?>
 								</select>
@@ -314,18 +314,18 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 									<?php esc_html_e( 'Brand Tone', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options">
-									<?php foreach ( $aisales_tones as $value => $tone_data ) : ?>
-										<label class="aisales-tone-option <?php echo $aisales_current_tone === $value ? 'aisales-tone-option--selected' : ''; ?>">
+									<?php foreach ( $aisales_tones as $aisales_value => $aisales_tone_data ) : ?>
+										<label class="aisales-tone-option <?php echo $aisales_current_tone === $aisales_value ? 'aisales-tone-option--selected' : ''; ?>">
 											<input type="radio" 
 												name="brand_tone" 
-												value="<?php echo esc_attr( $value ); ?>" 
-												<?php checked( $aisales_current_tone, $value ); ?>>
+												value="<?php echo esc_attr( $aisales_value ); ?>" 
+												<?php checked( $aisales_current_tone, $aisales_value ); ?>>
 											<span class="aisales-tone-option__icon">
-												<span class="dashicons <?php echo esc_attr( $tone_data['icon'] ); ?>"></span>
+												<span class="dashicons <?php echo esc_attr( $aisales_tone_data['icon'] ); ?>"></span>
 											</span>
 											<span class="aisales-tone-option__content">
-												<span class="aisales-tone-option__label"><?php echo esc_html( $tone_data['label'] ); ?></span>
-												<span class="aisales-tone-option__desc"><?php echo esc_html( $tone_data['description'] ); ?></span>
+												<span class="aisales-tone-option__label"><?php echo esc_html( $aisales_tone_data['label'] ); ?></span>
+												<span class="aisales-tone-option__desc"><?php echo esc_html( $aisales_tone_data['description'] ); ?></span>
 											</span>
 										</label>
 									<?php endforeach; ?>
@@ -352,18 +352,18 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 									<?php esc_html_e( 'Promotion Style', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options aisales-promo-options">
-									<?php foreach ( $aisales_promotion_styles as $value => $style_data ) : ?>
-										<label class="aisales-tone-option <?php echo $aisales_current_promo_style === $value ? 'aisales-tone-option--selected' : ''; ?>">
+									<?php foreach ( $aisales_promotion_styles as $aisales_value => $aisales_style_data ) : ?>
+										<label class="aisales-tone-option <?php echo $aisales_current_promo_style === $aisales_value ? 'aisales-tone-option--selected' : ''; ?>">
 											<input type="radio" 
 												name="promotion_style" 
-												value="<?php echo esc_attr( $value ); ?>" 
-												<?php checked( $aisales_current_promo_style, $value ); ?>>
+												value="<?php echo esc_attr( $aisales_value ); ?>" 
+												<?php checked( $aisales_current_promo_style, $aisales_value ); ?>>
 											<span class="aisales-tone-option__icon">
-												<span class="dashicons <?php echo esc_attr( $style_data['icon'] ); ?>"></span>
+												<span class="dashicons <?php echo esc_attr( $aisales_style_data['icon'] ); ?>"></span>
 											</span>
 											<span class="aisales-tone-option__content">
-												<span class="aisales-tone-option__label"><?php echo esc_html( $style_data['label'] ); ?></span>
-												<span class="aisales-tone-option__desc"><?php echo esc_html( $style_data['description'] ); ?></span>
+												<span class="aisales-tone-option__label"><?php echo esc_html( $aisales_style_data['label'] ); ?></span>
+												<span class="aisales-tone-option__desc"><?php echo esc_html( $aisales_style_data['description'] ); ?></span>
 											</span>
 										</label>
 									<?php endforeach; ?>
@@ -429,9 +429,9 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 									<?php esc_html_e( 'Font Family', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-font-family" name="font_family" class="aisales-form-select">
-									<?php foreach ( $aisales_safe_fonts as $slug => $font_data ) : ?>
-										<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $aisales_current_font, $slug ); ?>>
-											<?php echo esc_html( $font_data['label'] ); ?>
+									<?php foreach ( $aisales_safe_fonts as $aisales_slug => $aisales_font_data ) : ?>
+										<option value="<?php echo esc_attr( $aisales_slug ); ?>" <?php selected( $aisales_current_font, $aisales_slug ); ?>>
+											<?php echo esc_html( $aisales_font_data['label'] ); ?>
 										</option>
 									<?php endforeach; ?>
 								</select>

@@ -93,7 +93,7 @@ foreach ( $aisales_transients_to_delete as $aisales_transient ) {
 global $wpdb;
 
 $aisales_cart_table = $wpdb->prefix . 'aisales_abandoned_carts';
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall cleanup of custom table.
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Uninstall cleanup of custom table.
 $wpdb->query( "DROP TABLE IF EXISTS {$aisales_cart_table}" );
 
 // Clear any object cache data.

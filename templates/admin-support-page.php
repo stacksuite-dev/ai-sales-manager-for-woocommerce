@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	<?php else : ?>
 		<?php
-		$status_map = array(
+		$aisales_status_map = array(
 			'open'     => array( 'label' => __( 'Open', 'ai-sales-manager-for-woocommerce' ), 'class' => 'aisales-status-badge--active', 'icon' => 'dashicons-flag' ),
 			'pending'  => array( 'label' => __( 'Pending', 'ai-sales-manager-for-woocommerce' ), 'class' => 'aisales-status-badge--warning', 'icon' => 'dashicons-update' ),
 			'resolved' => array( 'label' => __( 'Resolved', 'ai-sales-manager-for-woocommerce' ), 'class' => 'aisales-status-badge--success', 'icon' => 'dashicons-yes-alt' ),
@@ -94,35 +94,35 @@ defined( 'ABSPATH' ) || exit;
 						<p><?php esc_html_e( 'Tap the floating Support button to start a request.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				<?php else : ?>
-					<?php foreach ( $aisales_tickets as $ticket ) : ?>
+					<?php foreach ( $aisales_tickets as $aisales_ticket ) : ?>
 						<?php
-							$status_key = isset( $ticket['status'] ) ? $ticket['status'] : 'open';
-							$status     = isset( $status_map[ $status_key ] ) ? $status_map[ $status_key ] : $status_map['open'];
-							$category   = isset( $ticket['category'] ) ? $ticket['category'] : 'support';
-							$priority   = isset( $ticket['priority'] ) ? $ticket['priority'] : 'normal';
-							$updated_at = ! empty( $ticket['updated_at'] ) ? strtotime( $ticket['updated_at'] ) : 0;
+							$aisales_status_key = isset( $aisales_ticket['status'] ) ? $aisales_ticket['status'] : 'open';
+							$aisales_status    = isset( $aisales_status_map[ $aisales_status_key ] ) ? $aisales_status_map[ $aisales_status_key ] : $aisales_status_map['open'];
+							$aisales_category  = isset( $aisales_ticket['category'] ) ? $aisales_ticket['category'] : 'support';
+							$aisales_priority  = isset( $aisales_ticket['priority'] ) ? $aisales_ticket['priority'] : 'normal';
+							$aisales_updated_at = ! empty( $aisales_ticket['updated_at'] ) ? strtotime( $aisales_ticket['updated_at'] ) : 0;
 							/* translators: %s: human-readable time difference */
-							$time_label = $updated_at
-								? sprintf( __( 'Last update %s', 'ai-sales-manager-for-woocommerce' ), human_time_diff( $updated_at, current_time( 'timestamp' ) ) . ' ago' )
+							$aisales_time_label = $aisales_updated_at
+								? sprintf( __( 'Last update %s', 'ai-sales-manager-for-woocommerce' ), human_time_diff( $aisales_updated_at, current_time( 'timestamp' ) ) . ' ago' )
 								: __( 'Last update -', 'ai-sales-manager-for-woocommerce' );
-							$category_label = ucfirst( $category );
-							$priority_label = ucfirst( $priority );
+							$aisales_category_label = ucfirst( $aisales_category );
+							$aisales_priority_label = ucfirst( $aisales_priority );
 						?>
 						<div class="aisales-support-ticket">
 							<div class="aisales-support-ticket__meta">
-								<span class="aisales-support-ticket__id"><?php echo esc_html( $ticket['id'] ); ?></span>
-								<span class="aisales-status-badge <?php echo esc_attr( $status['class'] ); ?>">
-									<span class="dashicons <?php echo esc_attr( $status['icon'] ); ?>"></span>
-									<?php echo esc_html( $status['label'] ); ?>
+								<span class="aisales-support-ticket__id"><?php echo esc_html( $aisales_ticket['id'] ); ?></span>
+								<span class="aisales-status-badge <?php echo esc_attr( $aisales_status['class'] ); ?>">
+									<span class="dashicons <?php echo esc_attr( $aisales_status['icon'] ); ?>"></span>
+									<?php echo esc_html( $aisales_status['label'] ); ?>
 								</span>
 							</div>
-							<h3><?php echo esc_html( $ticket['title'] ); ?></h3>
-							<p><?php echo esc_html( $ticket['preview'] ); ?></p>
+							<h3><?php echo esc_html( $aisales_ticket['title'] ); ?></h3>
+							<p><?php echo esc_html( $aisales_ticket['preview'] ); ?></p>
 							<div class="aisales-support-ticket__footer">
-								<span><?php echo esc_html( $time_label ); ?></span>
+								<span><?php echo esc_html( $aisales_time_label ); ?></span>
 								<div class="aisales-support-ticket__tags">
-									<span class="aisales-support-ticket__pill"><?php echo esc_html( $category_label ); ?></span>
-									<span class="aisales-support-ticket__pill aisales-support-ticket__pill--priority"><?php echo esc_html( $priority_label ); ?></span>
+									<span class="aisales-support-ticket__pill"><?php echo esc_html( $aisales_category_label ); ?></span>
+									<span class="aisales-support-ticket__pill aisales-support-ticket__pill--priority"><?php echo esc_html( $aisales_priority_label ); ?></span>
 								</div>
 							</div>
 						</div>

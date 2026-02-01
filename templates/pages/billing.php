@@ -72,10 +72,10 @@ $aisales_auto_topup_count = 0;
 $aisales_manual_count = 0;
 
 if ( ! empty( $aisales_purchase_list ) ) {
-	foreach ( $aisales_purchase_list as $purchase ) {
-		$aisales_total_purchased += $purchase['amount_tokens'];
-		$aisales_total_spent += $purchase['amount_usd'];
-		if ( 'auto_topup' === $purchase['type'] ) {
+	foreach ( $aisales_purchase_list as $aisales_purchase ) {
+		$aisales_total_purchased += $aisales_purchase['amount_tokens'];
+		$aisales_total_spent += $aisales_purchase['amount_usd'];
+		if ( 'auto_topup' === $aisales_purchase['type'] ) {
 			$aisales_auto_topup_count++;
 		} else {
 			$aisales_manual_count++;
@@ -237,9 +237,9 @@ if ( ! empty( $aisales_purchase_list ) ) {
 								<?php esc_html_e( 'When balance falls below', 'ai-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<select id="aisales-autotopup-threshold" class="aisales-form-select" <?php disabled( ! $aisales_auto_topup['enabled'] || ! $aisales_has_payment_method ); ?>>
-								<?php foreach ( $aisales_threshold_options as $value => $label ) : ?>
-									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_auto_topup['threshold'], $value ); ?>>
-										<?php echo esc_html( $label ); ?>
+								<?php foreach ( $aisales_threshold_options as $aisales_value => $aisales_label ) : ?>
+									<option value="<?php echo esc_attr( $aisales_value ); ?>" <?php selected( $aisales_auto_topup['threshold'], $aisales_value ); ?>>
+										<?php echo esc_html( $aisales_label ); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
@@ -249,9 +249,9 @@ if ( ! empty( $aisales_purchase_list ) ) {
 								<?php esc_html_e( 'Add this package', 'ai-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<select id="aisales-autotopup-product" class="aisales-form-select" <?php disabled( ! $aisales_auto_topup['enabled'] || ! $aisales_has_payment_method ); ?>>
-								<?php foreach ( $aisales_plan_list as $plan ) : ?>
-									<option value="<?php echo esc_attr( $plan['id'] ); ?>" <?php selected( $aisales_auto_topup['productSlug'], $plan['id'] ); ?>>
-										<?php echo esc_html( sprintf( '%s tokens - $%s', number_format( $plan['tokens'] ), number_format( $plan['price_usd'], 2 ) ) ); ?>
+								<?php foreach ( $aisales_plan_list as $aisales_plan) : ?>
+									<option value="<?php echo esc_attr( $aisales_plan['id'] ); ?>" <?php selected( $aisales_auto_topup['productSlug'], $aisales_plan['id'] ); ?>>
+										<?php echo esc_html( sprintf( '%s tokens - $%s', number_format( $aisales_plan['tokens'] ), number_format( $aisales_plan['price_usd'], 2 ) ) ); ?>
 									</option>
 								<?php endforeach; ?>
 								<?php if ( empty( $aisales_plan_list ) ) : ?>
@@ -309,14 +309,14 @@ if ( ! empty( $aisales_purchase_list ) ) {
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $aisales_purchase_list as $purchase ) : ?>
+						<?php foreach ( $aisales_purchase_list as $aisales_purchase ) : ?>
 							<tr>
 								<td class="aisales-table__col--date">
-									<span class="aisales-table__date"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $purchase['created_at'] ) ) ); ?></span>
-									<span class="aisales-table__time"><?php echo esc_html( wp_date( 'g:i A', strtotime( $purchase['created_at'] ) ) ); ?></span>
+									<span class="aisales-table__date"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $aisales_purchase['created_at'] ) ) ); ?></span>
+									<span class="aisales-table__time"><?php echo esc_html( wp_date( 'g:i A', strtotime( $aisales_purchase['created_at'] ) ) ); ?></span>
 								</td>
 								<td class="aisales-table__col--type">
-									<?php if ( 'auto_topup' === $purchase['type'] ) : ?>
+									<?php if ( 'auto_topup' === $aisales_purchase['type'] ) : ?>
 										<span class="aisales-purchase-badge aisales-purchase-badge--auto">
 											<span class="dashicons dashicons-update"></span>
 											<?php esc_html_e( 'Auto', 'ai-sales-manager-for-woocommerce' ); ?>
@@ -330,11 +330,11 @@ if ( ! empty( $aisales_purchase_list ) ) {
 								</td>
 								<td class="aisales-table__col--tokens">
 									<span class="aisales-tokens-badge aisales-tokens-badge--positive">
-										+<?php echo esc_html( number_format( $purchase['amount_tokens'] ) ); ?>
+										+<?php echo esc_html( number_format( $aisales_purchase['amount_tokens'] ) ); ?>
 									</span>
 								</td>
 								<td class="aisales-table__col--amount">
-									<span class="aisales-table__amount">$<?php echo esc_html( number_format( $purchase['amount_usd'] / 100, 2 ) ); ?></span>
+									<span class="aisales-table__amount">$<?php echo esc_html( number_format( $aisales_purchase['amount_usd'] / 100, 2 ) ); ?></span>
 								</td>
 								<td class="aisales-table__col--status">
 									<span class="aisales-status-badge aisales-status-badge--success">

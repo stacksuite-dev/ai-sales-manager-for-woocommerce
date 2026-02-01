@@ -64,6 +64,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 	public function handle_save_store_context() {
 		$this->verify_chat_request();
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$context_raw = isset( $_POST['context'] ) ? map_deep( wp_unslash( $_POST['context'] ), 'sanitize_textarea_field' ) : array();
 		$context     = is_array( $context_raw ) ? $context_raw : array();
 

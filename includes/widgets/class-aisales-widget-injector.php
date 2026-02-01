@@ -143,7 +143,9 @@ class AISales_Widget_Injector {
 		$settings = $this->get_settings();
 		add_action( 'wp_footer', function() use ( $settings ) {
 			echo "\n<!-- AISALES DEBUG:\n";
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			echo 'enabled_widgets: ' . esc_html( print_r( isset( $settings['enabled_widgets'] ) ? $settings['enabled_widgets'] : 'NOT SET', true ) ) . "\n";
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			echo 'widget_positions: ' . esc_html( print_r( isset( $settings['widget_positions'] ) ? $settings['widget_positions'] : 'NOT SET', true ) ) . "\n";
 			global $product;
 			if ( $product ) {

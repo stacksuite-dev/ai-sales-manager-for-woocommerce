@@ -24,7 +24,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Category definitions.
-$categories = array(
+$aisales_categories = array(
 	'products'       => array(
 		'label' => __( 'Products', 'ai-sales-manager-for-woocommerce' ),
 		'icon'  => 'dashicons-cart',
@@ -124,29 +124,29 @@ $categories = array(
 				<!-- Category Breakdown -->
 				<?php
 				// Get scanned categories for breakdown display.
-				$breakdown_scanned_categories = isset( $aisales_scan_results['scanned_categories'] ) ? $aisales_scan_results['scanned_categories'] : array();
+				$aisales_breakdown_scanned_categories = isset( $aisales_scan_results['scanned_categories'] ) ? $aisales_scan_results['scanned_categories'] : array();
 				?>
 				<div class="aisales-seo-score-breakdown" id="aisales-seo-score-breakdown">
 					<h3 class="aisales-seo-score-breakdown__title"><?php esc_html_e( 'Category Scores', 'ai-sales-manager-for-woocommerce' ); ?></h3>
 					<div class="aisales-seo-score-breakdown__items">
-						<?php foreach ( $categories as $key => $category ) : ?>
+						<?php foreach ( $aisales_categories as $aisales_key => $aisales_category ) : ?>
 							<?php
-							$cat_was_scanned = in_array( $key, $breakdown_scanned_categories, true );
-							$cat_score       = isset( $aisales_scores[ $key ] ) ? (int) $aisales_scores[ $key ] : 0;
-							$score_class     = $cat_was_scanned ? AISales_SEO_Checker_Page::get_score_class( $cat_score ) : 'aisales-seo-score--not-scanned';
+							$aisales_cat_was_scanned = in_array( $aisales_key, $aisales_breakdown_scanned_categories, true );
+							$aisales_cat_score       = isset( $aisales_scores[ $aisales_key ] ) ? (int) $aisales_scores[ $aisales_key ] : 0;
+							$aisales_score_class     = $aisales_cat_was_scanned ? AISales_SEO_Checker_Page::get_score_class( $aisales_cat_score ) : 'aisales-seo-score--not-scanned';
 							?>
-							<div class="aisales-seo-score-breakdown__item" data-category="<?php echo esc_attr( $key ); ?>">
+							<div class="aisales-seo-score-breakdown__item" data-category="<?php echo esc_attr( $aisales_key ); ?>">
 								<div class="aisales-seo-score-breakdown__item-header">
 									<span class="aisales-seo-score-breakdown__item-label">
-										<span class="dashicons <?php echo esc_attr( $category['icon'] ); ?>"></span>
-										<?php echo esc_html( $category['label'] ); ?>
+										<span class="dashicons <?php echo esc_attr( $aisales_category['icon'] ); ?>"></span>
+										<?php echo esc_html( $aisales_category['label'] ); ?>
 									</span>
-									<span class="aisales-seo-score-breakdown__item-value <?php echo esc_attr( $score_class ); ?>">
+									<span class="aisales-seo-score-breakdown__item-value <?php echo esc_attr( $aisales_score_class ); ?>">
 										<?php
 										if ( ! $aisales_has_results ) {
 											echo '--';
-										} elseif ( $cat_was_scanned ) {
-											echo esc_html( $cat_score );
+										} elseif ( $aisales_cat_was_scanned ) {
+											echo esc_html( $aisales_cat_score );
 										} else {
 											echo '—';
 										}
@@ -154,8 +154,8 @@ $categories = array(
 									</span>
 								</div>
 								<div class="aisales-seo-score-breakdown__item-bar">
-									<div class="aisales-seo-score-breakdown__item-progress <?php echo esc_attr( $score_class ); ?>"
-										style="width: <?php echo ( $aisales_has_results && $cat_was_scanned ) ? esc_attr( $cat_score ) : '0'; ?>%;">
+									<div class="aisales-seo-score-breakdown__item-progress <?php echo esc_attr( $aisales_score_class ); ?>"
+										style="width: <?php echo ( $aisales_has_results && $aisales_cat_was_scanned ) ? esc_attr( $aisales_cat_score ) : '0'; ?>%;">
 									</div>
 								</div>
 							</div>
@@ -263,29 +263,29 @@ $categories = array(
 				<!-- Category Accordions -->
 				<?php
 				// Get scanned categories from results.
-				$scanned_categories = isset( $aisales_scan_results['scanned_categories'] ) ? $aisales_scan_results['scanned_categories'] : array();
+				$aisales_scanned_categories = isset( $aisales_scan_results['scanned_categories'] ) ? $aisales_scan_results['scanned_categories'] : array();
 				?>
-				<?php foreach ( $categories as $key => $category ) : ?>
+				<?php foreach ( $aisales_categories as $aisales_key => $aisales_category ) : ?>
 					<?php
-					$was_scanned     = in_array( $key, $scanned_categories, true );
-					$cat_score       = isset( $aisales_scores[ $key ] ) ? (int) $aisales_scores[ $key ] : 0;
-					$score_class     = $was_scanned ? AISales_SEO_Checker_Page::get_score_class( $cat_score ) : 'aisales-seo-score--not-scanned';
-					$cat_issues      = isset( $aisales_detailed_issues[ $key ] ) ? $aisales_detailed_issues[ $key ] : array();
-					$critical_count  = 0;
-					$warning_count   = 0;
+					$aisales_was_scanned     = in_array( $aisales_key, $aisales_scanned_categories, true );
+					$aisales_cat_score       = isset( $aisales_scores[ $aisales_key ] ) ? (int) $aisales_scores[ $aisales_key ] : 0;
+					$aisales_score_class     = $aisales_was_scanned ? AISales_SEO_Checker_Page::get_score_class( $aisales_cat_score ) : 'aisales-seo-score--not-scanned';
+					$aisales_cat_issues      = isset( $aisales_detailed_issues[ $aisales_key ] ) ? $aisales_detailed_issues[ $aisales_key ] : array();
+					$aisales_critical_count  = 0;
+					$aisales_warning_count   = 0;
 
-					foreach ( $cat_issues as $issue ) {
-						if ( isset( $issue['severity'] ) ) {
-							if ( 'critical' === $issue['severity'] ) {
-								++$critical_count;
-							} elseif ( 'warning' === $issue['severity'] ) {
-								++$warning_count;
+					foreach ( $aisales_cat_issues as $aisales_issue ) {
+						if ( isset( $aisales_issue['severity'] ) ) {
+							if ( 'critical' === $aisales_issue['severity'] ) {
+								++$aisales_critical_count;
+							} elseif ( 'warning' === $aisales_issue['severity'] ) {
+								++$aisales_warning_count;
 							}
 						}
 					}
 
 					// Get human-readable filter label for the "not scanned" message.
-					$filter_labels = array(
+					$aisales_filter_labels = array(
 						'products'       => __( 'Products', 'ai-sales-manager-for-woocommerce' ),
 						'categories'     => __( 'Categories', 'ai-sales-manager-for-woocommerce' ),
 						'pages'          => __( 'Pages', 'ai-sales-manager-for-woocommerce' ),
@@ -293,28 +293,28 @@ $categories = array(
 						'store_settings' => __( 'All', 'ai-sales-manager-for-woocommerce' ),
 						'homepage'       => __( 'All', 'ai-sales-manager-for-woocommerce' ),
 					);
-					$filter_label = isset( $filter_labels[ $key ] ) ? $filter_labels[ $key ] : __( 'All', 'ai-sales-manager-for-woocommerce' );
+					$aisales_filter_label = isset( $aisales_filter_labels[ $aisales_key ] ) ? $aisales_filter_labels[ $aisales_key ] : __( 'All', 'ai-sales-manager-for-woocommerce' );
 					?>
-					<div class="aisales-seo-accordion" data-category="<?php echo esc_attr( $key ); ?>">
+					<div class="aisales-seo-accordion" data-category="<?php echo esc_attr( $aisales_key ); ?>">
 						<button type="button" class="aisales-seo-accordion__header" aria-expanded="false">
 							<span class="aisales-seo-accordion__icon">
-								<span class="dashicons <?php echo esc_attr( $category['icon'] ); ?>"></span>
+								<span class="dashicons <?php echo esc_attr( $aisales_category['icon'] ); ?>"></span>
 							</span>
-							<span class="aisales-seo-accordion__title"><?php echo esc_html( $category['label'] ); ?></span>
-							<?php if ( $was_scanned ) : ?>
-								<span class="aisales-seo-accordion__score <?php echo esc_attr( $score_class ); ?>"><?php echo esc_html( $cat_score ); ?>/100</span>
+							<span class="aisales-seo-accordion__title"><?php echo esc_html( $aisales_category['label'] ); ?></span>
+							<?php if ( $aisales_was_scanned ) : ?>
+								<span class="aisales-seo-accordion__score <?php echo esc_attr( $aisales_score_class ); ?>"><?php echo esc_html( $aisales_cat_score ); ?>/100</span>
 							<?php else : ?>
 								<span class="aisales-seo-accordion__score aisales-seo-score--not-scanned">—</span>
 							<?php endif; ?>
-							<?php if ( $was_scanned ) : ?>
-								<?php if ( $critical_count > 0 ) : ?>
+							<?php if ( $aisales_was_scanned ) : ?>
+								<?php if ( $aisales_critical_count > 0 ) : ?>
 									<span class="aisales-seo-accordion__badge aisales-seo-accordion__badge--critical">
-										<?php echo esc_html( $critical_count ); ?> <?php esc_html_e( 'critical', 'ai-sales-manager-for-woocommerce' ); ?>
+										<?php echo esc_html( $aisales_critical_count ); ?> <?php esc_html_e( 'critical', 'ai-sales-manager-for-woocommerce' ); ?>
 									</span>
 								<?php endif; ?>
-								<?php if ( $warning_count > 0 ) : ?>
+								<?php if ( $aisales_warning_count > 0 ) : ?>
 									<span class="aisales-seo-accordion__badge aisales-seo-accordion__badge--warning">
-										<?php echo esc_html( $warning_count ); ?> <?php esc_html_e( 'warnings', 'ai-sales-manager-for-woocommerce' ); ?>
+										<?php echo esc_html( $aisales_warning_count ); ?> <?php esc_html_e( 'warnings', 'ai-sales-manager-for-woocommerce' ); ?>
 									</span>
 								<?php endif; ?>
 							<?php else : ?>
@@ -327,7 +327,7 @@ $categories = array(
 							</span>
 						</button>
 						<div class="aisales-seo-accordion__content" style="display: none;">
-							<?php if ( ! $was_scanned ) : ?>
+							<?php if ( ! $aisales_was_scanned ) : ?>
 								<div class="aisales-seo-accordion__not-scanned">
 									<span class="dashicons dashicons-info-outline"></span>
 									<span>
@@ -335,22 +335,22 @@ $categories = array(
 										printf(
 											/* translators: %s: filter label */
 											esc_html__( 'This category hasn\'t been scanned yet. Click "Run Scan" with the filter set to "All" or "%s" to analyze it.', 'ai-sales-manager-for-woocommerce' ),
-											esc_html( $filter_label )
+											esc_html( $aisales_filter_label )
 										);
 										?>
 									</span>
 								</div>
-							<?php elseif ( empty( $cat_issues ) ) : ?>
+							<?php elseif ( empty( $aisales_cat_issues ) ) : ?>
 								<div class="aisales-seo-accordion__empty">
 									<span class="dashicons dashicons-yes-alt"></span>
 									<?php esc_html_e( 'No issues found. Great job!', 'ai-sales-manager-for-woocommerce' ); ?>
 								</div>
 							<?php else : ?>
 								<!-- Bulk Fix Button -->
-								<?php if ( $critical_count + $warning_count > 1 ) : ?>
+								<?php if ( $aisales_critical_count + $aisales_warning_count > 1 ) : ?>
 									<div class="aisales-seo-accordion__bulk-actions">
 										<button type="button" class="aisales-btn aisales-btn--ghost aisales-btn--sm aisales-seo-bulk-fix-btn"
-											data-category="<?php echo esc_attr( $key ); ?>">
+											data-category="<?php echo esc_attr( $aisales_key ); ?>">
 											<span class="dashicons dashicons-admin-customizer"></span>
 											<?php esc_html_e( 'AI Fix All', 'ai-sales-manager-for-woocommerce' ); ?>
 										</button>
@@ -359,29 +359,29 @@ $categories = array(
 
 								<!-- Issues List -->
 								<div class="aisales-seo-issues-list">
-									<?php foreach ( $cat_issues as $issue ) : ?>
-										<div class="aisales-seo-issue <?php echo esc_attr( 'aisales-seo-issue--' . ( $issue['severity'] ?? 'warning' ) ); ?>"
-											data-issue-id="<?php echo esc_attr( $issue['id'] ?? '' ); ?>"
-											data-item-type="<?php echo esc_attr( $issue['item_type'] ?? '' ); ?>"
-											data-item-id="<?php echo esc_attr( $issue['item_id'] ?? '' ); ?>">
+									<?php foreach ( $aisales_cat_issues as $aisales_issue ) : ?>
+										<div class="aisales-seo-issue <?php echo esc_attr( 'aisales-seo-issue--' . ( $aisales_issue['severity'] ?? 'warning' ) ); ?>"
+											data-issue-id="<?php echo esc_attr( $aisales_issue['id'] ?? '' ); ?>"
+											data-item-type="<?php echo esc_attr( $aisales_issue['item_type'] ?? '' ); ?>"
+											data-item-id="<?php echo esc_attr( $aisales_issue['item_id'] ?? '' ); ?>">
 											<div class="aisales-seo-issue__indicator">
-												<span class="dashicons <?php echo 'critical' === ( $issue['severity'] ?? 'warning' ) ? 'dashicons-warning' : 'dashicons-info'; ?>"></span>
+												<span class="dashicons <?php echo 'critical' === ( $aisales_issue['severity'] ?? 'warning' ) ? 'dashicons-warning' : 'dashicons-info'; ?>"></span>
 											</div>
 											<div class="aisales-seo-issue__content">
-												<span class="aisales-seo-issue__title"><?php echo esc_html( $issue['title'] ?? '' ); ?></span>
-												<span class="aisales-seo-issue__item-name"><?php echo esc_html( $issue['item_name'] ?? '' ); ?></span>
-												<span class="aisales-seo-issue__description"><?php echo esc_html( $issue['description'] ?? '' ); ?></span>
+												<span class="aisales-seo-issue__title"><?php echo esc_html( $aisales_issue['title'] ?? '' ); ?></span>
+												<span class="aisales-seo-issue__item-name"><?php echo esc_html( $aisales_issue['item_name'] ?? '' ); ?></span>
+												<span class="aisales-seo-issue__description"><?php echo esc_html( $aisales_issue['description'] ?? '' ); ?></span>
 											</div>
 											<div class="aisales-seo-issue__actions">
-												<?php if ( ! empty( $issue['fixable'] ) ) : ?>
+												<?php if ( ! empty( $aisales_issue['fixable'] ) ) : ?>
 													<button type="button" class="aisales-btn aisales-btn--pill aisales-btn--sm aisales-seo-fix-btn"
-														data-issue="<?php echo esc_attr( wp_json_encode( $issue ) ); ?>">
+														data-issue="<?php echo esc_attr( wp_json_encode( $aisales_issue ) ); ?>">
 														<span class="dashicons dashicons-admin-customizer"></span>
 														<?php esc_html_e( 'AI Fix', 'ai-sales-manager-for-woocommerce' ); ?>
 													</button>
 												<?php endif; ?>
-												<?php if ( ! empty( $issue['edit_url'] ) ) : ?>
-													<a href="<?php echo esc_url( $issue['edit_url'] ); ?>" class="aisales-btn aisales-btn--ghost aisales-btn--sm" target="_blank">
+												<?php if ( ! empty( $aisales_issue['edit_url'] ) ) : ?>
+													<a href="<?php echo esc_url( $aisales_issue['edit_url'] ); ?>" class="aisales-btn aisales-btn--ghost aisales-btn--sm" target="_blank">
 														<span class="dashicons dashicons-edit"></span>
 														<?php esc_html_e( 'Edit', 'ai-sales-manager-for-woocommerce' ); ?>
 													</a>

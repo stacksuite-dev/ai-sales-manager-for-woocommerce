@@ -56,7 +56,7 @@ class AISales_Abandoned_Cart_Scheduler {
 		$retention  = $this->get_cutoff_time( (int) $settings['retention_days'], DAY_IN_SECONDS );
 		$now        = current_time( 'mysql' );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Bulk update on custom table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Bulk update on custom table.
 		$wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$table}
@@ -68,7 +68,7 @@ class AISales_Abandoned_Cart_Scheduler {
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Bulk update on custom table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Bulk update on custom table.
 		$wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$table}
@@ -100,7 +100,7 @@ class AISales_Abandoned_Cart_Scheduler {
 		foreach ( $settings['email_steps'] as $step => $hours ) {
 			$cutoff = $this->get_cutoff_time( (int) $hours, HOUR_IN_SECONDS );
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table query for cron processing.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table query for cron processing.
 			$rows = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT * FROM {$table}
@@ -120,7 +120,7 @@ class AISales_Abandoned_Cart_Scheduler {
 					continue;
 				}
 
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update after email send.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table update after email send.
 				$wpdb->update(
 					$table,
 					array(

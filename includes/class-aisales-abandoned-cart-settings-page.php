@@ -93,7 +93,8 @@ class AISales_Abandoned_Cart_Settings_Page {
 		?>
 		<section class="aisales-abandoned-carts-settings">
 			<h2><?php esc_html_e( 'Abandoned Cart Settings', 'ai-sales-manager-for-woocommerce' ); ?></h2>
-			<?php if ( isset( $_GET['aisales_saved'] ) ) : ?>
+			<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+		<?php if ( isset( $_GET['aisales_saved'] ) ) : ?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Settings saved.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 				</div>

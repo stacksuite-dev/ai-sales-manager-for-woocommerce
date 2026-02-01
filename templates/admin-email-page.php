@@ -104,35 +104,35 @@ defined( 'ABSPATH' ) || exit;
 
 				<!-- Templates List -->
 				<div class="aisales-email-templates">
-					<?php foreach ( $aisales_grouped_templates as $category_key => $category ) : ?>
+					<?php foreach ( $aisales_grouped_templates as $aisales_category_key => $aisales_category ) : ?>
 						<div class="aisales-email-category">
 							<div class="aisales-email-category__header">
-								<span class="dashicons <?php echo esc_attr( $category['icon'] ); ?>"></span>
-								<h2><?php echo esc_html( $category['label'] ); ?></h2>
+								<span class="dashicons <?php echo esc_attr( $aisales_category['icon'] ); ?>"></span>
+								<h2><?php echo esc_html( $aisales_category['label'] ); ?></h2>
 							</div>
 							<div class="aisales-email-category__list">
-								<?php foreach ( $category['templates'] as $type => $template_data ) : ?>
-									<div class="aisales-email-template-card" data-template-type="<?php echo esc_attr( $type ); ?>">
+								<?php foreach ( $aisales_category['templates'] as $aisales_type => $aisales_template_data ) : ?>
+									<div class="aisales-email-template-card" data-template-type="<?php echo esc_attr( $aisales_type ); ?>">
 										<div class="aisales-email-template-card__icon">
-											<span class="dashicons <?php echo esc_attr( AISales_Email_Page::get_template_icon( $type ) ); ?>"></span>
+											<span class="dashicons <?php echo esc_attr( AISales_Email_Page::get_template_icon( $aisales_type ) ); ?>"></span>
 										</div>
 										<div class="aisales-email-template-card__info">
-											<h3 class="aisales-email-template-card__title"><?php echo esc_html( $template_data['label'] ); ?></h3>
-											<p class="aisales-email-template-card__desc"><?php echo esc_html( $template_data['description'] ); ?></p>
-											<?php if ( $template_data['has_template'] && ! empty( $template_data['template']['subject'] ) ) : ?>
+											<h3 class="aisales-email-template-card__title"><?php echo esc_html( $aisales_template_data['label'] ); ?></h3>
+											<p class="aisales-email-template-card__desc"><?php echo esc_html( $aisales_template_data['description'] ); ?></p>
+											<?php if ( $aisales_template_data['has_template'] && ! empty( $aisales_template_data['template']['subject'] ) ) : ?>
 												<p class="aisales-email-template-card__subject">
 													<span class="dashicons dashicons-email"></span>
-													<?php echo esc_html( $template_data['template']['subject'] ); ?>
+													<?php echo esc_html( $aisales_template_data['template']['subject'] ); ?>
 												</p>
 											<?php endif; ?>
 										</div>
 										<div class="aisales-email-template-card__status">
-											<?php if ( $template_data['is_active'] ) : ?>
+											<?php if ( $aisales_template_data['is_active'] ) : ?>
 												<span class="aisales-status-badge aisales-status-badge--active">
 													<span class="dashicons dashicons-yes-alt"></span>
 													<?php esc_html_e( 'Active', 'ai-sales-manager-for-woocommerce' ); ?>
 												</span>
-											<?php elseif ( $template_data['has_template'] ) : ?>
+											<?php elseif ( $aisales_template_data['has_template'] ) : ?>
 												<span class="aisales-status-badge aisales-status-badge--draft">
 													<span class="dashicons dashicons-edit"></span>
 													<?php esc_html_e( 'Draft', 'ai-sales-manager-for-woocommerce' ); ?>
@@ -145,22 +145,22 @@ defined( 'ABSPATH' ) || exit;
 											<?php endif; ?>
 										</div>
 										<div class="aisales-email-template-card__actions">
-											<?php if ( $template_data['has_template'] ) : ?>
+											<?php if ( $aisales_template_data['has_template'] ) : ?>
 												<button type="button" class="aisales-btn aisales-btn--outline aisales-btn--sm aisales-email-edit-btn" 
-													data-template-type="<?php echo esc_attr( $type ); ?>"
+													data-template-type="<?php echo esc_attr( $aisales_type ); ?>"
 													title="<?php esc_attr_e( 'Edit Template', 'ai-sales-manager-for-woocommerce' ); ?>">
 													<span class="dashicons dashicons-edit"></span>
 													<span class="aisales-btn__text"><?php esc_html_e( 'Edit', 'ai-sales-manager-for-woocommerce' ); ?></span>
 												</button>
-												<label class="aisales-toggle-switch" title="<?php echo $template_data['is_active'] ? esc_attr__( 'Deactivate', 'ai-sales-manager-for-woocommerce' ) : esc_attr__( 'Activate', 'ai-sales-manager-for-woocommerce' ); ?>">
+												<label class="aisales-toggle-switch" title="<?php echo $aisales_template_data['is_active'] ? esc_attr__( 'Deactivate', 'ai-sales-manager-for-woocommerce' ) : esc_attr__( 'Activate', 'ai-sales-manager-for-woocommerce' ); ?>">
 													<input type="checkbox" class="aisales-email-toggle" 
-														data-template-type="<?php echo esc_attr( $type ); ?>" 
-														<?php checked( $template_data['is_active'] ); ?>>
+														data-template-type="<?php echo esc_attr( $aisales_type ); ?>" 
+														<?php checked( $aisales_template_data['is_active'] ); ?>>
 													<span class="aisales-toggle-switch__slider"></span>
 												</label>
 											<?php else : ?>
 												<button type="button" class="aisales-btn aisales-btn--primary aisales-btn--sm aisales-email-generate-btn" 
-													data-template-type="<?php echo esc_attr( $type ); ?>">
+													data-template-type="<?php echo esc_attr( $aisales_type ); ?>">
 													<span class="dashicons dashicons-admin-customizer"></span>
 													<span class="aisales-btn__text"><?php esc_html_e( 'Generate', 'ai-sales-manager-for-woocommerce' ); ?></span>
 												</button>
@@ -304,15 +304,15 @@ defined( 'ABSPATH' ) || exit;
 									<span class="dashicons dashicons-arrow-down-alt2"></span>
 								</button>
 								<div class="aisales-email-placeholders-list" id="aisales-placeholders-list" style="display: none;">
-									<?php foreach ( $aisales_placeholders as $group => $group_placeholders ) : ?>
+									<?php foreach ( $aisales_placeholders as $aisales_group => $aisales_group_placeholders ) : ?>
 										<div class="aisales-placeholder-group">
-											<h4 class="aisales-placeholder-group__title"><?php echo esc_html( ucfirst( $group ) ); ?></h4>
+											<h4 class="aisales-placeholder-group__title"><?php echo esc_html( ucfirst( $aisales_group ) ); ?></h4>
 											<div class="aisales-placeholder-group__items">
-												<?php foreach ( $group_placeholders as $placeholder => $description ) : ?>
+												<?php foreach ( $aisales_group_placeholders as $aisales_placeholder => $aisales_description ) : ?>
 													<button type="button" class="aisales-placeholder-chip" 
-														data-placeholder="<?php echo esc_attr( $placeholder ); ?>" 
-														title="<?php echo esc_attr( $description ); ?>">
-														<?php echo esc_html( $placeholder ); ?>
+														data-placeholder="<?php echo esc_attr( $aisales_placeholder ); ?>" 
+														title="<?php echo esc_attr( $aisales_description ); ?>">
+														<?php echo esc_html( $aisales_placeholder ); ?>
 													</button>
 												<?php endforeach; ?>
 											</div>
@@ -399,13 +399,13 @@ defined( 'ABSPATH' ) || exit;
 
 		<!-- Placeholder Picker Dropdown -->
 		<div class="aisales-placeholder-picker" id="aisales-placeholder-picker" style="display: none;">
-			<?php foreach ( $aisales_placeholders as $group => $group_placeholders ) : ?>
+			<?php foreach ( $aisales_placeholders as $aisales_group => $aisales_group_placeholders ) : ?>
 				<div class="aisales-placeholder-picker__group">
-					<div class="aisales-placeholder-picker__group-title"><?php echo esc_html( ucfirst( $group ) ); ?></div>
-					<?php foreach ( $group_placeholders as $placeholder => $description ) : ?>
-						<button type="button" class="aisales-placeholder-picker__item" data-placeholder="<?php echo esc_attr( $placeholder ); ?>">
-							<code><?php echo esc_html( $placeholder ); ?></code>
-							<span><?php echo esc_html( $description ); ?></span>
+					<div class="aisales-placeholder-picker__group-title"><?php echo esc_html( ucfirst( $aisales_group ) ); ?></div>
+					<?php foreach ( $aisales_group_placeholders as $aisales_placeholder => $aisales_description ) : ?>
+						<button type="button" class="aisales-placeholder-picker__item" data-placeholder="<?php echo esc_attr( $aisales_placeholder ); ?>">
+							<code><?php echo esc_html( $aisales_placeholder ); ?></code>
+							<span><?php echo esc_html( $aisales_description ); ?></span>
 						</button>
 					<?php endforeach; ?>
 				</div>

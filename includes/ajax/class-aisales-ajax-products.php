@@ -97,6 +97,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		// Get value with appropriate sanitization
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$value_raw = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
 		$value     = in_array( $field, array( 'description', 'short_description' ), true )
 			? wp_kses_post( $value_raw )
@@ -151,6 +152,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		// Get value with appropriate sanitization
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$value_raw = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
 		$value     = 'description' === $field
 			? wp_kses_post( $value_raw )

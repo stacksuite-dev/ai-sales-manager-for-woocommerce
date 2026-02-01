@@ -263,11 +263,11 @@ class AISales_Abandoned_Cart_Report_Page {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
 		$abandoned = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'abandoned'" );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
 		$recovered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'recovered'" );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table with transient cache above.
 		$revenue   = (float) $wpdb->get_var( "SELECT SUM(total) FROM {$table} WHERE status = 'recovered'" );
 
 		$rate = $abandoned + $recovered > 0
@@ -295,7 +295,7 @@ class AISales_Abandoned_Cart_Report_Page {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, not cacheable (recent carts list).
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table, not cacheable (recent carts list).
 		$rows = $wpdb->get_results(
 			"SELECT email, status, total, currency, last_activity_at
 			, id, cart_items, order_id, user_id

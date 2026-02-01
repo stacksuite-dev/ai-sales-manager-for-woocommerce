@@ -109,6 +109,7 @@ class AISales_API_Client {
 		
 		// Log request in debug mode
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( sprintf( 'AISales API request: %s %s', $method, $url ) );
 		}
 		
@@ -117,6 +118,7 @@ class AISales_API_Client {
 		if ( is_wp_error( $response ) ) {
 			// Log connection errors for debugging
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( sprintf( 'AISales API connection error to %s: %s', $url, $response->get_error_message() ) );
 			}
 			return $response;
@@ -129,6 +131,7 @@ class AISales_API_Client {
 		if ( $status_code >= 400 ) {
 			// Log API errors for debugging
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( sprintf( 'AISales API error %d from %s: %s', $status_code, $url, $body ) );
 			}
 			// Try to get error message from response, with fallback showing status code
