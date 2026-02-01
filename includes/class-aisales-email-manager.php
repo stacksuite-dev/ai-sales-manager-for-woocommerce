@@ -593,7 +593,7 @@ class AISales_Email_Manager {
 					<tr>
 						<td style="padding:12px;border-bottom:1px solid #eee;"><?php echo esc_html( $item->get_name() ); ?></td>
 						<td style="padding:12px;text-align:center;border-bottom:1px solid #eee;"><?php echo esc_html( $item->get_quantity() ); ?></td>
-						<td style="padding:12px;text-align:right;border-bottom:1px solid #eee;"><?php echo wc_price( $item->get_total() ); ?></td>
+						<td style="padding:12px;text-align:right;border-bottom:1px solid #eee;"><?php echo wp_kses_post( wc_price( $item->get_total() ) ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

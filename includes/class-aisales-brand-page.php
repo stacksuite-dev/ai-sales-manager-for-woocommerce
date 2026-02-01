@@ -380,23 +380,23 @@ class AISales_Brand_Page {
 	 */
 	public function render_page() {
 		// Check if connected.
-		$api_key = get_option( 'aisales_api_key' );
-		$balance = get_option( 'aisales_balance', 0 );
+		$aisales_api_key = get_option( 'aisales_api_key' );
+		$aisales_balance = get_option( 'aisales_balance', 0 );
 
 		// Get store context.
-		$store_context = get_option( 'aisales_store_context', array() );
-		$has_setup     = $this->has_brand_settings();
+		$aisales_store_context = get_option( 'aisales_store_context', array() );
+		$aisales_has_setup     = $this->has_brand_settings();
 
 		// Get detected branding.
-		$branding_extractor = AISales_Branding_Extractor::instance();
-		$detected_branding  = $branding_extractor->get_branding();
+		$branding_extractor        = AISales_Branding_Extractor::instance();
+		$aisales_detected_branding = $branding_extractor->get_branding();
 
 		// Get options for the form.
-		$industries       = $this->get_industries();
-		$tones            = $this->get_brand_tones();
-		$price_positions  = $this->get_price_positions();
-		$promotion_styles = $this->get_promotion_styles();
-		$safe_fonts       = $branding_extractor->get_safe_fonts();
+		$aisales_industries       = $this->get_industries();
+		$aisales_tones            = $this->get_brand_tones();
+		$aisales_price_positions  = $this->get_price_positions();
+		$aisales_promotion_styles = $this->get_promotion_styles();
+		$aisales_safe_fonts       = $branding_extractor->get_safe_fonts();
 
 		// Include the template.
 		include AISALES_PLUGIN_DIR . 'templates/admin-brand-page.php';

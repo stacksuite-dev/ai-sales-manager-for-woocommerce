@@ -108,7 +108,7 @@ class AISales_Mail_Provider_Page {
 	 * Render the page.
 	 */
 	public function render_page() {
-		$settings = AISales_Mail_Provider::instance()->get_settings();
+		$aisales_settings = AISales_Mail_Provider::instance()->get_settings();
 		include AISALES_PLUGIN_DIR . 'templates/admin-mail-provider-page.php';
 	}
 

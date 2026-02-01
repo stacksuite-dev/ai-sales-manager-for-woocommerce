@@ -143,12 +143,12 @@ class AISales_Widget_Injector {
 		$settings = $this->get_settings();
 		add_action( 'wp_footer', function() use ( $settings ) {
 			echo "\n<!-- AISALES DEBUG:\n";
-			echo 'enabled_widgets: ' . print_r( isset( $settings['enabled_widgets'] ) ? $settings['enabled_widgets'] : 'NOT SET', true ) . "\n";
-			echo 'widget_positions: ' . print_r( isset( $settings['widget_positions'] ) ? $settings['widget_positions'] : 'NOT SET', true ) . "\n";
+			echo 'enabled_widgets: ' . esc_html( print_r( isset( $settings['enabled_widgets'] ) ? $settings['enabled_widgets'] : 'NOT SET', true ) ) . "\n";
+			echo 'widget_positions: ' . esc_html( print_r( isset( $settings['widget_positions'] ) ? $settings['widget_positions'] : 'NOT SET', true ) ) . "\n";
 			global $product;
 			if ( $product ) {
-				echo 'product_id: ' . $product->get_id() . "\n";
-				echo 'total_sales: ' . $product->get_total_sales() . "\n";
+				echo 'product_id: ' . esc_html( $product->get_id() ) . "\n";
+				echo 'total_sales: ' . esc_html( $product->get_total_sales() ) . "\n";
 			}
 			echo "-->\n";
 		} );

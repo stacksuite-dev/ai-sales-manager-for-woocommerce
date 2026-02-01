@@ -88,7 +88,7 @@ This plugin is specifically designed for WooCommerce stores. It integrates with 
 
 == External Services ==
 
-This plugin connects to the AI Sales Manager SaaS platform (https://woo-ai-worker.simplebuild.site) for:
+This plugin connects to the AI Sales Manager SaaS platform (https://ai-sales-manager-for-woocommerce.store) for:
 
 * AI content generation and processing
 * Token balance and account management

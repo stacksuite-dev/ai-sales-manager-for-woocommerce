@@ -138,8 +138,10 @@ class AISales_API_Client {
 			} elseif ( isset( $data['error'] ) ) {
 				$error_message = $data['error'];
 			} elseif ( ! empty( $body ) && strlen( $body ) < 200 ) {
-				$error_message = sprintf( __( 'API error %d: %s', 'ai-sales-manager-for-woocommerce' ), $status_code, $body );
+				/* translators: %1$d: HTTP status code, %2$s: error message */
+				$error_message = sprintf( __( 'API error %1$d: %2$s', 'ai-sales-manager-for-woocommerce' ), $status_code, $body );
 			} else {
+				/* translators: %d: HTTP status code */
 				$error_message = sprintf( __( 'API error %d', 'ai-sales-manager-for-woocommerce' ), $status_code );
 			}
 			return new WP_Error( 'api_error', $error_message, array( 'status' => $status_code, 'body' => $body ) );

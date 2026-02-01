@@ -6,12 +6,12 @@
  * Replaces the slide-out panel with a full-page experience.
  *
  * Variables passed from AISales_Email_Page::render_page():
- * - $api_key (string) - API key for the service
+ * - $aisales_api_key (string) - API key for the service
  * - $balance (int) - Current token balance
  * - $templates (array) - Templates overview data
- * - $placeholders (array) - Available placeholders grouped by category
- * - $grouped_templates (array) - Templates grouped by category
- * - $stats (array) - Template statistics (active, draft, not_created, total)
+ * - $aisales_placeholders (array) - Available placeholders grouped by category
+ * - $aisales_grouped_templates (array) - Templates grouped by category
+ * - $aisales_stats (array) - Template statistics (active, draft, not_created, total)
  *
  * @package AISales_Sales_Manager
  */
@@ -37,7 +37,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</header>
 
-	<?php if ( empty( $api_key ) ) : ?>
+	<?php if ( empty( $aisales_api_key ) ) : ?>
 		<!-- Not Connected State -->
 		<div class="aisales-email-page__not-connected">
 			<div class="aisales-empty-state">
@@ -56,7 +56,7 @@ defined( 'ABSPATH' ) || exit;
 			<button type="button" class="aisales-email-tab aisales-email-tab--active" data-tab="templates">
 				<span class="dashicons dashicons-email-alt"></span>
 				<span class="aisales-email-tab__text"><?php esc_html_e( 'Templates', 'ai-sales-manager-for-woocommerce' ); ?></span>
-				<span class="aisales-email-tab__count"><?php echo esc_html( $stats['total'] ); ?></span>
+				<span class="aisales-email-tab__count"><?php echo esc_html( $aisales_stats['total'] ); ?></span>
 			</button>
 			<button type="button" class="aisales-email-tab" data-tab="settings">
 				<span class="dashicons dashicons-admin-generic"></span>
@@ -75,17 +75,17 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-email-stats">
 					<div class="aisales-email-stat aisales-email-stat--active">
 						<span class="aisales-email-stat__icon"></span>
-						<span class="aisales-email-stat__count"><?php echo esc_html( $stats['active'] ); ?></span>
+						<span class="aisales-email-stat__count"><?php echo esc_html( $aisales_stats['active'] ); ?></span>
 						<span class="aisales-email-stat__label"><?php esc_html_e( 'Active', 'ai-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-email-stat aisales-email-stat--draft">
 						<span class="aisales-email-stat__icon"></span>
-						<span class="aisales-email-stat__count"><?php echo esc_html( $stats['draft'] ); ?></span>
+						<span class="aisales-email-stat__count"><?php echo esc_html( $aisales_stats['draft'] ); ?></span>
 						<span class="aisales-email-stat__label"><?php esc_html_e( 'Draft', 'ai-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-email-stat aisales-email-stat--none">
 						<span class="aisales-email-stat__icon"></span>
-						<span class="aisales-email-stat__count"><?php echo esc_html( $stats['not_created'] ); ?></span>
+						<span class="aisales-email-stat__count"><?php echo esc_html( $aisales_stats['not_created'] ); ?></span>
 						<span class="aisales-email-stat__label"><?php esc_html_e( 'Not Created', 'ai-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 				</div>
@@ -95,7 +95,7 @@ defined( 'ABSPATH' ) || exit;
 						<span class="dashicons dashicons-admin-customizer"></span>
 						<?php esc_html_e( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ); ?>
 					</button>
-					<button type="button" class="aisales-btn aisales-btn--pill" id="aisales-generate-all-btn" <?php echo $stats['not_created'] === 0 ? 'disabled' : ''; ?>>
+					<button type="button" class="aisales-btn aisales-btn--pill" id="aisales-generate-all-btn" <?php echo $aisales_stats['not_created'] === 0 ? 'disabled' : ''; ?>>
 						<span class="dashicons dashicons-controls-repeat"></span>
 						<?php esc_html_e( 'Generate All Missing', 'ai-sales-manager-for-woocommerce' ); ?>
 					</button>
@@ -104,7 +104,7 @@ defined( 'ABSPATH' ) || exit;
 
 				<!-- Templates List -->
 				<div class="aisales-email-templates">
-					<?php foreach ( $grouped_templates as $category_key => $category ) : ?>
+					<?php foreach ( $aisales_grouped_templates as $category_key => $category ) : ?>
 						<div class="aisales-email-category">
 							<div class="aisales-email-category__header">
 								<span class="dashicons <?php echo esc_attr( $category['icon'] ); ?>"></span>
@@ -304,7 +304,7 @@ defined( 'ABSPATH' ) || exit;
 									<span class="dashicons dashicons-arrow-down-alt2"></span>
 								</button>
 								<div class="aisales-email-placeholders-list" id="aisales-placeholders-list" style="display: none;">
-									<?php foreach ( $placeholders as $group => $group_placeholders ) : ?>
+									<?php foreach ( $aisales_placeholders as $group => $group_placeholders ) : ?>
 										<div class="aisales-placeholder-group">
 											<h4 class="aisales-placeholder-group__title"><?php echo esc_html( ucfirst( $group ) ); ?></h4>
 											<div class="aisales-placeholder-group__items">
@@ -399,7 +399,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<!-- Placeholder Picker Dropdown -->
 		<div class="aisales-placeholder-picker" id="aisales-placeholder-picker" style="display: none;">
-			<?php foreach ( $placeholders as $group => $group_placeholders ) : ?>
+			<?php foreach ( $aisales_placeholders as $group => $group_placeholders ) : ?>
 				<div class="aisales-placeholder-picker__group">
 					<div class="aisales-placeholder-picker__group-title"><?php echo esc_html( ucfirst( $group ) ); ?></div>
 					<?php foreach ( $group_placeholders as $placeholder => $description ) : ?>
@@ -416,7 +416,7 @@ defined( 'ABSPATH' ) || exit;
 		<!-- Tab Panel: Settings -->
 		<div class="aisales-email-tab-panel" data-tab-panel="settings">
 			<?php
-			$mail_settings = AISales_Mail_Provider::instance()->get_settings();
+			$aisales_mail_settings = AISales_Mail_Provider::instance()->get_settings();
 			include AISALES_PLUGIN_DIR . 'templates/partials/email-settings-panel.php';
 			?>
 		</div><!-- /.aisales-email-tab-panel[settings] -->

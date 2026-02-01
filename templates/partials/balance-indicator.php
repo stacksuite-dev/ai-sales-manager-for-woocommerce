@@ -7,15 +7,18 @@
  * low balance warning state when balance < 1000.
  *
  * Expected variable:
- * - $balance (int) - Current token balance
+ * - $aisales_balance (int) - Current token balance (prefixed)
+ * - $balance (int) - Legacy fallback for unprefixed templates
  *
  * @package AISales_Sales_Manager
  */
 
 defined( 'ABSPATH' ) || exit;
 
-// Get balance from parent template or default to 0.
-$aisales_balance = isset( $balance ) ? (int) $balance : 0;
+// Get balance from parent template (prefixed or legacy) or default to 0.
+if ( ! isset( $aisales_balance ) ) {
+	$aisales_balance = isset( $balance ) ? (int) $balance : 0;
+}
 ?>
 <span class="aisales-balance-indicator">
 	<span class="dashicons dashicons-money-alt"></span>

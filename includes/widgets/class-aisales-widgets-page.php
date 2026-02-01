@@ -1943,8 +1943,8 @@ class AISales_Widgets_Page {
 	 * Render the page
 	 */
 	public function render_page() {
-		$settings   = $this->get_settings();
-		$categories = $this->get_categories();
+		$aisales_settings   = $this->get_settings();
+		$aisales_categories = $this->get_categories();
 
 		include AISALES_PLUGIN_DIR . 'templates/admin-widgets-page.php';
 	}

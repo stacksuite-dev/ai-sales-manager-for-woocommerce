@@ -11,17 +11,17 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Variables passed from parent:
- * - $api: AISales_API_Client instance
- * - $account: Account data array
- * - $balance: Current token balance
+ * - $aisales_api: AISales_API_Client instance
+ * - $aisales_account: Account data array
+ * - $aisales_balance: Current token balance
  */
 
 // Get auto top-up settings.
-$auto_topup = $api->get_auto_topup_settings();
-$has_auto_topup_error = is_wp_error( $auto_topup );
+$aisales_auto_topup = $aisales_api->get_auto_topup_settings();
+$aisales_has_auto_topup_error = is_wp_error( $aisales_auto_topup );
 
-if ( $has_auto_topup_error ) {
-	$auto_topup = array(
+if ( $aisales_has_auto_topup_error ) {
+	$aisales_auto_topup = array(
 		'enabled'           => false,
 		'threshold'         => 1000,
 		'productSlug'       => 'standard_plan',
@@ -31,21 +31,21 @@ if ( $has_auto_topup_error ) {
 }
 
 // Get payment method details.
-$payment_method = $api->get_payment_method();
-$has_payment_method = ! is_wp_error( $payment_method ) && ! empty( $payment_method['payment_method'] );
-$card_details = $has_payment_method ? $payment_method['payment_method'] : null;
+$aisales_payment_method = $aisales_api->get_payment_method();
+$aisales_has_payment_method = ! is_wp_error( $aisales_payment_method ) && ! empty( $aisales_payment_method['payment_method'] );
+$aisales_card_details = $aisales_has_payment_method ? $aisales_payment_method['payment_method'] : null;
 
 // Get purchases.
-$purchases = $api->get_purchases( 10, 0 );
-$has_purchases_error = is_wp_error( $purchases );
-$purchase_list = ! $has_purchases_error && isset( $purchases['purchases'] ) ? $purchases['purchases'] : array();
+$aisales_purchases = $aisales_api->get_purchases( 10, 0 );
+$aisales_has_purchases_error = is_wp_error( $aisales_purchases );
+$aisales_purchase_list = ! $aisales_has_purchases_error && isset( $aisales_purchases['purchases'] ) ? $aisales_purchases['purchases'] : array();
 
 // Get available plans for dropdown.
-$plans = $api->get_plans();
-$plan_list = ! is_wp_error( $plans ) && isset( $plans['plans'] ) ? $plans['plans'] : array();
+$aisales_plans = $aisales_api->get_plans();
+$aisales_plan_list = ! is_wp_error( $aisales_plans ) && isset( $aisales_plans['plans'] ) ? $aisales_plans['plans'] : array();
 
 // Threshold options.
-$threshold_options = array(
+$aisales_threshold_options = array(
 	500   => __( '500 tokens', 'ai-sales-manager-for-woocommerce' ),
 	1000  => __( '1,000 tokens', 'ai-sales-manager-for-woocommerce' ),
 	2000  => __( '2,000 tokens', 'ai-sales-manager-for-woocommerce' ),
@@ -53,32 +53,32 @@ $threshold_options = array(
 );
 
 // Calculate cooldown status.
-$cooldown_active = false;
-$cooldown_minutes = 0;
-if ( ! empty( $auto_topup['lastTopupAt'] ) ) {
-	$last_topup = strtotime( $auto_topup['lastTopupAt'] );
-	$cooldown_end = $last_topup + HOUR_IN_SECONDS;
-	$now = time();
-	if ( $now < $cooldown_end ) {
-		$cooldown_active = true;
-		$cooldown_minutes = ceil( ( $cooldown_end - $now ) / MINUTE_IN_SECONDS );
+$aisales_cooldown_active = false;
+$aisales_cooldown_minutes = 0;
+if ( ! empty( $aisales_auto_topup['lastTopupAt'] ) ) {
+	$aisales_last_topup = strtotime( $aisales_auto_topup['lastTopupAt'] );
+	$aisales_cooldown_end = $aisales_last_topup + HOUR_IN_SECONDS;
+	$aisales_now = time();
+	if ( $aisales_now < $aisales_cooldown_end ) {
+		$aisales_cooldown_active = true;
+		$aisales_cooldown_minutes = ceil( ( $aisales_cooldown_end - $aisales_now ) / MINUTE_IN_SECONDS );
 	}
 }
 
 // Calculate purchase summary.
-$total_purchased = 0;
-$total_spent = 0;
-$auto_topup_count = 0;
-$manual_count = 0;
+$aisales_total_purchased = 0;
+$aisales_total_spent = 0;
+$aisales_auto_topup_count = 0;
+$aisales_manual_count = 0;
 
-if ( ! empty( $purchase_list ) ) {
-	foreach ( $purchase_list as $purchase ) {
-		$total_purchased += $purchase['amount_tokens'];
-		$total_spent += $purchase['amount_usd'];
+if ( ! empty( $aisales_purchase_list ) ) {
+	foreach ( $aisales_purchase_list as $purchase ) {
+		$aisales_total_purchased += $purchase['amount_tokens'];
+		$aisales_total_spent += $purchase['amount_usd'];
 		if ( 'auto_topup' === $purchase['type'] ) {
-			$auto_topup_count++;
+			$aisales_auto_topup_count++;
 		} else {
-			$manual_count++;
+			$aisales_manual_count++;
 		}
 	}
 }
@@ -92,21 +92,21 @@ if ( ! empty( $purchase_list ) ) {
 			<div class="aisales-stat-card__icon">
 				<span class="dashicons dashicons-database"></span>
 			</div>
-			<span class="aisales-stat-card__value"><?php echo esc_html( number_format( $balance ) ); ?></span>
+			<span class="aisales-stat-card__value"><?php echo esc_html( number_format( $aisales_balance ) ); ?></span>
 			<span class="aisales-stat-card__label"><?php esc_html_e( 'Current Balance', 'ai-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-stat-card aisales-stat-card--purchased">
 			<div class="aisales-stat-card__icon">
 				<span class="dashicons dashicons-plus-alt"></span>
 			</div>
-			<span class="aisales-stat-card__value"><?php echo esc_html( number_format( $total_purchased ) ); ?></span>
+			<span class="aisales-stat-card__value"><?php echo esc_html( number_format( $aisales_total_purchased ) ); ?></span>
 			<span class="aisales-stat-card__label"><?php esc_html_e( 'Tokens Purchased', 'ai-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-stat-card aisales-stat-card--spent">
 			<div class="aisales-stat-card__icon">
 				<span class="dashicons dashicons-money-alt"></span>
 			</div>
-			<span class="aisales-stat-card__value">$<?php echo esc_html( number_format( $total_spent / 100, 2 ) ); ?></span>
+			<span class="aisales-stat-card__value">$<?php echo esc_html( number_format( $aisales_total_spent / 100, 2 ) ); ?></span>
 			<span class="aisales-stat-card__label"><?php esc_html_e( 'Total Spent', 'ai-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-stat-card aisales-stat-card--autotopup-status">
@@ -114,7 +114,7 @@ if ( ! empty( $purchase_list ) ) {
 				<span class="dashicons dashicons-update"></span>
 			</div>
 			<span class="aisales-stat-card__value">
-				<?php if ( $auto_topup['enabled'] ) : ?>
+				<?php if ( $aisales_auto_topup['enabled'] ) : ?>
 					<?php esc_html_e( 'ON', 'ai-sales-manager-for-woocommerce' ); ?>
 				<?php else : ?>
 					<?php esc_html_e( 'OFF', 'ai-sales-manager-for-woocommerce' ); ?>
@@ -125,16 +125,13 @@ if ( ! empty( $purchase_list ) ) {
 	</div>
 
 	<!-- Recent Auto Top-Up Notice -->
-	<?php if ( $cooldown_active ) : ?>
+	<?php if ( $aisales_cooldown_active ) : ?>
 		<div class="aisales-alert aisales-alert--info aisales-mb-5">
 			<span class="dashicons dashicons-clock"></span>
 			<div class="aisales-alert__content">
 				<?php
 				/* translators: %d: minutes remaining */
-				printf(
-					esc_html__( 'Auto top-up recently triggered. Next auto top-up available in %d minutes.', 'ai-sales-manager-for-woocommerce' ),
-					$cooldown_minutes
-				);
+				echo esc_html( sprintf( __( 'Auto top-up recently triggered. Next auto top-up available in %d minutes.', 'ai-sales-manager-for-woocommerce' ), $aisales_cooldown_minutes ) );
 				?>
 			</div>
 		</div>
@@ -159,7 +156,7 @@ if ( ! empty( $purchase_list ) ) {
 			<div class="aisales-billing-section">
 				<div class="aisales-billing-section__label"><?php esc_html_e( 'Payment Method', 'ai-sales-manager-for-woocommerce' ); ?></div>
 
-				<?php if ( $has_payment_method && $card_details ) : ?>
+				<?php if ( $aisales_has_payment_method && $aisales_card_details ) : ?>
 					<div class="aisales-payment-method">
 						<div class="aisales-payment-method__card">
 							<div class="aisales-payment-method__icon">
@@ -170,16 +167,12 @@ if ( ! empty( $purchase_list ) ) {
 								</svg>
 							</div>
 							<div class="aisales-payment-method__info">
-								<span class="aisales-payment-method__brand"><?php echo esc_html( ucfirst( $card_details['brand'] ) ); ?></span>
-								<span class="aisales-payment-method__number">&bull;&bull;&bull;&bull; <?php echo esc_html( $card_details['last4'] ); ?></span>
+								<span class="aisales-payment-method__brand"><?php echo esc_html( ucfirst( $aisales_card_details['brand'] ) ); ?></span>
+								<span class="aisales-payment-method__number">&bull;&bull;&bull;&bull; <?php echo esc_html( $aisales_card_details['last4'] ); ?></span>
 								<span class="aisales-payment-method__expiry">
 									<?php
 									/* translators: %1$d: expiry month, %2$d: expiry year */
-									printf(
-										esc_html__( 'Exp %1$02d/%2$d', 'ai-sales-manager-for-woocommerce' ),
-										$card_details['exp_month'],
-										$card_details['exp_year'] % 100
-									);
+									echo esc_html( sprintf( __( 'Exp %1$02d/%2$d', 'ai-sales-manager-for-woocommerce' ), $aisales_card_details['exp_month'], $aisales_card_details['exp_year'] % 100 ) );
 									?>
 								</span>
 							</div>
@@ -221,15 +214,15 @@ if ( ! empty( $purchase_list ) ) {
 						<label class="aisales-toggle">
 							<input type="checkbox" 
 								   id="aisales-autotopup-enabled" 
-								   <?php checked( $auto_topup['enabled'] ); ?>
-								   <?php disabled( ! $has_payment_method ); ?>>
+								   <?php checked( $aisales_auto_topup['enabled'] ); ?>
+								   <?php disabled( ! $aisales_has_payment_method ); ?>>
 							<span class="aisales-toggle__slider"></span>
 						</label>
 						<div class="aisales-autotopup__toggle-label">
 							<span class="aisales-autotopup__toggle-text">
 								<?php esc_html_e( 'Enable automatic refills', 'ai-sales-manager-for-woocommerce' ); ?>
 							</span>
-							<?php if ( ! $has_payment_method ) : ?>
+							<?php if ( ! $aisales_has_payment_method ) : ?>
 								<span class="aisales-autotopup__requires-card">
 									<?php esc_html_e( 'Requires payment method', 'ai-sales-manager-for-woocommerce' ); ?>
 								</span>
@@ -238,14 +231,14 @@ if ( ! empty( $purchase_list ) ) {
 					</div>
 
 					<!-- Settings Row -->
-					<div class="aisales-autotopup__settings <?php echo ( ! $auto_topup['enabled'] || ! $has_payment_method ) ? 'aisales-autotopup__settings--disabled' : ''; ?>" id="aisales-autotopup-options">
+					<div class="aisales-autotopup__settings <?php echo ( ! $aisales_auto_topup['enabled'] || ! $aisales_has_payment_method ) ? 'aisales-autotopup__settings--disabled' : ''; ?>" id="aisales-autotopup-options">
 						<div class="aisales-autotopup__field">
 							<label for="aisales-autotopup-threshold" class="aisales-autotopup__field-label">
 								<?php esc_html_e( 'When balance falls below', 'ai-sales-manager-for-woocommerce' ); ?>
 							</label>
-							<select id="aisales-autotopup-threshold" class="aisales-form-select" <?php disabled( ! $auto_topup['enabled'] || ! $has_payment_method ); ?>>
-								<?php foreach ( $threshold_options as $value => $label ) : ?>
-									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $auto_topup['threshold'], $value ); ?>>
+							<select id="aisales-autotopup-threshold" class="aisales-form-select" <?php disabled( ! $aisales_auto_topup['enabled'] || ! $aisales_has_payment_method ); ?>>
+								<?php foreach ( $aisales_threshold_options as $value => $label ) : ?>
+									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_auto_topup['threshold'], $value ); ?>>
 										<?php echo esc_html( $label ); ?>
 									</option>
 								<?php endforeach; ?>
@@ -255,13 +248,13 @@ if ( ! empty( $purchase_list ) ) {
 							<label for="aisales-autotopup-product" class="aisales-autotopup__field-label">
 								<?php esc_html_e( 'Add this package', 'ai-sales-manager-for-woocommerce' ); ?>
 							</label>
-							<select id="aisales-autotopup-product" class="aisales-form-select" <?php disabled( ! $auto_topup['enabled'] || ! $has_payment_method ); ?>>
-								<?php foreach ( $plan_list as $plan ) : ?>
-									<option value="<?php echo esc_attr( $plan['id'] ); ?>" <?php selected( $auto_topup['productSlug'], $plan['id'] ); ?>>
+							<select id="aisales-autotopup-product" class="aisales-form-select" <?php disabled( ! $aisales_auto_topup['enabled'] || ! $aisales_has_payment_method ); ?>>
+								<?php foreach ( $aisales_plan_list as $plan ) : ?>
+									<option value="<?php echo esc_attr( $plan['id'] ); ?>" <?php selected( $aisales_auto_topup['productSlug'], $plan['id'] ); ?>>
 										<?php echo esc_html( sprintf( '%s tokens - $%s', number_format( $plan['tokens'] ), number_format( $plan['price_usd'], 2 ) ) ); ?>
 									</option>
 								<?php endforeach; ?>
-								<?php if ( empty( $plan_list ) ) : ?>
+								<?php if ( empty( $aisales_plan_list ) ) : ?>
 									<option value="standard_plan" selected>10,000 tokens - $9.00</option>
 								<?php endif; ?>
 							</select>
@@ -303,7 +296,7 @@ if ( ! empty( $purchase_list ) ) {
 			<h2><?php esc_html_e( 'Purchase History', 'ai-sales-manager-for-woocommerce' ); ?></h2>
 		</div>
 
-		<?php if ( ! empty( $purchase_list ) ) : ?>
+		<?php if ( ! empty( $aisales_purchase_list ) ) : ?>
 			<div class="aisales-table-wrapper">
 				<table class="aisales-table-modern">
 					<thead>
@@ -316,7 +309,7 @@ if ( ! empty( $purchase_list ) ) {
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $purchase_list as $purchase ) : ?>
+						<?php foreach ( $aisales_purchase_list as $purchase ) : ?>
 							<tr>
 								<td class="aisales-table__col--date">
 									<span class="aisales-table__date"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $purchase['created_at'] ) ) ); ?></span>

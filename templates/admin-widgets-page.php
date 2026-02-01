@@ -6,23 +6,23 @@
  * Features live previews, shortcode builders, and intuitive controls.
  *
  * Variables passed from AISales_Widgets_Page::render_page():
- * - $settings (array) - Current widget settings
- * - $categories (array) - Widget categories
+ * - $aisales_settings (array) - Current widget settings
+ * - $aisales_categories (array) - Widget categories
  *
  * @package AISales_Sales_Manager
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$widgets_page  = AISales_Widgets_Page::instance();
-$all_widgets   = $widgets_page->get_widgets();
+$aisales_widgets_page  = AISales_Widgets_Page::instance();
+$aisales_all_widgets   = $aisales_widgets_page->get_widgets();
 
 // Count only feature/injectable-type widgets for the active badge.
-$toggleable_widgets = array_filter( $all_widgets, function( $w ) { return in_array( $w['type'], array( 'feature', 'injectable' ), true ); } );
-$enabled_toggleable = array_intersect( array_keys( $toggleable_widgets ), $settings['enabled_widgets'] );
-$enabled_count   = count( $enabled_toggleable );
-$feature_count   = count( $toggleable_widgets );
-$total_count     = count( $all_widgets );
+$aisales_toggleable_widgets = array_filter( $aisales_all_widgets, function( $w ) { return in_array( $w['type'], array( 'feature', 'injectable' ), true ); } );
+$aisales_enabled_toggleable = array_intersect( array_keys( $aisales_toggleable_widgets ), $aisales_settings['enabled_widgets'] );
+$aisales_enabled_count   = count( $aisales_enabled_toggleable );
+$aisales_feature_count   = count( $aisales_toggleable_widgets );
+$aisales_total_count     = count( $aisales_all_widgets );
 ?>
 
 <div class="wrap aisales-admin-wrap aisales-widgets-wrap">
@@ -41,7 +41,7 @@ $total_count     = count( $all_widgets );
 		<div class="aisales-widgets-header__right">
 			<span class="aisales-widgets-active-badge">
 				<span class="dashicons dashicons-yes-alt"></span>
-				<span class="aisales-widgets-active-badge__count" id="aisales-widgets-active-count"><?php echo esc_html( $enabled_count ); ?></span>
+				<span class="aisales-widgets-active-badge__count" id="aisales-widgets-active-count"><?php echo esc_html( $aisales_enabled_count ); ?></span>
 				<?php esc_html_e( 'active', 'ai-sales-manager-for-woocommerce' ); ?>
 			</span>
 		</div>
@@ -52,13 +52,13 @@ $total_count     = count( $all_widgets );
 		<button type="button" class="aisales-widgets-tab aisales-widgets-tab--active" data-category="all">
 			<span class="dashicons dashicons-grid-view"></span>
 			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'All Widgets', 'ai-sales-manager-for-woocommerce' ); ?></span>
-			<span class="aisales-widgets-tab__count"><?php echo esc_html( $total_count ); ?></span>
+			<span class="aisales-widgets-tab__count"><?php echo esc_html( $aisales_total_count ); ?></span>
 		</button>
-		<?php foreach ( $categories as $cat_slug => $cat_data ) : ?>
+		<?php foreach ( $aisales_categories as $cat_slug => $cat_data ) : ?>
 		<button type="button" class="aisales-widgets-tab" data-category="<?php echo esc_attr( $cat_slug ); ?>">
 			<span class="dashicons <?php echo esc_attr( $cat_data['icon'] ); ?>"></span>
 			<span class="aisales-widgets-tab__text"><?php echo esc_html( $cat_data['name'] ); ?></span>
-			<span class="aisales-widgets-tab__count"><?php echo esc_html( count( $widgets_page->get_widgets_by_category( $cat_slug ) ) ); ?></span>
+			<span class="aisales-widgets-tab__count"><?php echo esc_html( count( $aisales_widgets_page->get_widgets_by_category( $cat_slug ) ) ); ?></span>
 		</button>
 		<?php endforeach; ?>
 		<button type="button" class="aisales-widgets-tab" data-category="settings">
@@ -70,8 +70,8 @@ $total_count     = count( $all_widgets );
 	<!-- Widgets Grid -->
 	<div class="aisales-widgets-content">
 		<div class="aisales-widgets-grid" id="widgets-grid">
-		<?php foreach ( $all_widgets as $widget_key => $widget ) : 
-			$is_enabled    = in_array( $widget_key, $settings['enabled_widgets'], true );
+		<?php foreach ( $aisales_all_widgets as $widget_key => $widget ) : 
+			$is_enabled    = in_array( $widget_key, $aisales_settings['enabled_widgets'], true );
 			$is_toggleable = in_array( $widget['type'], array( 'feature', 'injectable' ), true );
 			$is_injectable = 'injectable' === $widget['type'];
 			$card_class    = 'aisales-widget-card';
@@ -81,8 +81,8 @@ $total_count     = count( $all_widgets );
 			}
 			// Get current position for injectable widgets.
 			$current_position = '';
-			if ( $is_injectable && isset( $settings['widget_positions'][ $widget_key ] ) ) {
-				$current_position = $settings['widget_positions'][ $widget_key ];
+			if ( $is_injectable && isset( $aisales_settings['widget_positions'][ $widget_key ] ) ) {
+				$current_position = $aisales_settings['widget_positions'][ $widget_key ];
 			} elseif ( $is_injectable && isset( $widget['default_pos'] ) ) {
 				$current_position = $widget['default_pos'];
 			}
@@ -95,7 +95,7 @@ $total_count     = count( $all_widgets );
 					</div>
 					<div class="aisales-widget-card__info">
 						<h3 class="aisales-widget-card__name"><?php echo esc_html( $widget['name'] ); ?></h3>
-						<span class="aisales-widget-card__category"><?php echo esc_html( $categories[ $widget['category'] ]['name'] ); ?></span>
+						<span class="aisales-widget-card__category"><?php echo esc_html( $aisales_categories[ $widget['category'] ]['name'] ); ?></span>
 					</div>
 					<?php if ( $is_toggleable ) : ?>
 					<label class="aisales-toggle-switch">
@@ -161,7 +161,7 @@ $total_count     = count( $all_widgets );
 						<label class="aisales-field__label"><?php esc_html_e( 'Styling Mode', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-field__options">
 							<label class="aisales-radio-card">
-								<input type="radio" name="styling_mode" value="inherit" <?php checked( $settings['styling_mode'], 'inherit' ); ?>>
+								<input type="radio" name="styling_mode" value="inherit" <?php checked( $aisales_settings['styling_mode'], 'inherit' ); ?>>
 								<div class="aisales-radio-card__content">
 									<span class="dashicons dashicons-admin-customizer"></span>
 									<span class="aisales-radio-card__title"><?php esc_html_e( 'Inherit Theme', 'ai-sales-manager-for-woocommerce' ); ?></span>
@@ -169,7 +169,7 @@ $total_count     = count( $all_widgets );
 								</div>
 							</label>
 							<label class="aisales-radio-card">
-								<input type="radio" name="styling_mode" value="custom" <?php checked( $settings['styling_mode'], 'custom' ); ?>>
+								<input type="radio" name="styling_mode" value="custom" <?php checked( $aisales_settings['styling_mode'], 'custom' ); ?>>
 								<div class="aisales-radio-card__content">
 									<span class="dashicons dashicons-art"></span>
 									<span class="aisales-radio-card__title"><?php esc_html_e( 'Custom Styles', 'ai-sales-manager-for-woocommerce' ); ?></span>
@@ -179,24 +179,24 @@ $total_count     = count( $all_widgets );
 						</div>
 					</div>
 
-					<div class="aisales-field aisales-field--colors" id="custom-colors" style="<?php echo $settings['styling_mode'] !== 'custom' ? 'display:none;' : ''; ?>">
+					<div class="aisales-field aisales-field--colors" id="custom-colors" style="<?php echo $aisales_settings['styling_mode'] !== 'custom' ? 'display:none;' : ''; ?>">
 						<label class="aisales-field__label"><?php esc_html_e( 'Custom Colors', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-color-grid">
 							<div class="aisales-color-field">
 								<label><?php esc_html_e( 'Primary', 'ai-sales-manager-for-woocommerce' ); ?></label>
-								<input type="color" name="colors[primary]" value="<?php echo esc_attr( $settings['colors']['primary'] ); ?>">
+								<input type="color" name="colors[primary]" value="<?php echo esc_attr( $aisales_settings['colors']['primary'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
 								<label><?php esc_html_e( 'Success', 'ai-sales-manager-for-woocommerce' ); ?></label>
-								<input type="color" name="colors[success]" value="<?php echo esc_attr( $settings['colors']['success'] ); ?>">
+								<input type="color" name="colors[success]" value="<?php echo esc_attr( $aisales_settings['colors']['success'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
 								<label><?php esc_html_e( 'Urgency', 'ai-sales-manager-for-woocommerce' ); ?></label>
-								<input type="color" name="colors[urgency]" value="<?php echo esc_attr( $settings['colors']['urgency'] ); ?>">
+								<input type="color" name="colors[urgency]" value="<?php echo esc_attr( $aisales_settings['colors']['urgency'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
 								<label><?php esc_html_e( 'Text', 'ai-sales-manager-for-woocommerce' ); ?></label>
-								<input type="color" name="colors[text]" value="<?php echo esc_attr( $settings['colors']['text'] ); ?>">
+								<input type="color" name="colors[text]" value="<?php echo esc_attr( $aisales_settings['colors']['text'] ); ?>">
 							</div>
 						</div>
 					</div>
@@ -213,9 +213,9 @@ $total_count     = count( $all_widgets );
 						<label class="aisales-field__label"><?php esc_html_e( 'Customer Privacy Level', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<p class="aisales-field__help"><?php esc_html_e( 'How to display customer information in recent purchase notifications', 'ai-sales-manager-for-woocommerce' ); ?></p>
 						<select name="social_proof[privacy_level]" class="aisales-select">
-							<option value="full" <?php selected( $settings['social_proof']['privacy_level'], 'full' ); ?>><?php esc_html_e( 'Full Name (John Smith)', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="first_city" <?php selected( $settings['social_proof']['privacy_level'], 'first_city' ); ?>><?php esc_html_e( 'First Name + City (John from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="anonymous" <?php selected( $settings['social_proof']['privacy_level'], 'anonymous' ); ?>><?php esc_html_e( 'Anonymous (Someone from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="full" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'full' ); ?>><?php esc_html_e( 'Full Name (John Smith)', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="first_city" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'first_city' ); ?>><?php esc_html_e( 'First Name + City (John from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="anonymous" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'anonymous' ); ?>><?php esc_html_e( 'Anonymous (Someone from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
 						</select>
 					</div>
 
@@ -223,25 +223,25 @@ $total_count     = count( $all_widgets );
 						<label class="aisales-field__label"><?php esc_html_e( 'Popup Position', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-position-grid">
 							<label class="aisales-position-option">
-								<input type="radio" name="social_proof[popup_position]" value="top-left" <?php checked( $settings['social_proof']['popup_position'], 'top-left' ); ?>>
+								<input type="radio" name="social_proof[popup_position]" value="top-left" <?php checked( $aisales_settings['social_proof']['popup_position'], 'top-left' ); ?>>
 								<span class="aisales-position-option__box">
 									<span class="aisales-position-option__dot aisales-position-option__dot--top-left"></span>
 								</span>
 							</label>
 							<label class="aisales-position-option">
-								<input type="radio" name="social_proof[popup_position]" value="top-right" <?php checked( $settings['social_proof']['popup_position'], 'top-right' ); ?>>
+								<input type="radio" name="social_proof[popup_position]" value="top-right" <?php checked( $aisales_settings['social_proof']['popup_position'], 'top-right' ); ?>>
 								<span class="aisales-position-option__box">
 									<span class="aisales-position-option__dot aisales-position-option__dot--top-right"></span>
 								</span>
 							</label>
 							<label class="aisales-position-option">
-								<input type="radio" name="social_proof[popup_position]" value="bottom-left" <?php checked( $settings['social_proof']['popup_position'], 'bottom-left' ); ?>>
+								<input type="radio" name="social_proof[popup_position]" value="bottom-left" <?php checked( $aisales_settings['social_proof']['popup_position'], 'bottom-left' ); ?>>
 								<span class="aisales-position-option__box">
 									<span class="aisales-position-option__dot aisales-position-option__dot--bottom-left"></span>
 								</span>
 							</label>
 							<label class="aisales-position-option">
-								<input type="radio" name="social_proof[popup_position]" value="bottom-right" <?php checked( $settings['social_proof']['popup_position'], 'bottom-right' ); ?>>
+								<input type="radio" name="social_proof[popup_position]" value="bottom-right" <?php checked( $aisales_settings['social_proof']['popup_position'], 'bottom-right' ); ?>>
 								<span class="aisales-position-option__box">
 									<span class="aisales-position-option__dot aisales-position-option__dot--bottom-right"></span>
 								</span>
@@ -252,8 +252,8 @@ $total_count     = count( $all_widgets );
 					<div class="aisales-field">
 						<label class="aisales-field__label"><?php esc_html_e( 'Popup Duration', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-range-field">
-							<input type="range" name="social_proof[popup_duration]" min="3" max="15" value="<?php echo esc_attr( $settings['social_proof']['popup_duration'] ); ?>" class="aisales-range">
-							<span class="aisales-range-value"><span id="popup-duration-value"><?php echo esc_html( $settings['social_proof']['popup_duration'] ); ?></span>s</span>
+							<input type="range" name="social_proof[popup_duration]" min="3" max="15" value="<?php echo esc_attr( $aisales_settings['social_proof']['popup_duration'] ); ?>" class="aisales-range">
+							<span class="aisales-range-value"><span id="popup-duration-value"><?php echo esc_html( $aisales_settings['social_proof']['popup_duration'] ); ?></span>s</span>
 						</div>
 					</div>
 				</div>
@@ -270,25 +270,25 @@ $total_count     = count( $all_widgets );
 						<p class="aisales-field__help"><?php esc_html_e( 'Set to 0 to use your WooCommerce shipping settings', 'ai-sales-manager-for-woocommerce' ); ?></p>
 						<div class="aisales-input-group">
 							<span class="aisales-input-group__prefix"><?php echo esc_html( get_woocommerce_currency_symbol() ); ?></span>
-							<input type="number" name="conversion[shipping_threshold]" value="<?php echo esc_attr( $settings['conversion']['shipping_threshold'] ); ?>" min="0" step="0.01" class="aisales-input">
+							<input type="number" name="conversion[shipping_threshold]" value="<?php echo esc_attr( $aisales_settings['conversion']['shipping_threshold'] ); ?>" min="0" step="0.01" class="aisales-input">
 						</div>
 					</div>
 
 					<div class="aisales-field">
 						<label class="aisales-field__label"><?php esc_html_e( 'Stock Urgency Threshold', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<p class="aisales-field__help"><?php esc_html_e( 'Show "Only X left" when stock is at or below this number', 'ai-sales-manager-for-woocommerce' ); ?></p>
-						<input type="number" name="conversion[stock_urgency_at]" value="<?php echo esc_attr( $settings['conversion']['stock_urgency_at'] ); ?>" min="1" max="100" class="aisales-input aisales-input--sm">
+						<input type="number" name="conversion[stock_urgency_at]" value="<?php echo esc_attr( $aisales_settings['conversion']['stock_urgency_at'] ); ?>" min="1" max="100" class="aisales-input aisales-input--sm">
 					</div>
 
 					<div class="aisales-field">
 						<label class="aisales-field__label"><?php esc_html_e( 'Cache Duration', 'ai-sales-manager-for-woocommerce' ); ?></label>
 						<p class="aisales-field__help"><?php esc_html_e( 'How long to cache widget data for performance', 'ai-sales-manager-for-woocommerce' ); ?></p>
 						<select name="cache_duration" class="aisales-select">
-							<option value="900" <?php selected( $settings['cache_duration'], 900 ); ?>><?php esc_html_e( '15 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="1800" <?php selected( $settings['cache_duration'], 1800 ); ?>><?php esc_html_e( '30 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="3600" <?php selected( $settings['cache_duration'], 3600 ); ?>><?php esc_html_e( '1 hour', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="7200" <?php selected( $settings['cache_duration'], 7200 ); ?>><?php esc_html_e( '2 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="21600" <?php selected( $settings['cache_duration'], 21600 ); ?>><?php esc_html_e( '6 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="900" <?php selected( $aisales_settings['cache_duration'], 900 ); ?>><?php esc_html_e( '15 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="1800" <?php selected( $aisales_settings['cache_duration'], 1800 ); ?>><?php esc_html_e( '30 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="3600" <?php selected( $aisales_settings['cache_duration'], 3600 ); ?>><?php esc_html_e( '1 hour', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="7200" <?php selected( $aisales_settings['cache_duration'], 7200 ); ?>><?php esc_html_e( '2 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="21600" <?php selected( $aisales_settings['cache_duration'], 21600 ); ?>><?php esc_html_e( '6 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
 						</select>
 					</div>
 				</div>

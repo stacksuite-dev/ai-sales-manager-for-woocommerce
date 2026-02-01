@@ -111,6 +111,7 @@ class AISales_Abandoned_Cart_Tracker {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update on order completion.
 		$wpdb->update(
 			$table,
 			array(
@@ -143,6 +144,7 @@ class AISales_Abandoned_Cart_Tracker {
 		$now        = current_time( 'mysql' );
 		$restore_key = $this->get_restore_key( $token );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup.
 		$existing = $wpdb->get_row(
 			$wpdb->prepare( "SELECT id, email FROM {$table} WHERE cart_token = %s", $token ),
 			ARRAY_A
@@ -174,6 +176,7 @@ class AISales_Abandoned_Cart_Tracker {
 		$formats = array( '%s', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%s' );
 
 		if ( $existing ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table upsert.
 			$wpdb->update(
 				$table,
 				$data,
@@ -185,6 +188,7 @@ class AISales_Abandoned_Cart_Tracker {
 			$data['created_at'] = $now;
 			$formats[]          = '%s';
 
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table insert.
 			$wpdb->insert( $table, $data, $formats );
 		}
 	}

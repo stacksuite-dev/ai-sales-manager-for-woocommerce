@@ -839,7 +839,8 @@ class AISales_Tool_Catalog {
 			return new WP_Error(
 				'has_products',
 				sprintf(
-					__( 'Category "%s" has %d products. Use force=true to delete anyway.', 'ai-sales-manager-for-woocommerce' ),
+					/* translators: %1$s: category name, %2$d: product count */
+					__( 'Category "%1$s" has %2$d products. Use force=true to delete anyway.', 'ai-sales-manager-for-woocommerce' ),
 					$term->name,
 					$term->count
 				)

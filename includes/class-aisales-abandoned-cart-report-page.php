@@ -255,23 +255,35 @@ class AISales_Abandoned_Cart_Report_Page {
 	 * @return array
 	 */
 	private function get_stats() {
+		$cached = get_transient( 'aisales_cart_report_stats' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
 		$abandoned = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'abandoned'" );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
 		$recovered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE status = 'recovered'" );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with transient cache above.
 		$revenue   = (float) $wpdb->get_var( "SELECT SUM(total) FROM {$table} WHERE status = 'recovered'" );
 
 		$rate = $abandoned + $recovered > 0
 			? round( ( $recovered / ( $abandoned + $recovered ) ) * 100, 2 )
 			: 0;
 
-		return array(
+		$stats = array(
 			'abandoned'         => $abandoned,
 			'recovered'         => $recovered,
 			'recovery_rate'     => $rate,
 			'recovered_revenue' => wc_price( $revenue ),
 		);
+
+		set_transient( 'aisales_cart_report_stats', $stats, 5 * MINUTE_IN_SECONDS );
+
+		return $stats;
 	}
 
 	/**
@@ -283,6 +295,7 @@ class AISales_Abandoned_Cart_Report_Page {
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, not cacheable (recent carts list).
 		$rows = $wpdb->get_results(
 			"SELECT email, status, total, currency, last_activity_at
 			, id, cart_items, order_id, user_id
@@ -315,6 +328,7 @@ class AISales_Abandoned_Cart_Report_Page {
 
 		$summary  = '<div class="aisales-cart-summary">';
 		$summary .= '<div class="aisales-cart-summary__meta">';
+		/* translators: %d: number of items */
 		$summary .= '<span class="aisales-cart-summary__count">' . esc_html( sprintf( _n( '%d item', '%d items', count( $items ), 'ai-sales-manager-for-woocommerce' ), count( $items ) ) ) . '</span>';
 		$summary .= '</div>';
 		$summary .= '<button type="button" class="aisales-btn aisales-btn--ghost aisales-btn--sm aisales-cart-toggle" data-cart-id="' . esc_attr( $cart_id ) . '">';

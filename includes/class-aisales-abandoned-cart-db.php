@@ -79,6 +79,7 @@ class AISales_Abandoned_Cart_DB {
 		global $wpdb;
 		$table_name = self::get_table_name();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checking custom table existence.
 		$found = $wpdb->get_var(
 			$wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name )
 		);

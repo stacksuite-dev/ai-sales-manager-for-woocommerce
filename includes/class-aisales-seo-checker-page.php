@@ -387,16 +387,15 @@ class AISales_SEO_Checker_Page {
 		delete_option( 'aisales_seo_scan_results' );
 
 		// Delete per-item SEO meta from posts (products, pages, posts).
-		$wpdb->query(
-			"DELETE FROM {$wpdb->postmeta}
-			WHERE meta_key IN ('_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check')"
-		);
+		$aisales_seo_meta_keys = array( '_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check' );
+		foreach ( $aisales_seo_meta_keys as $aisales_meta_key ) {
+			delete_metadata( 'post', 0, $aisales_meta_key, '', true );
+		}
 
 		// Delete per-item SEO meta from terms (categories).
-		$wpdb->query(
-			"DELETE FROM {$wpdb->termmeta}
-			WHERE meta_key IN ('_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check')"
-		);
+		foreach ( $aisales_seo_meta_keys as $aisales_meta_key ) {
+			delete_metadata( 'term', 0, $aisales_meta_key, '', true );
+		}
 
 		// Translators: %d is the number of items cleared.
 		return sprintf(
@@ -414,16 +413,19 @@ class AISales_SEO_Checker_Page {
 		global $wpdb;
 
 		// Delete per-item SEO meta from posts.
-		$posts_deleted = $wpdb->query(
-			"DELETE FROM {$wpdb->postmeta}
-			WHERE meta_key IN ('_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check')"
-		);
+		$aisales_seo_meta_keys = array( '_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check' );
+		$posts_deleted         = 0;
+		foreach ( $aisales_seo_meta_keys as $aisales_meta_key ) {
+			delete_metadata( 'post', 0, $aisales_meta_key, '', true );
+			++$posts_deleted;
+		}
 
 		// Delete per-item SEO meta from terms.
-		$terms_deleted = $wpdb->query(
-			"DELETE FROM {$wpdb->termmeta}
-			WHERE meta_key IN ('_aisales_seo_score', '_aisales_seo_issues', '_aisales_seo_last_check')"
-		);
+		$terms_deleted = 0;
+		foreach ( $aisales_seo_meta_keys as $aisales_meta_key ) {
+			delete_metadata( 'term', 0, $aisales_meta_key, '', true );
+			++$terms_deleted;
+		}
 
 		return sprintf(
 			/* translators: %1$d is posts meta count, %2$d is terms meta count */
@@ -438,24 +440,24 @@ class AISales_SEO_Checker_Page {
 	 */
 	public function render_page() {
 		// Handle debug actions.
-		$debug_message = $this->handle_debug_actions();
+		$aisales_debug_message = $this->handle_debug_actions();
 
 		// Check if connected.
-		$api_key = get_option( 'aisales_api_key' );
-		$balance = get_option( 'aisales_balance', 0 );
+		$aisales_api_key = get_option( 'aisales_api_key' );
+		$aisales_balance = get_option( 'aisales_balance', 0 );
 
 		// Get last scan results.
-		$scan_results   = get_option( 'aisales_seo_scan_results', array() );
-		$has_results    = ! empty( $scan_results ) && isset( $scan_results['overall_score'] );
-		$overall_score  = $has_results ? (int) $scan_results['overall_score'] : 0;
-		$scores         = $has_results ? $scan_results['scores'] : array();
-		$issues         = $has_results ? $scan_results['issues'] : array();
-		$scan_date      = $has_results ? $scan_results['scan_date'] : '';
-		$items_scanned  = $has_results ? (int) $scan_results['items_scanned'] : 0;
-		$detailed_issues = $has_results && isset( $scan_results['detailed_issues'] ) ? $scan_results['detailed_issues'] : array();
+		$aisales_scan_results   = get_option( 'aisales_seo_scan_results', array() );
+		$aisales_has_results    = ! empty( $aisales_scan_results ) && isset( $aisales_scan_results['overall_score'] );
+		$aisales_overall_score  = $aisales_has_results ? (int) $aisales_scan_results['overall_score'] : 0;
+		$aisales_scores         = $aisales_has_results ? $aisales_scan_results['scores'] : array();
+		$aisales_issues         = $aisales_has_results ? $aisales_scan_results['issues'] : array();
+		$aisales_scan_date      = $aisales_has_results ? $aisales_scan_results['scan_date'] : '';
+		$aisales_items_scanned  = $aisales_has_results ? (int) $aisales_scan_results['items_scanned'] : 0;
+		$aisales_detailed_issues = $aisales_has_results && isset( $aisales_scan_results['detailed_issues'] ) ? $aisales_scan_results['detailed_issues'] : array();
 
 		// Get content counts.
-		$content_counts = $this->get_content_counts();
+		$aisales_content_counts = $this->get_content_counts();
 
 		// Include the template.
 		include AISALES_PLUGIN_DIR . 'templates/admin-seo-checker-page.php';

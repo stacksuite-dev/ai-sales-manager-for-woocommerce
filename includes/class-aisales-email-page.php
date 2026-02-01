@@ -334,25 +334,25 @@ class AISales_Email_Page {
 	 */
 	public function render_page() {
 		// Check if connected.
-		$api_key = get_option( 'aisales_api_key' );
-		$balance = get_option( 'aisales_balance', 0 );
+		$aisales_api_key = get_option( 'aisales_api_key' );
+		$balance         = get_option( 'aisales_balance', 0 );
 
 		// Get email manager and templates.
-		$email_manager = AISales_Email_Manager::instance();
-		$templates     = $email_manager->get_templates_overview();
-		$placeholders  = $email_manager->get_placeholders();
+		$email_manager        = AISales_Email_Manager::instance();
+		$templates            = $email_manager->get_templates_overview();
+		$aisales_placeholders = $email_manager->get_placeholders();
 
 		// Group templates by category.
-		$grouped_templates = $this->group_templates_by_category( $templates );
+		$aisales_grouped_templates = $this->group_templates_by_category( $templates );
 
 		// Calculate stats.
-		$stats = $this->calculate_stats( $templates );
+		$aisales_stats = $this->calculate_stats( $templates );
 
 		// Include the template.
 		include AISALES_PLUGIN_DIR . 'templates/admin-email-page.php';
 
 		// Include wizard modal (only if connected).
-		if ( ! empty( $api_key ) ) {
+		if ( ! empty( $aisales_api_key ) ) {
 			$this->render_wizard_modal( $templates );
 		}
 	}
@@ -360,11 +360,10 @@ class AISales_Email_Page {
 	/**
 	 * Render the wizard modal
 	 *
-	 * @param array $templates All templates overview.
+	 * @param array $aisales_templates All templates overview.
 	 */
-	private function render_wizard_modal( $templates ) {
-		$store_context     = get_option( 'aisales_store_context', array() );
-		$wizard_completed  = get_option( 'aisales_email_wizard_completed', false );
+	private function render_wizard_modal( $aisales_templates ) {
+		$aisales_store_context = get_option( 'aisales_store_context', array() );
 
 		// Pass variables to the template.
 		include AISALES_PLUGIN_DIR . 'templates/partials/email-wizard-modal.php';

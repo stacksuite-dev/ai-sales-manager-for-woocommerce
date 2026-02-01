@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</header>
 
-	<?php if ( empty( $api_key ) ) : ?>
+	<?php if ( empty( $aisales_api_key ) ) : ?>
 		<div class="aisales-support-page__not-connected">
 			<div class="aisales-empty-state">
 				<span class="dashicons dashicons-warning"></span>
@@ -56,19 +56,19 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="aisales-support-page__stats aisales-stats-grid aisales-stats-grid--4col">
 			<div class="aisales-stat-card">
-				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $stats['open'] ) ); ?></span>
+				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $aisales_stats['open'] ) ); ?></span>
 				<span class="aisales-stat-card__label"><?php esc_html_e( 'Open', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			</div>
 			<div class="aisales-stat-card">
-				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $stats['pending'] ) ); ?></span>
+				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $aisales_stats['pending'] ) ); ?></span>
 				<span class="aisales-stat-card__label"><?php esc_html_e( 'Pending', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			</div>
 			<div class="aisales-stat-card">
-				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $stats['resolved'] ) ); ?></span>
+				<span class="aisales-stat-card__value"><?php echo esc_html( number_format_i18n( (int) $aisales_stats['resolved'] ) ); ?></span>
 				<span class="aisales-stat-card__label"><?php esc_html_e( 'Resolved', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			</div>
 			<div class="aisales-stat-card">
-				<span class="aisales-stat-card__value"><?php echo esc_html( $stats['average'] ); ?></span>
+				<span class="aisales-stat-card__value"><?php echo esc_html( $aisales_stats['average'] ); ?></span>
 				<span class="aisales-stat-card__label"><?php esc_html_e( 'Avg Response', 'ai-sales-manager-for-woocommerce' ); ?></span>
 			</div>
 		</div>
@@ -85,7 +85,7 @@ defined( 'ABSPATH' ) || exit;
 					</button>
 				</div>
 
-				<?php if ( empty( $tickets ) ) : ?>
+				<?php if ( empty( $aisales_tickets ) ) : ?>
 					<div class="aisales-empty-state--enhanced">
 						<div class="aisales-empty-state__icon">
 							<span class="dashicons dashicons-sos"></span>
@@ -94,13 +94,14 @@ defined( 'ABSPATH' ) || exit;
 						<p><?php esc_html_e( 'Tap the floating Support button to start a request.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				<?php else : ?>
-					<?php foreach ( $tickets as $ticket ) : ?>
+					<?php foreach ( $aisales_tickets as $ticket ) : ?>
 						<?php
 							$status_key = isset( $ticket['status'] ) ? $ticket['status'] : 'open';
 							$status     = isset( $status_map[ $status_key ] ) ? $status_map[ $status_key ] : $status_map['open'];
 							$category   = isset( $ticket['category'] ) ? $ticket['category'] : 'support';
 							$priority   = isset( $ticket['priority'] ) ? $ticket['priority'] : 'normal';
 							$updated_at = ! empty( $ticket['updated_at'] ) ? strtotime( $ticket['updated_at'] ) : 0;
+							/* translators: %s: human-readable time difference */
 							$time_label = $updated_at
 								? sprintf( __( 'Last update %s', 'ai-sales-manager-for-woocommerce' ), human_time_diff( $updated_at, current_time( 'timestamp' ) ) . ' ago' )
 								: __( 'Last update -', 'ai-sales-manager-for-woocommerce' );

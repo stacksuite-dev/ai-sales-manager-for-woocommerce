@@ -542,11 +542,8 @@ class AISales_Admin_Settings {
 						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Widgets', 'ai-sales-manager-for-woocommerce' ); ?></h4>
 						<p class="aisales-feature-card__desc">
 							<?php
-							printf(
-								/* translators: %d: number of enabled widgets */
-								esc_html__( '%d widgets enabled', 'ai-sales-manager-for-woocommerce' ),
-								$enabled_widgets_count
-							);
+							/* translators: %d: number of enabled widgets */
+							echo esc_html( sprintf( __( '%d widgets enabled', 'ai-sales-manager-for-woocommerce' ), $enabled_widgets_count ) );
 							?>
 						</p>
 					</div>
@@ -562,12 +559,8 @@ class AISales_Admin_Settings {
 						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Abandoned Carts', 'ai-sales-manager-for-woocommerce' ); ?></h4>
 						<p class="aisales-feature-card__desc">
 							<?php
-							printf(
-								/* translators: %1$d: abandoned carts, %2$d: recovered carts */
-								esc_html__( '%1$d abandoned, %2$d recovered', 'ai-sales-manager-for-woocommerce' ),
-								$cart_stats['abandoned'],
-								$cart_stats['recovered']
-							);
+							/* translators: %1$d: abandoned carts, %2$d: recovered carts */
+							echo esc_html( sprintf( __( '%1$d abandoned, %2$d recovered', 'ai-sales-manager-for-woocommerce' ), $cart_stats['abandoned'], $cart_stats['recovered'] ) );
 							?>
 						</p>
 					</div>
@@ -866,18 +859,19 @@ class AISales_Admin_Settings {
 	 * Render billing tab
 	 */
 	private function render_billing_tab() {
-		$api     = AISales_API_Client::instance();
-		$account = $api->get_account();
+		$aisales_api     = AISales_API_Client::instance();
+		$aisales_account = $aisales_api->get_account();
 
 		// Handle API errors gracefully
-		$has_error = is_wp_error( $account );
-		$balance   = ( ! $has_error && isset( $account['balance_tokens'] ) ) ? $account['balance_tokens'] : 0;
+		$aisales_has_error = is_wp_error( $aisales_account );
+		$aisales_balance   = ( ! $aisales_has_error && isset( $aisales_account['balance_tokens'] ) ) ? $aisales_account['balance_tokens'] : 0;
 
 		// Include the billing template
 		include AISALES_PLUGIN_DIR . 'templates/pages/billing.php';
 
 		// Include the balance modal for Buy Tokens functionality
-		// Note: $balance variable is used by the modal template
+		// Note: $aisales_balance variable is used by the modal template
+		$balance = $aisales_balance;
 		include AISALES_PLUGIN_DIR . 'templates/partials/balance-modal.php';
 	}
 

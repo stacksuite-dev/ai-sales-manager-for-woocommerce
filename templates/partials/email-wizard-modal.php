@@ -6,9 +6,8 @@
  * Guides users through brand context setup and template selection.
  *
  * Variables passed from parent:
- * - $templates (array) - Available template types
- * - $store_context (array) - Existing store context
- * - $wizard_completed (bool) - Whether wizard has been completed before
+ * - $aisales_templates (array) - Available template types
+ * - $aisales_store_context (array) - Existing store context
  *
  * @package AISales_Sales_Manager
  */
@@ -16,12 +15,12 @@
 defined( 'ABSPATH' ) || exit;
 
 // Get branding data from extractor
-$branding_extractor = AISales_Branding_Extractor::instance();
-$detected_branding  = $branding_extractor->get_branding();
-$safe_fonts         = $branding_extractor->get_safe_fonts();
+$aisales_branding_extractor = AISales_Branding_Extractor::instance();
+$aisales_detected_branding  = $aisales_branding_extractor->get_branding();
+$aisales_safe_fonts         = $aisales_branding_extractor->get_safe_fonts();
 
 // Business niche options
-$niche_options = array(
+$aisales_niche_options = array(
 	''            => __( 'Select your industry...', 'ai-sales-manager-for-woocommerce' ),
 	'fashion'     => __( 'Fashion & Apparel', 'ai-sales-manager-for-woocommerce' ),
 	'electronics' => __( 'Electronics & Tech', 'ai-sales-manager-for-woocommerce' ),
@@ -41,7 +40,7 @@ $niche_options = array(
 );
 
 // Brand tone options with descriptions
-$tone_options = array(
+$aisales_tone_options = array(
 	'professional' => array(
 		'icon'  => '👔',
 		'label' => __( 'Professional', 'ai-sales-manager-for-woocommerce' ),
@@ -65,23 +64,23 @@ $tone_options = array(
 );
 
 // Default store context values
-$default_context = array(
+$aisales_default_context = array(
 	'store_name'      => get_bloginfo( 'name' ),
 	'business_niche'  => '',
 	'brand_tone'      => 'friendly',
 	'target_audience' => '',
 	// Branding - merge detected values with any saved overrides
-	'primary_color'   => $detected_branding['colors']['primary'] ?? '#7f54b3',
-	'text_color'      => $detected_branding['colors']['text'] ?? '#3c3c3c',
-	'bg_color'        => $detected_branding['colors']['background'] ?? '#f7f7f7',
-	'font_family'     => $detected_branding['fonts']['body_slug'] ?? 'system',
-	'logo_url'        => $detected_branding['logo']['url'] ?? '',
+	'primary_color'   => $aisales_detected_branding['colors']['primary'] ?? '#7f54b3',
+	'text_color'      => $aisales_detected_branding['colors']['text'] ?? '#3c3c3c',
+	'bg_color'        => $aisales_detected_branding['colors']['background'] ?? '#f7f7f7',
+	'font_family'     => $aisales_detected_branding['fonts']['body_slug'] ?? 'system',
+	'logo_url'        => $aisales_detected_branding['logo']['url'] ?? '',
 );
-$context = wp_parse_args( $store_context, $default_context );
+$aisales_context = wp_parse_args( $aisales_store_context, $aisales_default_context );
 
 // Determine branding source for UI hint
-$branding_source = $detected_branding['colors']['source'] ?? 'default';
-$branding_source_label = array(
+$aisales_branding_source = $aisales_detected_branding['colors']['source'] ?? 'default';
+$aisales_branding_source_label = array(
 	'woocommerce'      => __( 'Imported from WooCommerce email settings', 'ai-sales-manager-for-woocommerce' ),
 	'block_theme'      => __( 'Imported from your theme', 'ai-sales-manager-for-woocommerce' ),
 	'theme_customizer' => __( 'Imported from theme customizer', 'ai-sales-manager-for-woocommerce' ),
@@ -145,7 +144,7 @@ $branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label for="aisales-wizard-store-name"><?php esc_html_e( 'Store Name', 'ai-sales-manager-for-woocommerce' ); ?></label>
 							<input type="text" id="aisales-wizard-store-name" 
-								value="<?php echo esc_attr( $context['store_name'] ); ?>" 
+								value="<?php echo esc_attr( $aisales_context['store_name'] ); ?>" 
 								placeholder="<?php esc_attr_e( 'e.g., Acme Store', 'ai-sales-manager-for-woocommerce' ); ?>">
 						</div>
 
@@ -153,8 +152,8 @@ $branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label for="aisales-wizard-business-niche"><?php esc_html_e( 'What do you sell?', 'ai-sales-manager-for-woocommerce' ); ?></label>
 							<select id="aisales-wizard-business-niche">
-								<?php foreach ( $niche_options as $value => $label ) : ?>
-									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $context['business_niche'], $value ); ?>>
+								<?php foreach ( $aisales_niche_options as $value => $label ) : ?>
+									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_context['business_niche'], $value ); ?>>
 										<?php echo esc_html( $label ); ?>
 									</option>
 								<?php endforeach; ?>
@@ -165,10 +164,10 @@ $branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label><?php esc_html_e( 'How should your emails sound?', 'ai-sales-manager-for-woocommerce' ); ?></label>
 							<div class="aisales-wizard__tone-grid">
-								<?php foreach ( $tone_options as $value => $option ) : ?>
+								<?php foreach ( $aisales_tone_options as $value => $option ) : ?>
 									<label class="aisales-wizard__tone-option">
 										<input type="radio" name="wizard_brand_tone" value="<?php echo esc_attr( $value ); ?>" 
-											<?php checked( $context['brand_tone'], $value ); ?>>
+											<?php checked( $aisales_context['brand_tone'], $value ); ?>>
 										<div class="aisales-wizard__tone-card">
 											<span class="aisales-wizard__tone-icon"><?php echo esc_html( $option['icon'] ); ?></span>
 											<span class="aisales-wizard__tone-name"><?php echo esc_html( $option['label'] ); ?></span>
@@ -184,9 +183,9 @@ $branding_source_label = array(
 							<div class="aisales-wizard__section-header">
 								<span class="dashicons dashicons-art"></span>
 								<span><?php esc_html_e( 'Brand Colors & Typography', 'ai-sales-manager-for-woocommerce' ); ?></span>
-								<?php if ( 'default' !== $branding_source ) : ?>
+								<?php if ( 'default' !== $aisales_branding_source ) : ?>
 									<span class="aisales-wizard__section-badge">
-										<?php echo esc_html( $branding_source_label[ $branding_source ] ); ?>
+										<?php echo esc_html( $aisales_branding_source_label[ $aisales_branding_source ] ); ?>
 									</span>
 								<?php endif; ?>
 							</div>
@@ -197,10 +196,10 @@ $branding_source_label = array(
 									<label for="aisales-wizard-primary-color"><?php esc_html_e( 'Primary Color', 'ai-sales-manager-for-woocommerce' ); ?></label>
 									<div class="aisales-wizard__color-input-wrap">
 										<input type="color" id="aisales-wizard-primary-color" 
-											value="<?php echo esc_attr( $context['primary_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['primary_color'] ); ?>"
 											class="aisales-wizard__color-picker">
 										<input type="text" id="aisales-wizard-primary-color-hex" 
-											value="<?php echo esc_attr( $context['primary_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['primary_color'] ); ?>"
 											class="aisales-wizard__color-hex"
 											pattern="^#[0-9A-Fa-f]{6}$"
 											maxlength="7">
@@ -213,10 +212,10 @@ $branding_source_label = array(
 									<label for="aisales-wizard-text-color"><?php esc_html_e( 'Text Color', 'ai-sales-manager-for-woocommerce' ); ?></label>
 									<div class="aisales-wizard__color-input-wrap">
 										<input type="color" id="aisales-wizard-text-color" 
-											value="<?php echo esc_attr( $context['text_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['text_color'] ); ?>"
 											class="aisales-wizard__color-picker">
 										<input type="text" id="aisales-wizard-text-color-hex" 
-											value="<?php echo esc_attr( $context['text_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['text_color'] ); ?>"
 											class="aisales-wizard__color-hex"
 											pattern="^#[0-9A-Fa-f]{6}$"
 											maxlength="7">
@@ -229,10 +228,10 @@ $branding_source_label = array(
 									<label for="aisales-wizard-bg-color"><?php esc_html_e( 'Background', 'ai-sales-manager-for-woocommerce' ); ?></label>
 									<div class="aisales-wizard__color-input-wrap">
 										<input type="color" id="aisales-wizard-bg-color" 
-											value="<?php echo esc_attr( $context['bg_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['bg_color'] ); ?>"
 											class="aisales-wizard__color-picker">
 										<input type="text" id="aisales-wizard-bg-color-hex" 
-											value="<?php echo esc_attr( $context['bg_color'] ); ?>"
+											value="<?php echo esc_attr( $aisales_context['bg_color'] ); ?>"
 											class="aisales-wizard__color-hex"
 											pattern="^#[0-9A-Fa-f]{6}$"
 											maxlength="7">
@@ -244,9 +243,9 @@ $branding_source_label = array(
 								<div class="aisales-wizard__font-field">
 									<label for="aisales-wizard-font-family"><?php esc_html_e( 'Font Family', 'ai-sales-manager-for-woocommerce' ); ?></label>
 									<select id="aisales-wizard-font-family" class="aisales-wizard__font-select">
-										<?php foreach ( $safe_fonts as $slug => $font_data ) : ?>
+										<?php foreach ( $aisales_safe_fonts as $slug => $font_data ) : ?>
 											<option value="<?php echo esc_attr( $slug ); ?>" 
-												<?php selected( $context['font_family'], $slug ); ?>
+												<?php selected( $aisales_context['font_family'], $slug ); ?>
 												data-family="<?php echo esc_attr( $font_data['family'] ); ?>">
 												<?php echo esc_html( $font_data['label'] ); ?>
 											</option>
@@ -263,7 +262,7 @@ $branding_source_label = array(
 								<span class="aisales-wizard__preview-label"><?php esc_html_e( 'Preview', 'ai-sales-manager-for-woocommerce' ); ?></span>
 								<div class="aisales-wizard__preview-email" id="aisales-wizard-email-preview">
 									<div class="aisales-wizard__preview-header" id="aisales-preview-header">
-										<?php echo esc_html( $context['store_name'] ); ?>
+										<?php echo esc_html( $aisales_context['store_name'] ); ?>
 									</div>
 									<div class="aisales-wizard__preview-body" id="aisales-preview-body">
 										<p style="margin: 0 0 8px; font-weight: 600;"><?php esc_html_e( 'Thank you for your order!', 'ai-sales-manager-for-woocommerce' ); ?></p>
@@ -280,7 +279,7 @@ $branding_source_label = array(
 						<div class="aisales-wizard__field">
 							<label for="aisales-wizard-target-audience"><?php esc_html_e( 'Who are your customers?', 'ai-sales-manager-for-woocommerce' ); ?> <small>(<?php esc_html_e( 'optional', 'ai-sales-manager-for-woocommerce' ); ?>)</small></label>
 							<input type="text" id="aisales-wizard-target-audience" 
-								value="<?php echo esc_attr( $context['target_audience'] ); ?>" 
+								value="<?php echo esc_attr( $aisales_context['target_audience'] ); ?>" 
 								placeholder="<?php esc_attr_e( 'e.g., Young professionals, busy parents, fitness enthusiasts', 'ai-sales-manager-for-woocommerce' ); ?>">
 							<span class="aisales-wizard__field-hint"><?php esc_html_e( 'Describing your audience helps personalize email tone and language.', 'ai-sales-manager-for-woocommerce' ); ?></span>
 						</div>
@@ -299,7 +298,7 @@ $branding_source_label = array(
 				</div>
 
 				<div class="aisales-wizard__template-list">
-					<?php foreach ( $templates as $type => $template_data ) : ?>
+					<?php foreach ( $aisales_templates as $type => $template_data ) : ?>
 						<div class="aisales-wizard__template-item <?php echo $template_data['has_template'] ? 'is-disabled' : ''; ?>" 
 							data-template-type="<?php echo esc_attr( $type ); ?>">
 							<span class="aisales-wizard__template-checkbox">

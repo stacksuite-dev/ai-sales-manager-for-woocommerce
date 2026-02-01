@@ -6,16 +6,16 @@
  * Provides empty state, AI analysis flow, and settings form.
  *
  * Variables passed from AISales_Brand_Page::render_page():
- * - $api_key (string) - API key for the service
- * - $balance (int) - Current token balance
- * - $store_context (array) - Saved store context settings
- * - $has_setup (bool) - Whether brand settings have been configured
- * - $detected_branding (array) - Auto-detected branding from extractor
- * - $industries (array) - Industry options for dropdown
- * - $tones (array) - Brand tone options
- * - $price_positions (array) - Price positioning options
- * - $promotion_styles (array) - Promotion style options
- * - $safe_fonts (array) - Email-safe font options
+ * - $aisales_api_key (string) - API key for the service
+ * - $aisales_balance (int) - Current token balance
+ * - $aisales_store_context (array) - Saved store context settings
+ * - $aisales_has_setup (bool) - Whether brand settings have been configured
+ * - $aisales_detected_branding (array) - Auto-detected branding from extractor
+ * - $aisales_industries (array) - Industry options for dropdown
+ * - $aisales_tones (array) - Brand tone options
+ * - $aisales_price_positions (array) - Price positioning options
+ * - $aisales_promotion_styles (array) - Promotion style options
+ * - $aisales_safe_fonts (array) - Email-safe font options
  *
  * @package AISales_Sales_Manager
  */
@@ -23,20 +23,20 @@
 defined( 'ABSPATH' ) || exit;
 
 // Prepare current values with fallbacks.
-$current_store_name      = $store_context['store_name'] ?? get_bloginfo( 'name' );
-$current_tagline         = $store_context['tagline'] ?? get_bloginfo( 'description' );
-$current_industry        = $store_context['business_niche'] ?? '';
-$current_target_audience = $store_context['target_audience'] ?? '';
-$current_price_position  = $store_context['price_position'] ?? '';
-$current_differentiator  = $store_context['differentiator'] ?? '';
-$current_pain_points     = $store_context['pain_points'] ?? '';
-$current_tone            = $store_context['brand_tone'] ?? 'friendly';
-$current_words_avoid     = $store_context['words_to_avoid'] ?? '';
-$current_promo_style     = $store_context['promotion_style'] ?? 'moderate';
-$current_primary_color   = $store_context['primary_color'] ?? $detected_branding['colors']['primary'] ?? '#7f54b3';
-$current_text_color      = $store_context['text_color'] ?? $detected_branding['colors']['text'] ?? '#3c3c3c';
-$current_bg_color        = $store_context['bg_color'] ?? $detected_branding['colors']['background'] ?? '#f7f7f7';
-$current_font            = $store_context['font_family'] ?? $detected_branding['fonts']['body_slug'] ?? 'system';
+$aisales_current_store_name      = $aisales_store_context['store_name'] ?? get_bloginfo( 'name' );
+$aisales_current_tagline         = $aisales_store_context['tagline'] ?? get_bloginfo( 'description' );
+$aisales_current_industry        = $aisales_store_context['business_niche'] ?? '';
+$aisales_current_target_audience = $aisales_store_context['target_audience'] ?? '';
+$aisales_current_price_position  = $aisales_store_context['price_position'] ?? '';
+$aisales_current_differentiator  = $aisales_store_context['differentiator'] ?? '';
+$aisales_current_pain_points     = $aisales_store_context['pain_points'] ?? '';
+$aisales_current_tone            = $aisales_store_context['brand_tone'] ?? 'friendly';
+$aisales_current_words_avoid     = $aisales_store_context['words_to_avoid'] ?? '';
+$aisales_current_promo_style     = $aisales_store_context['promotion_style'] ?? 'moderate';
+$aisales_current_primary_color   = $aisales_store_context['primary_color'] ?? $aisales_detected_branding['colors']['primary'] ?? '#7f54b3';
+$aisales_current_text_color      = $aisales_store_context['text_color'] ?? $aisales_detected_branding['colors']['text'] ?? '#3c3c3c';
+$aisales_current_bg_color        = $aisales_store_context['bg_color'] ?? $aisales_detected_branding['colors']['background'] ?? '#f7f7f7';
+$aisales_current_font            = $aisales_store_context['font_family'] ?? $aisales_detected_branding['fonts']['body_slug'] ?? 'system';
 ?>
 
 <div class="wrap aisales-admin-wrap aisales-brand-page">
@@ -52,7 +52,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 			</span>
 		</div>
 		<div class="aisales-brand-page__header-right">
-			<?php if ( ! empty( $api_key ) && $has_setup ) : ?>
+			<?php if ( ! empty( $aisales_api_key ) && $aisales_has_setup ) : ?>
 				<!-- AI Re-analyze Button (pill style like balance indicator) -->
 				<button type="button" class="aisales-btn aisales-btn--pill" id="aisales-brand-reanalyze-btn">
 					<span class="dashicons dashicons-admin-customizer"></span>
@@ -64,7 +64,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 		</div>
 	</header>
 
-	<?php if ( empty( $api_key ) ) : ?>
+	<?php if ( empty( $aisales_api_key ) ) : ?>
 		<!-- Not Connected State -->
 		<div class="aisales-brand-page__not-connected">
 			<div class="aisales-empty-state">
@@ -78,7 +78,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 			</div>
 		</div>
 	<?php else : ?>
-		<?php if ( ! $has_setup ) : ?>
+		<?php if ( ! $aisales_has_setup ) : ?>
 			<!-- Empty State (First Visit) -->
 			<div class="aisales-brand-page__empty-state" id="aisales-brand-empty-state">
 				<div class="aisales-brand-welcome">
@@ -171,7 +171,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 	<?php endif; ?>
 
 	<!-- Form State (Always in DOM, shown after setup or when has_setup) -->
-	<div class="aisales-brand-page__form-state" id="aisales-brand-form-state" <?php echo ( ! $has_setup || empty( $api_key ) ) ? 'style="display: none;"' : ''; ?>>
+	<div class="aisales-brand-page__form-state" id="aisales-brand-form-state" <?php echo ( ! $aisales_has_setup || empty( $aisales_api_key ) ) ? 'style="display: none;"' : ''; ?>>
 		<form id="aisales-brand-form" class="aisales-brand-form">
 			<div class="aisales-brand-settings">
 				<!-- Unified Settings Header -->
@@ -201,7 +201,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									id="aisales-store-name" 
 									name="store_name" 
 									class="aisales-form-input" 
-									value="<?php echo esc_attr( $current_store_name ); ?>"
+									value="<?php echo esc_attr( $aisales_current_store_name ); ?>"
 									placeholder="<?php esc_attr_e( 'Your Store Name', 'ai-sales-manager-for-woocommerce' ); ?>">
 							</div>
 
@@ -214,7 +214,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									id="aisales-tagline" 
 									name="tagline" 
 									class="aisales-form-input" 
-									value="<?php echo esc_attr( $current_tagline ); ?>"
+									value="<?php echo esc_attr( $aisales_current_tagline ); ?>"
 									placeholder="<?php esc_attr_e( 'e.g., Handcrafted coffee for the modern connoisseur', 'ai-sales-manager-for-woocommerce' ); ?>">
 								<p class="aisales-form-help"><?php esc_html_e( 'A short phrase that captures your brand essence.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 							</div>
@@ -225,8 +225,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									<?php esc_html_e( 'Industry', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-industry" name="business_niche" class="aisales-form-select">
-									<?php foreach ( $industries as $value => $label ) : ?>
-										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_industry, $value ); ?>>
+									<?php foreach ( $aisales_industries as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_current_industry, $value ); ?>>
 											<?php echo esc_html( $label ); ?>
 										</option>
 									<?php endforeach; ?>
@@ -252,7 +252,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									name="target_audience" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., Young professionals aged 25-35 who value quality and sustainability', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $current_target_audience ); ?></textarea>
+									placeholder="<?php esc_attr_e( 'e.g., Young professionals aged 25-35 who value quality and sustainability', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_target_audience ); ?></textarea>
 								<p class="aisales-form-help"><?php esc_html_e( 'Who are your ideal customers? Include demographics, interests, and values.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
@@ -262,8 +262,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									<?php esc_html_e( 'Price Positioning', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-price-position" name="price_position" class="aisales-form-select">
-									<?php foreach ( $price_positions as $value => $label ) : ?>
-										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_price_position, $value ); ?>>
+									<?php foreach ( $aisales_price_positions as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $aisales_current_price_position, $value ); ?>>
 											<?php echo esc_html( $label ); ?>
 										</option>
 									<?php endforeach; ?>
@@ -281,7 +281,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									name="differentiator" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., We source directly from family farms and roast in small batches for peak freshness', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $current_differentiator ); ?></textarea>
+									placeholder="<?php esc_attr_e( 'e.g., We source directly from family farms and roast in small batches for peak freshness', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_differentiator ); ?></textarea>
 								<p class="aisales-form-help"><?php esc_html_e( 'Your unique selling points and competitive advantages.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
@@ -295,7 +295,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									name="pain_points" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., Hard to find consistent quality, overwhelmed by choices, unsure what to buy', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $current_pain_points ); ?></textarea>
+									placeholder="<?php esc_attr_e( 'e.g., Hard to find consistent quality, overwhelmed by choices, unsure what to buy', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_pain_points ); ?></textarea>
 								<p class="aisales-form-help"><?php esc_html_e( 'What problems does your store solve for customers?', 'ai-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 						</div>
@@ -314,12 +314,12 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									<?php esc_html_e( 'Brand Tone', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options">
-									<?php foreach ( $tones as $value => $tone_data ) : ?>
-										<label class="aisales-tone-option <?php echo $current_tone === $value ? 'aisales-tone-option--selected' : ''; ?>">
+									<?php foreach ( $aisales_tones as $value => $tone_data ) : ?>
+										<label class="aisales-tone-option <?php echo $aisales_current_tone === $value ? 'aisales-tone-option--selected' : ''; ?>">
 											<input type="radio" 
 												name="brand_tone" 
 												value="<?php echo esc_attr( $value ); ?>" 
-												<?php checked( $current_tone, $value ); ?>>
+												<?php checked( $aisales_current_tone, $value ); ?>>
 											<span class="aisales-tone-option__icon">
 												<span class="dashicons <?php echo esc_attr( $tone_data['icon'] ); ?>"></span>
 											</span>
@@ -341,7 +341,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									id="aisales-words-avoid" 
 									name="words_to_avoid" 
 									class="aisales-form-input" 
-									value="<?php echo esc_attr( $current_words_avoid ); ?>"
+									value="<?php echo esc_attr( $aisales_current_words_avoid ); ?>"
 									placeholder="<?php esc_attr_e( 'e.g., cheap, discount, budget, competitor names', 'ai-sales-manager-for-woocommerce' ); ?>">
 								<p class="aisales-form-help"><?php esc_html_e( 'Comma-separated list of words AI should never use in your content.', 'ai-sales-manager-for-woocommerce' ); ?></p>
 							</div>
@@ -352,12 +352,12 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									<?php esc_html_e( 'Promotion Style', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options aisales-promo-options">
-									<?php foreach ( $promotion_styles as $value => $style_data ) : ?>
-										<label class="aisales-tone-option <?php echo $current_promo_style === $value ? 'aisales-tone-option--selected' : ''; ?>">
+									<?php foreach ( $aisales_promotion_styles as $value => $style_data ) : ?>
+										<label class="aisales-tone-option <?php echo $aisales_current_promo_style === $value ? 'aisales-tone-option--selected' : ''; ?>">
 											<input type="radio" 
 												name="promotion_style" 
 												value="<?php echo esc_attr( $value ); ?>" 
-												<?php checked( $current_promo_style, $value ); ?>>
+												<?php checked( $aisales_current_promo_style, $value ); ?>>
 											<span class="aisales-tone-option__icon">
 												<span class="dashicons <?php echo esc_attr( $style_data['icon'] ); ?>"></span>
 											</span>
@@ -390,8 +390,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 										id="aisales-primary-color" 
 										name="primary_color" 
 										class="aisales-color-picker" 
-										value="<?php echo esc_attr( $current_primary_color ); ?>"
-										data-default-color="<?php echo esc_attr( $detected_branding['colors']['primary'] ?? '#7f54b3' ); ?>">
+										value="<?php echo esc_attr( $aisales_current_primary_color ); ?>"
+										data-default-color="<?php echo esc_attr( $aisales_detected_branding['colors']['primary'] ?? '#7f54b3' ); ?>">
 								</div>
 								<div class="aisales-form-group aisales-form-group--color">
 									<label for="aisales-text-color" class="aisales-form-label">
@@ -401,8 +401,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 										id="aisales-text-color" 
 										name="text_color" 
 										class="aisales-color-picker" 
-										value="<?php echo esc_attr( $current_text_color ); ?>"
-										data-default-color="<?php echo esc_attr( $detected_branding['colors']['text'] ?? '#3c3c3c' ); ?>">
+										value="<?php echo esc_attr( $aisales_current_text_color ); ?>"
+										data-default-color="<?php echo esc_attr( $aisales_detected_branding['colors']['text'] ?? '#3c3c3c' ); ?>">
 								</div>
 								<div class="aisales-form-group aisales-form-group--color">
 									<label for="aisales-bg-color" class="aisales-form-label">
@@ -412,8 +412,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 										id="aisales-bg-color" 
 										name="bg_color" 
 										class="aisales-color-picker" 
-										value="<?php echo esc_attr( $current_bg_color ); ?>"
-										data-default-color="<?php echo esc_attr( $detected_branding['colors']['background'] ?? '#f7f7f7' ); ?>">
+										value="<?php echo esc_attr( $aisales_current_bg_color ); ?>"
+										data-default-color="<?php echo esc_attr( $aisales_detected_branding['colors']['background'] ?? '#f7f7f7' ); ?>">
 								</div>
 							</div>
 
@@ -429,8 +429,8 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 									<?php esc_html_e( 'Font Family', 'ai-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-font-family" name="font_family" class="aisales-form-select">
-									<?php foreach ( $safe_fonts as $slug => $font_data ) : ?>
-										<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $current_font, $slug ); ?>>
+									<?php foreach ( $aisales_safe_fonts as $slug => $font_data ) : ?>
+										<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $aisales_current_font, $slug ); ?>>
 											<?php echo esc_html( $font_data['label'] ); ?>
 										</option>
 									<?php endforeach; ?>
@@ -443,7 +443,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 								<label class="aisales-form-label"><?php esc_html_e( 'Preview', 'ai-sales-manager-for-woocommerce' ); ?></label>
 								<div class="aisales-brand-preview__box" id="aisales-brand-preview">
 									<div class="aisales-brand-preview__header" id="aisales-preview-header">
-										<?php echo esc_html( $current_store_name ); ?>
+										<?php echo esc_html( $aisales_current_store_name ); ?>
 									</div>
 									<div class="aisales-brand-preview__body" id="aisales-preview-body">
 										<p class="aisales-brand-preview__heading"><?php esc_html_e( 'Thank you for your order!', 'ai-sales-manager-for-woocommerce' ); ?></p>
@@ -467,7 +467,7 @@ $current_font            = $store_context['font_family'] ?? $detected_branding['
 		</form>
 	</div>
 
-	<?php if ( ! empty( $api_key ) ) : ?>
+	<?php if ( ! empty( $aisales_api_key ) ) : ?>
 		<!-- Balance Modal (Shared Partial) -->
 		<?php include AISALES_PLUGIN_DIR . 'templates/partials/balance-modal.php'; ?>
 	<?php endif; ?>

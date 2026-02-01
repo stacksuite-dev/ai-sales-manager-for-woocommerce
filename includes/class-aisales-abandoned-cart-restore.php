@@ -55,6 +55,7 @@ class AISales_Abandoned_Cart_Restore {
 
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup by token.
 		$cart  = $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE cart_token = %s", $token ),
 			ARRAY_A
@@ -88,6 +89,7 @@ class AISales_Abandoned_Cart_Restore {
 			$redirect = wc_get_checkout_url();
 		}
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table update.
 		$wpdb->update(
 			$table,
 			array(
