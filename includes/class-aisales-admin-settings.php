@@ -389,10 +389,9 @@ class AISales_Admin_Settings {
 			if ( false !== $cached ) {
 				$cart_stats = $cached;
 			} else {
-				global $wpdb;
-				$table        = AISales_Abandoned_Cart_DB::get_table_name();
-				$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-				if ( $table_exists ) {
+				if ( AISales_Abandoned_Cart_DB::table_exists() ) {
+					global $wpdb;
+					$table = AISales_Abandoned_Cart_DB::get_table_name();
 					$cart_stats['abandoned'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'abandoned'", $table ) );
 					$cart_stats['recovered'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE status = 'recovered'", $table ) );
 				}

@@ -71,11 +71,26 @@ class AISales_Abandoned_Cart_DB {
 	}
 
 	/**
+	 * Flush all cart-related caches.
+	 *
+	 * @param string $token Optional cart token to flush token-specific cache.
+	 */
+	public static function flush_cart_cache( $token = '' ) {
+		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
+		wp_cache_delete( 'aisales_cart_recent_25', 'aisales_carts' );
+		wp_cache_delete( 'aisales_dashboard_cart_stats', 'aisales_carts' );
+
+		if ( '' !== $token ) {
+			wp_cache_delete( 'aisales_cart_token_' . $token, 'aisales_carts' );
+		}
+	}
+
+	/**
 	 * Check if abandoned cart table exists.
 	 *
 	 * @return bool
 	 */
-	private static function table_exists() {
+	public static function table_exists() {
 		$cache_key = 'aisales_cart_table_exists';
 		$cached    = wp_cache_get( $cache_key, 'aisales_carts' );
 		if ( false !== $cached ) {

@@ -119,33 +119,31 @@ trait AISales_Shortcodes_Discovery {
 
 		$date_threshold = gmdate( 'Y-m-d H:i:s', strtotime( $date_after ) );
 
-		// Query for products with recent orders.
-		// We'll get products that have been ordered recently, sorted by order count.
-		global $wpdb;
-
 		// Get product IDs from recent orders, ordered by frequency.
 		$cache_key          = 'aisales_trending_' . md5( $date_threshold . '_' . absint( $atts['limit'] ) );
 		$recent_product_ids = wp_cache_get( $cache_key, 'aisales_carts' );
 		if ( false === $recent_product_ids ) {
-			$recent_product_ids = $wpdb->get_col(
-				$wpdb->prepare(
-					"SELECT DISTINCT order_item_meta.meta_value as product_id
-					FROM {$wpdb->prefix}woocommerce_order_items as order_items
-					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
-						ON order_items.order_item_id = order_item_meta.order_item_id
-					INNER JOIN {$wpdb->posts} as posts
-						ON order_items.order_id = posts.ID
-					WHERE posts.post_type = 'shop_order'
-					AND posts.post_status IN ('wc-completed', 'wc-processing')
-					AND posts.post_date >= %s
-					AND order_item_meta.meta_key = '_product_id'
-					GROUP BY order_item_meta.meta_value
-					ORDER BY COUNT(*) DESC
-					LIMIT %d",
-					$date_threshold,
-					absint( $atts['limit'] ) * 2
+			$orders = wc_get_orders(
+				array(
+					'status'     => array( 'wc-completed', 'wc-processing' ),
+					'date_after' => $date_threshold,
+					'limit'      => 100,
+					'return'     => 'objects',
 				)
 			);
+
+			$product_counts = array();
+			foreach ( $orders as $order ) {
+				foreach ( $order->get_items() as $item ) {
+					$pid = $item->get_product_id();
+					if ( $pid ) {
+						$product_counts[ $pid ] = isset( $product_counts[ $pid ] ) ? $product_counts[ $pid ] + 1 : 1;
+					}
+				}
+			}
+
+			arsort( $product_counts );
+			$recent_product_ids = array_map( 'strval', array_keys( array_slice( $product_counts, 0, absint( $atts['limit'] ) * 2, true ) ) );
 			wp_cache_set( $cache_key, $recent_product_ids, 'aisales_carts', 300 );
 		}
 
@@ -288,36 +286,38 @@ trait AISales_Shortcodes_Discovery {
 
 		$exclude_current = filter_var( $atts['exclude_current'], FILTER_VALIDATE_BOOLEAN );
 
-		global $wpdb;
-
 		// Find products that were purchased together with the current product.
 		$bt_cache_key = 'aisales_bought_together_' . $product_id . '_' . absint( $atts['limit'] );
 		$related_ids  = wp_cache_get( $bt_cache_key, 'aisales_carts' );
 		if ( false === $related_ids ) {
-			$related_ids = $wpdb->get_col(
-				$wpdb->prepare(
-					"SELECT DISTINCT order_item_meta.meta_value as product_id
-					FROM {$wpdb->prefix}woocommerce_order_items as order_items
-					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta
-						ON order_items.order_item_id = order_item_meta.order_item_id
-					INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta2
-						ON order_items.order_item_id = order_item_meta2.order_item_id
-					INNER JOIN {$wpdb->posts} as posts
-						ON order_items.order_id = posts.ID
-					WHERE posts.post_type = 'shop_order'
-					AND posts.post_status IN ('wc-completed', 'wc-processing')
-					AND order_item_meta.meta_key = '_product_id'
-					AND order_item_meta2.meta_key = '_product_id'
-					AND order_item_meta2.meta_value = %d
-					AND order_item_meta.meta_value != %d
-					GROUP BY order_item_meta.meta_value
-					ORDER BY COUNT(*) DESC
-					LIMIT %d",
-					$product_id,
-					$product_id,
-					absint( $atts['limit'] ) * 2
+			$orders = wc_get_orders(
+				array(
+					'status' => array( 'wc-completed', 'wc-processing' ),
+					'limit'  => 100,
+					'return' => 'objects',
 				)
 			);
+
+			$co_purchased = array();
+			foreach ( $orders as $order ) {
+				$order_product_ids = array();
+				foreach ( $order->get_items() as $item ) {
+					$pid = $item->get_product_id();
+					if ( $pid ) {
+						$order_product_ids[] = $pid;
+					}
+				}
+				if ( in_array( $product_id, $order_product_ids, true ) ) {
+					foreach ( $order_product_ids as $pid ) {
+						if ( $pid !== $product_id ) {
+							$co_purchased[ $pid ] = isset( $co_purchased[ $pid ] ) ? $co_purchased[ $pid ] + 1 : 1;
+						}
+					}
+				}
+			}
+
+			arsort( $co_purchased );
+			$related_ids = array_map( 'strval', array_keys( array_slice( $co_purchased, 0, absint( $atts['limit'] ) * 2, true ) ) );
 			wp_cache_set( $bt_cache_key, $related_ids, 'aisales_carts', 300 );
 		}
 

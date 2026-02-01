@@ -79,7 +79,7 @@ class AISales_Abandoned_Cart_Scheduler {
 			)
 		);
 
-		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
+		AISales_Abandoned_Cart_DB::flush_cart_cache();
 
 		if ( empty( $settings['enable_emails'] ) ) {
 			return;
@@ -100,22 +100,26 @@ class AISales_Abandoned_Cart_Scheduler {
 		$now    = current_time( 'mysql' );
 
 		foreach ( $settings['email_steps'] as $step => $hours ) {
-			$cutoff = $this->get_cutoff_time( (int) $hours, HOUR_IN_SECONDS );
-
-			$rows = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM %i
-					WHERE status = 'abandoned'
-					AND abandoned_at IS NOT NULL
-					AND abandoned_at < %s
-					AND (last_email_step < %d OR last_email_step IS NULL)
-					AND email IS NOT NULL AND email <> ''",
-					$table,
-					$cutoff,
-					(int) $step
-				),
-				ARRAY_A
-			);
+			$cutoff    = $this->get_cutoff_time( (int) $hours, HOUR_IN_SECONDS );
+			$cache_key = 'aisales_email_candidates_' . (int) $step;
+			$rows      = wp_cache_get( $cache_key, 'aisales_carts' );
+			if ( false === $rows ) {
+				$rows = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT * FROM %i
+						WHERE status = 'abandoned'
+						AND abandoned_at IS NOT NULL
+						AND abandoned_at < %s
+						AND (last_email_step < %d OR last_email_step IS NULL)
+						AND email IS NOT NULL AND email <> ''",
+						$table,
+						$cutoff,
+						(int) $step
+					),
+					ARRAY_A
+				);
+				wp_cache_set( $cache_key, $rows, 'aisales_carts', 60 );
+			}
 
 			foreach ( $rows as $cart ) {
 				if ( ! $emails->send_recovery_email( $cart, (int) $step ) ) {
@@ -136,7 +140,7 @@ class AISales_Abandoned_Cart_Scheduler {
 			}
 		}
 
-		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
+		AISales_Abandoned_Cart_DB::flush_cart_cache();
 	}
 
 	/**

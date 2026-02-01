@@ -258,7 +258,7 @@ class AISales_Abandoned_Cart_Report_Page {
 	 * @return array
 	 */
 	private function get_stats() {
-		$cached = get_transient( 'aisales_cart_report_stats' );
+		$cached = wp_cache_get( 'aisales_cart_stats', 'aisales_carts' );
 		if ( false !== $cached ) {
 			return $cached;
 		}
@@ -281,7 +281,7 @@ class AISales_Abandoned_Cart_Report_Page {
 			'recovered_revenue' => wc_price( $revenue ),
 		);
 
-		set_transient( 'aisales_cart_report_stats', $stats, 5 * MINUTE_IN_SECONDS );
+		wp_cache_set( 'aisales_cart_stats', $stats, 'aisales_carts', 300 );
 
 		return $stats;
 	}
@@ -292,7 +292,7 @@ class AISales_Abandoned_Cart_Report_Page {
 	 * @return array
 	 */
 	private function get_recent_carts() {
-		$cached = wp_cache_get( 'aisales_recent_carts', 'aisales_carts' );
+		$cached = wp_cache_get( 'aisales_cart_recent_25', 'aisales_carts' );
 		if ( false !== $cached ) {
 			return $cached;
 		}
@@ -316,7 +316,7 @@ class AISales_Abandoned_Cart_Report_Page {
 			$row['total'] = wc_price( (float) $row['total'], array( 'currency' => $row['currency'] ) );
 		}
 
-		wp_cache_set( 'aisales_recent_carts', $rows, 'aisales_carts', 60 );
+		wp_cache_set( 'aisales_cart_recent_25', $rows, 'aisales_carts', 60 );
 
 		return $rows;
 	}

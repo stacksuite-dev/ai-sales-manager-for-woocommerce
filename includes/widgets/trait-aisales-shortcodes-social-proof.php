@@ -567,42 +567,29 @@ trait AISales_Shortcodes_Social_Proof {
 	 * @return string HTML output or empty string.
 	 */
 	private function get_rating_breakdown_html( $product_id ) {
-		$cache_key = 'aisales_rating_breakdown_' . absint( $product_id );
-		$ratings   = wp_cache_get( $cache_key, 'aisales_carts' );
-		if ( false === $ratings ) {
-			global $wpdb;
-
-			$ratings = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT meta_value as rating, COUNT(*) as count
-					FROM {$wpdb->comments} c
-					INNER JOIN {$wpdb->commentmeta} cm ON c.comment_ID = cm.comment_id
-					WHERE c.comment_post_ID = %d
-					AND c.comment_approved = '1'
-					AND c.comment_type = 'review'
-					AND cm.meta_key = 'rating'
-					GROUP BY meta_value
-					ORDER BY meta_value DESC",
-					$product_id
+		$cache_key    = 'aisales_rating_breakdown_' . absint( $product_id );
+		$distribution = wp_cache_get( $cache_key, 'aisales_carts' );
+		if ( false === $distribution ) {
+			$reviews = get_comments(
+				array(
+					'post_id' => absint( $product_id ),
+					'type'    => 'review',
+					'status'  => 'approve',
 				)
 			);
-			wp_cache_set( $cache_key, $ratings, 'aisales_carts', 300 );
+
+			$distribution = array( 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0 );
+			foreach ( $reviews as $review ) {
+				$star = absint( get_comment_meta( $review->comment_ID, 'rating', true ) );
+				if ( $star >= 1 && $star <= 5 ) {
+					$distribution[ $star ]++;
+				}
+			}
+
+			wp_cache_set( $cache_key, $distribution, 'aisales_carts', 300 );
 		}
 
-		if ( empty( $ratings ) ) {
-			return '';
-		}
-
-		// Build distribution array.
-		$distribution = array( 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0 );
-		$total        = 0;
-
-		foreach ( $ratings as $row ) {
-			$star              = absint( $row->rating );
-			$count             = absint( $row->count );
-			$distribution[ $star ] = $count;
-			$total            += $count;
-		}
+		$total = array_sum( $distribution );
 
 		if ( 0 === $total ) {
 			return '';

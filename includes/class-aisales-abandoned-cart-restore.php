@@ -62,10 +62,17 @@ class AISales_Abandoned_Cart_Restore {
 
 		global $wpdb;
 		$table = AISales_Abandoned_Cart_DB::get_table_name();
-		$cart  = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM %i WHERE cart_token = %s", $table, $token ),
-			ARRAY_A
-		);
+		$cart  = wp_cache_get( 'aisales_cart_token_' . $token, 'aisales_carts' );
+		if ( false === $cart ) {
+			$cart = $wpdb->get_row(
+				$wpdb->prepare( "SELECT * FROM %i WHERE cart_token = %s", $table, $token ),
+				ARRAY_A
+			);
+			wp_cache_set( 'aisales_cart_token_' . $token, $cart ? $cart : 'none', 'aisales_carts', 300 );
+		}
+		if ( 'none' === $cart ) {
+			$cart = null;
+		}
 
 		if ( empty( $cart ) ) {
 			wp_safe_redirect( wc_get_cart_url() );
@@ -106,7 +113,7 @@ class AISales_Abandoned_Cart_Restore {
 			array( '%d' )
 		);
 
-		wp_cache_delete( 'aisales_cart_' . $token, 'aisales_carts' );
+		AISales_Abandoned_Cart_DB::flush_cart_cache( $token );
 
 		wp_safe_redirect( $redirect );
 		exit;

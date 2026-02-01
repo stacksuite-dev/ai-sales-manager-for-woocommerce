@@ -93,6 +93,7 @@ foreach ( $aisales_transients_to_delete as $aisales_transient ) {
 global $wpdb;
 
 $aisales_cart_table = $wpdb->prefix . 'aisales_abandoned_carts';
+wp_cache_delete( 'aisales_cart_table_exists', 'aisales_carts' );
 $wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %i", $aisales_cart_table ) );
 
 // Clear any object cache data.

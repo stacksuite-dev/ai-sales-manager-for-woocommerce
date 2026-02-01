@@ -132,7 +132,7 @@ class AISales_Abandoned_Cart_Tracker {
 			array( '%s' )
 		);
 
-		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
+		AISales_Abandoned_Cart_DB::flush_cart_cache( $token );
 
 		update_post_meta( $order_id, '_aisales_abandoned_cart_token', $token );
 	}
@@ -153,10 +153,17 @@ class AISales_Abandoned_Cart_Tracker {
 		$now        = current_time( 'mysql' );
 		$restore_key = $this->get_restore_key( $token );
 
-		$existing = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM %i WHERE cart_token = %s", $table, $token ),
-			ARRAY_A
-		);
+		$existing = wp_cache_get( 'aisales_cart_token_' . $token, 'aisales_carts' );
+		if ( false === $existing || 'none' === $existing ) {
+			$existing = $wpdb->get_row(
+				$wpdb->prepare( "SELECT id, email FROM %i WHERE cart_token = %s", $table, $token ),
+				ARRAY_A
+			);
+			wp_cache_set( 'aisales_cart_token_' . $token, $existing ? $existing : 'none', 'aisales_carts', 300 );
+		}
+		if ( 'none' === $existing ) {
+			$existing = null;
+		}
 
 		if ( empty( $email ) && ! empty( $existing['email'] ) ) {
 			$email = $existing['email'];
@@ -198,7 +205,7 @@ class AISales_Abandoned_Cart_Tracker {
 			$wpdb->insert( $table, $data, $formats );
 		}
 
-		wp_cache_delete( 'aisales_cart_stats', 'aisales_carts' );
+		AISales_Abandoned_Cart_DB::flush_cart_cache( $token );
 	}
 
 	/**
