@@ -23,5 +23,5 @@ if ( ! isset( $aisales_balance ) ) {
 <span class="aisales-balance-indicator">
 	<span class="dashicons dashicons-money-alt"></span>
 	<span id="aisales-balance-display"><?php echo esc_html( number_format( $aisales_balance ) ); ?></span>
-	<?php esc_html_e( 'tokens', 'ai-sales-manager-for-woocommerce' ); ?>
+	<?php esc_html_e( 'tokens', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 </span>

@@ -1,6 +1,6 @@
 <?php
 /**
- * API Client for AI Sales Manager SaaS
+ * API Client for StackSuite Sales Manager SaaS
  *
  * @package AISales_Sales_Manager
  */
@@ -132,17 +132,17 @@ class AISales_API_Client {
 				wp_trigger_error( __METHOD__, esc_html( sprintf( 'AISales API error %d from %s: %s', $status_code, $url, $body ) ), E_USER_NOTICE );
 			}
 			// Try to get error message from response, with fallback showing status code
-			$error_message = __( 'API request failed', 'ai-sales-manager-for-woocommerce' );
+			$error_message = __( 'API request failed', 'stacksuite-sales-manager-for-woocommerce' );
 			if ( isset( $data['message'] ) ) {
 				$error_message = $data['message'];
 			} elseif ( isset( $data['error'] ) ) {
 				$error_message = $data['error'];
 			} elseif ( ! empty( $body ) && strlen( $body ) < 200 ) {
 				/* translators: %1$d: HTTP status code, %2$s: error message */
-				$error_message = sprintf( __( 'API error %1$d: %2$s', 'ai-sales-manager-for-woocommerce' ), $status_code, $body );
+				$error_message = sprintf( __( 'API error %1$d: %2$s', 'stacksuite-sales-manager-for-woocommerce' ), $status_code, $body );
 			} else {
 				/* translators: %d: HTTP status code */
-				$error_message = sprintf( __( 'API error %d', 'ai-sales-manager-for-woocommerce' ), $status_code );
+				$error_message = sprintf( __( 'API error %d', 'stacksuite-sales-manager-for-woocommerce' ), $status_code );
 			}
 			return new WP_Error( 'api_error', $error_message, array( 'status' => $status_code, 'body' => $body ) );
 		}
@@ -658,7 +658,7 @@ class AISales_API_Client {
 		$status_code  = wp_remote_retrieve_response_code( $response );
 
 		if ( $status_code >= 400 ) {
-			$message = isset( $data['error']['message'] ) ? $data['error']['message'] : __( 'API request failed', 'ai-sales-manager-for-woocommerce' );
+			$message = isset( $data['error']['message'] ) ? $data['error']['message'] : __( 'API request failed', 'stacksuite-sales-manager-for-woocommerce' );
 			return new WP_Error(
 				'api_error',
 				$message,

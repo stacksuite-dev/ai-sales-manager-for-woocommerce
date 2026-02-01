@@ -105,25 +105,25 @@ trait AISales_Shortcodes_Conversion {
 			if ( $show_days ) {
 				$content .= '<div class="aisales-countdown__unit">';
 				$content .= '<span class="aisales-countdown__value" data-unit="days">00</span>';
-				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Days', 'ai-sales-manager-for-woocommerce' ) . '</span>';
+				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Days', 'stacksuite-sales-manager-for-woocommerce' ) . '</span>';
 				$content .= '</div>';
 			}
 			if ( $show_hours ) {
 				$content .= '<div class="aisales-countdown__unit">';
 				$content .= '<span class="aisales-countdown__value" data-unit="hours">00</span>';
-				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Hours', 'ai-sales-manager-for-woocommerce' ) . '</span>';
+				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Hours', 'stacksuite-sales-manager-for-woocommerce' ) . '</span>';
 				$content .= '</div>';
 			}
 			if ( $show_mins ) {
 				$content .= '<div class="aisales-countdown__unit">';
 				$content .= '<span class="aisales-countdown__value" data-unit="minutes">00</span>';
-				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Min', 'ai-sales-manager-for-woocommerce' ) . '</span>';
+				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Min', 'stacksuite-sales-manager-for-woocommerce' ) . '</span>';
 				$content .= '</div>';
 			}
 			if ( $show_secs ) {
 				$content .= '<div class="aisales-countdown__unit">';
 				$content .= '<span class="aisales-countdown__value" data-unit="seconds">00</span>';
-				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Sec', 'ai-sales-manager-for-woocommerce' ) . '</span>';
+				$content .= '<span class="aisales-countdown__label">' . esc_html__( 'Sec', 'stacksuite-sales-manager-for-woocommerce' ) . '</span>';
 				$content .= '</div>';
 			}
 
@@ -271,7 +271,7 @@ trait AISales_Shortcodes_Conversion {
 			}
 			if ( $show_amount ) {
 				/* translators: %s: savings amount */
-				$parts[] = '<span class="aisales-price-drop__amount">' . sprintf( esc_html__( 'Save %s', 'ai-sales-manager-for-woocommerce' ), wp_strip_all_tags( wc_price( $savings_amount ) ) ) . '</span>';
+				$parts[] = '<span class="aisales-price-drop__amount">' . sprintf( esc_html__( 'Save %s', 'stacksuite-sales-manager-for-woocommerce' ), wp_strip_all_tags( wc_price( $savings_amount ) ) ) . '</span>';
 			}
 			$content = implode( ' ', $parts );
 		} else {

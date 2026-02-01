@@ -509,7 +509,7 @@ trait AISales_Shortcodes_Discovery {
 
 			// Sale badge (if on sale).
 			if ( $product->is_on_sale() ) {
-				$output .= '<span class="aisales-product-grid__sale-badge">' . esc_html__( 'Sale', 'ai-sales-manager-for-woocommerce' ) . '</span>';
+				$output .= '<span class="aisales-product-grid__sale-badge">' . esc_html__( 'Sale', 'stacksuite-sales-manager-for-woocommerce' ) . '</span>';
 			}
 
 			$output .= '</div>'; // End image-wrap.

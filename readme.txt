@@ -1,4 +1,4 @@
-=== AI Sales Manager for WooCommerce ===
+=== StackSuite Sales Manager for WooCommerce ===
 Contributors: stacksuite
 Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
@@ -14,7 +14,7 @@ AI-powered WooCommerce product management. Generate content, suggest tags, and c
 
 == Description ==
 
-AI Sales Manager for WooCommerce brings the power of AI to your WooCommerce store. Enhance your product catalog with:
+StackSuite Sales Manager for WooCommerce brings the power of AI to your WooCommerce store. Enhance your product catalog with:
 
 * **AI Agent Chat** - Interactive chat interface to manage products and categories with AI assistance
 * **Content Generation** - Improve product descriptions, generate from titles, or SEO optimize existing content
@@ -43,10 +43,10 @@ AI Sales Manager for WooCommerce brings the power of AI to your WooCommerce stor
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/ai-sales-manager-for-woocommerce/`
+1. Upload the plugin files to `/wp-content/plugins/stacksuite-sales-manager-for-woocommerce/`
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Ensure WooCommerce is installed and active
-4. Go to AI Sales Manager in the admin menu
+4. Go to StackSuite Sales Manager in the admin menu
 5. Enter your email to connect your store (domain-based authentication)
 6. Top up your token balance
 7. Start using AI tools on your products or try the AI Agent chat!
@@ -72,7 +72,7 @@ Yes, the plugin works with any properly coded WooCommerce theme.
 
 = What happens when I uninstall the plugin? =
 
-When you delete the plugin through WordPress, all plugin data is removed including your API key, balance cache, and store context settings. Your account on the AI Sales Manager service remains intact - you can reconnect anytime using the same email.
+When you delete the plugin through WordPress, all plugin data is removed including your API key, balance cache, and store context settings. Your account on the StackSuite Sales Manager service remains intact - you can reconnect anytime using the same email.
 
 = Does it work with Yoast SEO or RankMath? =
 
@@ -88,7 +88,7 @@ This plugin is specifically designed for WooCommerce stores. It integrates with 
 
 == External Services ==
 
-This plugin connects to the AI Sales Manager SaaS platform (https://ai-sales-manager-for-woocommerce.store) for:
+This plugin connects to the StackSuite Sales Manager SaaS platform (https://ai-sales-manager-for-woocommerce.store) for:
 
 * AI content generation and processing
 * Token balance and account management
@@ -216,4 +216,4 @@ Code refactoring for WordPress.org compliance. All 'wooai' prefixes renamed to '
 Major update with AI Agent chat interface, category management, and improved code quality. Domain-based authentication is now the recommended connection method.
 
 = 1.0.0 =
-Initial release of AI Sales Manager for WooCommerce.
+Initial release of StackSuite Sales Manager for WooCommerce.

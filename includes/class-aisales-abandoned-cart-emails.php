@@ -90,16 +90,16 @@ class AISales_Abandoned_Cart_Emails {
 	private function get_default_templates() {
 		return array(
 			1 => array(
-				'subject' => __( 'You left items in your cart', 'ai-sales-manager-for-woocommerce' ),
-				'body'    => __( "Hi {customer_name},\n\nYou left these items in your cart:\n{cart_items}\n\nTotal: {cart_total}\n\nComplete your purchase here: {restore_link}\n\nThanks,\n{store_name}", 'ai-sales-manager-for-woocommerce' ),
+				'subject' => __( 'You left items in your cart', 'stacksuite-sales-manager-for-woocommerce' ),
+				'body'    => __( "Hi {customer_name},\n\nYou left these items in your cart:\n{cart_items}\n\nTotal: {cart_total}\n\nComplete your purchase here: {restore_link}\n\nThanks,\n{store_name}", 'stacksuite-sales-manager-for-woocommerce' ),
 			),
 			2 => array(
-				'subject' => __( 'Still thinking it over?', 'ai-sales-manager-for-woocommerce' ),
-				'body'    => __( "Hi {customer_name},\n\nYour cart is still waiting:\n{cart_items}\n\nTotal: {cart_total}\n\nResume checkout: {restore_link}\n\n{store_name}", 'ai-sales-manager-for-woocommerce' ),
+				'subject' => __( 'Still thinking it over?', 'stacksuite-sales-manager-for-woocommerce' ),
+				'body'    => __( "Hi {customer_name},\n\nYour cart is still waiting:\n{cart_items}\n\nTotal: {cart_total}\n\nResume checkout: {restore_link}\n\n{store_name}", 'stacksuite-sales-manager-for-woocommerce' ),
 			),
 			3 => array(
-				'subject' => __( 'Last chance to complete your order', 'ai-sales-manager-for-woocommerce' ),
-				'body'    => __( "Hi {customer_name},\n\nYour cart is about to expire:\n{cart_items}\n\nTotal: {cart_total}\n\nFinish now: {restore_link}\n\nThanks,\n{store_name}", 'ai-sales-manager-for-woocommerce' ),
+				'subject' => __( 'Last chance to complete your order', 'stacksuite-sales-manager-for-woocommerce' ),
+				'body'    => __( "Hi {customer_name},\n\nYour cart is about to expire:\n{cart_items}\n\nTotal: {cart_total}\n\nFinish now: {restore_link}\n\nThanks,\n{store_name}", 'stacksuite-sales-manager-for-woocommerce' ),
 			),
 		);
 	}
@@ -145,7 +145,7 @@ class AISales_Abandoned_Cart_Emails {
 		}
 
 		if ( empty( $items ) ) {
-			return esc_html__( 'Your cart items', 'ai-sales-manager-for-woocommerce' );
+			return esc_html__( 'Your cart items', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		return '<ul><li>' . implode( '</li><li>', $items ) . '</li></ul>';
@@ -174,7 +174,7 @@ class AISales_Abandoned_Cart_Emails {
 		$parts = explode( '@', $email );
 		$name  = isset( $parts[0] ) ? $parts[0] : '';
 		$name  = trim( preg_replace( '/[^a-zA-Z]+/', ' ', $name ) );
-		$name  = $name ? ucwords( $name ) : __( 'there', 'ai-sales-manager-for-woocommerce' );
+		$name  = $name ? ucwords( $name ) : __( 'there', 'stacksuite-sales-manager-for-woocommerce' );
 
 		return $name;
 	}

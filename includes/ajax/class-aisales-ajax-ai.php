@@ -116,10 +116,10 @@ class AISales_Ajax_AI extends AISales_Ajax_Base {
 		$product_id = $this->get_post( 'product_id', 'int' );
 
 		if ( ! $product_id ) {
-			$this->error( __( 'Invalid product.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid product.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
-		$image_url = $this->require_post( 'image_url', 'url', __( 'No image selected.', 'ai-sales-manager-for-woocommerce' ) );
+		$image_url = $this->require_post( 'image_url', 'url', __( 'No image selected.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$action    = $this->get_post( 'improve_action', 'key', 'enhance' );
 
 		$result = $this->handle_api_result(

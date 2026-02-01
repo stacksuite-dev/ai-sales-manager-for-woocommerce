@@ -54,13 +54,13 @@ class AISales_Tool_Executor {
 	 */
 	public function execute( $tool, $params = array() ) {
 		if ( ! in_array( $tool, $this->available_tools, true ) ) {
-			return new WP_Error( 'invalid_tool', __( 'Unknown tool.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'invalid_tool', __( 'Unknown tool.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$method = 'execute_' . $tool;
 
 		if ( ! method_exists( $this, $method ) ) {
-			return new WP_Error( 'not_implemented', __( 'Tool not implemented.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_implemented', __( 'Tool not implemented.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		return $this->$method( $params );
@@ -170,14 +170,14 @@ class AISales_Tool_Executor {
 		$limit                = isset( $params['limit'] ) ? min( absint( $params['limit'] ), 100 ) : 50;
 
 		if ( empty( $category_id ) ) {
-			return new WP_Error( 'missing_param', __( 'category_id is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'category_id is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get category data
 		$term = get_term( $category_id, 'product_cat' );
 
 		if ( ! $term || is_wp_error( $term ) ) {
-			return new WP_Error( 'not_found', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_found', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$category_data = $this->format_category_data( $term );
@@ -235,7 +235,7 @@ class AISales_Tool_Executor {
 		$slug      = isset( $params['slug'] ) ? sanitize_title( $params['slug'] ) : '';
 
 		if ( empty( $page_type ) ) {
-			return new WP_Error( 'missing_param', __( 'page_type is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'page_type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = array(
@@ -301,7 +301,7 @@ class AISales_Tool_Executor {
 				if ( isset( $page ) && $page ) {
 					$result = $this->extract_page_content( $page );
 				} else {
-					return new WP_Error( 'not_found', __( 'Page not found.', 'ai-sales-manager-for-woocommerce' ) );
+					return new WP_Error( 'not_found', __( 'Page not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 				}
 				break;
 
@@ -318,7 +318,7 @@ class AISales_Tool_Executor {
 				if ( isset( $product ) && $product ) {
 					$result = $this->extract_product_content( $product );
 				} else {
-					return new WP_Error( 'not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+					return new WP_Error( 'not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 				}
 				break;
 
@@ -332,12 +332,12 @@ class AISales_Tool_Executor {
 				if ( isset( $term ) && $term && ! is_wp_error( $term ) ) {
 					$result = $this->extract_category_content( $term );
 				} else {
-					return new WP_Error( 'not_found', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+					return new WP_Error( 'not_found', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 				}
 				break;
 
 			default:
-				return new WP_Error( 'invalid_type', __( 'Invalid page type.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'invalid_type', __( 'Invalid page type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		return $result;

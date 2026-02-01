@@ -93,13 +93,13 @@ class AISales_Abandoned_Cart_Settings_Page {
 		$settings = AISales_Abandoned_Cart_Settings::get_settings();
 		?>
 		<section class="aisales-abandoned-carts-settings">
-			<h2><?php esc_html_e( 'Abandoned Cart Settings', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+			<h2><?php esc_html_e( 'Abandoned Cart Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 			<?php
 		$aisales_saved_nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
 		?>
 		<?php if ( isset( $_GET['aisales_saved'] ) && wp_verify_nonce( $aisales_saved_nonce, 'aisales_settings_saved' ) ) : ?>
 				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'Settings saved.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+					<p><?php esc_html_e( 'Settings saved.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 				</div>
 			<?php endif; ?>
 			<form method="post">
@@ -107,62 +107,62 @@ class AISales_Abandoned_Cart_Settings_Page {
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row">
-							<label for="aisales-abandon-minutes"><?php esc_html_e( 'Abandon After (minutes)', 'ai-sales-manager-for-woocommerce' ); ?></label>
+							<label for="aisales-abandon-minutes"><?php esc_html_e( 'Abandon After (minutes)', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						</th>
 						<td>
 							<input type="number" id="aisales-abandon-minutes" name="abandon_minutes" class="small-text" min="5" value="<?php echo esc_attr( $settings['abandon_minutes'] ); ?>">
-							<p class="description"><?php esc_html_e( 'Mark carts abandoned after inactivity.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Mark carts abandoned after inactivity.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="aisales-retention-days"><?php esc_html_e( 'Retention (days)', 'ai-sales-manager-for-woocommerce' ); ?></label>
+							<label for="aisales-retention-days"><?php esc_html_e( 'Retention (days)', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						</th>
 						<td>
 							<input type="number" id="aisales-retention-days" name="retention_days" class="small-text" min="1" value="<?php echo esc_attr( $settings['retention_days'] ); ?>">
-							<p class="description"><?php esc_html_e( 'Expire carts after this many days.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Expire carts after this many days.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Recovery Emails', 'ai-sales-manager-for-woocommerce' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Recovery Emails', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 						<td>
 							<label for="aisales-enable-emails">
 								<input type="checkbox" id="aisales-enable-emails" name="enable_emails" value="1" <?php checked( $settings['enable_emails'] ); ?>>
-								<?php esc_html_e( 'Enable recovery emails', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Enable recovery emails', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Email Timing (hours)', 'ai-sales-manager-for-woocommerce' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Email Timing (hours)', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 						<td>
-							<label for="aisales-email-step-1"><?php esc_html_e( 'Email 1', 'ai-sales-manager-for-woocommerce' ); ?></label>
+							<label for="aisales-email-step-1"><?php esc_html_e( 'Email 1', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 							<input type="number" id="aisales-email-step-1" name="email_step_1" class="small-text" min="1" value="<?php echo esc_attr( $settings['email_steps'][1] ); ?>">
 							<label for="aisales-email-step-2" style="margin-left:10px;">
-								<?php esc_html_e( 'Email 2', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Email 2', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<input type="number" id="aisales-email-step-2" name="email_step_2" class="small-text" min="1" value="<?php echo esc_attr( $settings['email_steps'][2] ); ?>">
 							<label for="aisales-email-step-3" style="margin-left:10px;">
-								<?php esc_html_e( 'Email 3', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Email 3', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<input type="number" id="aisales-email-step-3" name="email_step_3" class="small-text" min="1" value="<?php echo esc_attr( $settings['email_steps'][3] ); ?>">
-							<p class="description"><?php esc_html_e( 'Hours after abandonment.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Hours after abandonment.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="aisales-restore-redirect"><?php esc_html_e( 'Restore Link Destination', 'ai-sales-manager-for-woocommerce' ); ?></label>
+							<label for="aisales-restore-redirect"><?php esc_html_e( 'Restore Link Destination', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						</th>
 						<td>
 							<select id="aisales-restore-redirect" name="restore_redirect">
-								<option value="checkout" <?php selected( $settings['restore_redirect'], 'checkout' ); ?>><?php esc_html_e( 'Checkout', 'ai-sales-manager-for-woocommerce' ); ?></option>
-								<option value="cart" <?php selected( $settings['restore_redirect'], 'cart' ); ?>><?php esc_html_e( 'Cart', 'ai-sales-manager-for-woocommerce' ); ?></option>
+								<option value="checkout" <?php selected( $settings['restore_redirect'], 'checkout' ); ?>><?php esc_html_e( 'Checkout', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+								<option value="cart" <?php selected( $settings['restore_redirect'], 'cart' ); ?>><?php esc_html_e( 'Cart', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
 							</select>
 						</td>
 					</tr>
 				</table>
 				<p class="submit">
 					<button type="submit" name="aisales_abandoned_cart_settings_submit" class="button button-primary">
-						<?php esc_html_e( 'Save Changes', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Save Changes', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</p>
 			</form>

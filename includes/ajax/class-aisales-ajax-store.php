@@ -55,7 +55,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		check_ajax_referer( $this->nonce_action, $this->nonce_field );
 
 		if ( ! current_user_can( $capability ) ) {
-			$this->error( __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Permission denied.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -90,7 +90,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		update_option( 'aisales_store_context', $store_context );
 
 		$this->success( array(
-			'message' => __( 'Store context saved successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Store context saved successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -124,7 +124,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		$this->success( array(
 			'message' => sprintf(
 				/* translators: %1$s: category count, %2$s: product count */
-				__( 'Synced: %1$s categories, %2$s products', 'ai-sales-manager-for-woocommerce' ),
+				__( 'Synced: %1$s categories, %2$s products', 'stacksuite-sales-manager-for-woocommerce' ),
 				number_format_i18n( $category_count ),
 				number_format_i18n( $product_total )
 			),
@@ -151,7 +151,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		$balance = $this->get_post( 'balance', 'int' );
 
 		if ( null === $balance ) {
-			$this->error( __( 'Invalid balance value.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid balance value.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		update_option( 'aisales_balance', $balance );
@@ -166,7 +166,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		check_ajax_referer( $this->chat_nonce_action, $this->nonce_field );
 
 		if ( ! current_user_can( 'upload_files' ) ) {
-			$this->error( __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Permission denied.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$image_data = $this->get_post( 'image_data', 'text' );
@@ -189,7 +189,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		}
 
 		if ( empty( $image_data ) ) {
-			$this->error( __( 'No image data provided.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'No image data provided.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Handle base64 encoded data
@@ -240,7 +240,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 	public function handle_fetch_tool_data() {
 		$this->verify_chat_request();
 
-		$tool_name = $this->require_post( 'tool_name', 'key', __( 'Tool name is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$tool_name = $this->require_post( 'tool_name', 'key', __( 'Tool name is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$params    = $this->get_json_post( 'params', true, array() );
 
 		// Sanitize params
@@ -273,17 +273,17 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		) );
 
 		if ( is_wp_error( $response ) ) {
-			$this->error( __( 'Failed to download image: ', 'ai-sales-manager-for-woocommerce' ) . $response->get_error_message() );
+			$this->error( __( 'Failed to download image: ', 'stacksuite-sales-manager-for-woocommerce' ) . $response->get_error_message() );
 		}
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 		if ( 200 !== $response_code ) {
-			$this->error( __( 'Failed to download image. HTTP error: ', 'ai-sales-manager-for-woocommerce' ) . $response_code );
+			$this->error( __( 'Failed to download image. HTTP error: ', 'stacksuite-sales-manager-for-woocommerce' ) . $response_code );
 		}
 
 		$decoded = wp_remote_retrieve_body( $response );
 		if ( empty( $decoded ) ) {
-			$this->error( __( 'Downloaded image is empty.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Downloaded image is empty.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Verify it's a valid image
@@ -292,7 +292,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 
 		$allowed_mimes = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
 		if ( ! in_array( $mime, $allowed_mimes, true ) ) {
-			$this->error( __( 'Invalid image type from URL.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid image type from URL.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$this->save_image_to_media_library( $decoded, $mime, $filename, $title );
@@ -310,7 +310,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		if ( strpos( $image_data, 'data:image/' ) === 0 ) {
 			preg_match( '/data:image\/(\w+);base64,(.+)/', $image_data, $matches );
 			if ( count( $matches ) !== 3 ) {
-				$this->error( __( 'Invalid image data format.', 'ai-sales-manager-for-woocommerce' ) );
+				$this->error( __( 'Invalid image data format.', 'stacksuite-sales-manager-for-woocommerce' ) );
 			}
 			$extension  = $matches[1];
 			$image_data = $matches[2];
@@ -320,7 +320,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		// Decode base64
 		$decoded = base64_decode( $image_data );
 		if ( false === $decoded ) {
-			$this->error( __( 'Failed to decode image data.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Failed to decode image data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Determine mime type
@@ -329,7 +329,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 
 		$allowed_mimes = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
 		if ( ! in_array( $mime, $allowed_mimes, true ) ) {
-			$this->error( __( 'Invalid image type.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid image type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$this->save_image_to_media_library( $decoded, $mime, $filename, $title );
@@ -356,7 +356,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		// Write file
 		$result = file_put_contents( $file_path, $image_data );
 		if ( false === $result ) {
-			$this->error( __( 'Failed to save image file.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Failed to save image file.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Create attachment
@@ -382,7 +382,7 @@ class AISales_Ajax_Store extends AISales_Ajax_Base {
 		$this->success( array(
 			'attachment_id' => $attachment_id,
 			'url'           => wp_get_attachment_url( $attachment_id ),
-			'message'       => __( 'Image saved to media library.', 'ai-sales-manager-for-woocommerce' ),
+			'message'       => __( 'Image saved to media library.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 }

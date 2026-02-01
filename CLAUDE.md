@@ -1,10 +1,10 @@
-# AI Sales Manager for WooCommerce - Developer Notes
+# StackSuite Sales Manager for WooCommerce - Developer Notes
 
 ## Project Structure
 
 ```
 plugin/
-├── ai-sales-manager-for-woocommerce.php  # Main plugin file
+├── stacksuite-sales-manager-for-woocommerce.php  # Main plugin file
 ├── includes/                              # PHP classes
 │   ├── ajax/                              # AJAX handlers (modular)
 │   │   ├── class-aisales-ajax-base.php    # Abstract base class
@@ -85,8 +85,8 @@ Located in `includes/widgets/class-aisales-widgets-page.php`:
 
 ```php
 'widget_key' => array(
-    'name'        => __( 'Widget Name', 'ai-sales-manager-for-woocommerce' ),
-    'description' => __( 'Description', 'ai-sales-manager-for-woocommerce' ),
+    'name'        => __( 'Widget Name', 'stacksuite-sales-manager-for-woocommerce' ),
+    'description' => __( 'Description', 'stacksuite-sales-manager-for-woocommerce' ),
     'shortcode'   => 'aisales_shortcode_name',
     'category'    => 'social_proof', // social_proof, conversion, discovery
     'type'        => 'shortcode',    // shortcode or feature
@@ -236,7 +236,7 @@ All admin pages follow consistent header structure:
     <div class="aisales-{page}-header__left">
         <span class="aisales-{page}-header__title">
             <span class="dashicons dashicons-{icon}"></span>
-            <?php esc_html_e( 'Page Title', 'ai-sales-manager-for-woocommerce' ); ?>
+            <?php esc_html_e( 'Page Title', 'stacksuite-sales-manager-for-woocommerce' ); ?>
         </span>
         <span class="aisales-{page}-header__subtitle">...</span>
     </div>

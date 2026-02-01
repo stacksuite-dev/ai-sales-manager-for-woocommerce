@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: AI Sales Manager for WooCommerce
+ * Plugin Name: StackSuite Sales Manager for WooCommerce
  * Plugin URI: https://github.com/stacksuite-dev/woo-ai-sales-manager
  * Description: AI-powered product catalog management for WooCommerce. Generate content, suggest tags/categories, and create/improve product images using Google Gemini.
  * Version: 1.4.4
@@ -8,7 +8,7 @@
  * Author URI: https://stacksuite.dev
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: ai-sales-manager-for-woocommerce
+ * Text Domain: stacksuite-sales-manager-for-woocommerce
  * Domain Path: /languages
  * Requires at least: 6.2
  * Tested up to: 6.9
@@ -59,8 +59,8 @@ function aisales_woocommerce_missing_notice() {
 	?>
 	<div class="notice notice-error">
 		<p>
-			<strong><?php esc_html_e( 'AI Sales Manager for WooCommerce', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-			<?php esc_html_e( 'requires WooCommerce to be installed and active.', 'ai-sales-manager-for-woocommerce' ); ?>
+			<strong><?php esc_html_e( 'StackSuite Sales Manager for WooCommerce', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+			<?php esc_html_e( 'requires WooCommerce to be installed and active.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 		</p>
 	</div>
 	<?php
@@ -255,13 +255,13 @@ final class AISales_Sales_Manager {
 				'nonce'     => wp_create_nonce( 'aisales_nonce' ),
 				'chatNonce' => wp_create_nonce( 'aisales_chat_nonce' ),
 				'strings'   => array(
-					'error'        => __( 'An error occurred. Please try again.', 'ai-sales-manager-for-woocommerce' ),
-					'generating'   => __( 'Generating...', 'ai-sales-manager-for-woocommerce' ),
-					'applying'     => __( 'Applying...', 'ai-sales-manager-for-woocommerce' ),
-					'success'      => __( 'Success!', 'ai-sales-manager-for-woocommerce' ),
-					'lowBalance'   => __( 'Low balance. Please top up.', 'ai-sales-manager-for-woocommerce' ),
-					'confirmApply' => __( 'Apply this suggestion?', 'ai-sales-manager-for-woocommerce' ),
-					'clickToTopUp' => __( 'Click to add tokens', 'ai-sales-manager-for-woocommerce' ),
+					'error'        => __( 'An error occurred. Please try again.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'generating'   => __( 'Generating...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'applying'     => __( 'Applying...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'success'      => __( 'Success!', 'stacksuite-sales-manager-for-woocommerce' ),
+					'lowBalance'   => __( 'Low balance. Please top up.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'confirmApply' => __( 'Apply this suggestion?', 'stacksuite-sales-manager-for-woocommerce' ),
+					'clickToTopUp' => __( 'Click to add tokens', 'stacksuite-sales-manager-for-woocommerce' ),
 				),
 			)
 		);
@@ -335,7 +335,7 @@ final class AISales_Sales_Manager {
 	 */
 	public function plugin_action_links( $links ) {
 		$plugin_links = array(
-			'<a href="' . admin_url( 'admin.php?page=ai-sales-manager' ) . '">' . __( 'Settings', 'ai-sales-manager-for-woocommerce' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=ai-sales-manager' ) . '">' . __( 'Settings', 'stacksuite-sales-manager-for-woocommerce' ) . '</a>',
 		);
 		return array_merge( $plugin_links, $links );
 	}

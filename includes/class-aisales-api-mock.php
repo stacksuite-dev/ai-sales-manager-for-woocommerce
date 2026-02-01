@@ -964,7 +964,7 @@ class AISales_API_Mock {
 		if ( ! $stored || $stored['token'] !== $token ) {
 			return new WP_Error(
 				'invalid_token',
-				__( 'Invalid or expired recovery token.', 'ai-sales-manager-for-woocommerce' )
+				__( 'Invalid or expired recovery token.', 'stacksuite-sales-manager-for-woocommerce' )
 			);
 		}
 
@@ -974,7 +974,7 @@ class AISales_API_Mock {
 		return array(
 			'api_key' => $new_api_key,
 			'email'   => $stored['email'],
-			'message' => __( 'API key recovered successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'API key recovered successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 
@@ -988,8 +988,8 @@ class AISales_API_Mock {
 		return array(
 			'draft_id'        => 'draft_' . wp_generate_password( 8, false ),
 			'questions'       => array(
-				__( 'Which browser version are you using?', 'ai-sales-manager-for-woocommerce' ),
-				__( 'Does the issue persist after disabling caching?', 'ai-sales-manager-for-woocommerce' ),
+				__( 'Which browser version are you using?', 'stacksuite-sales-manager-for-woocommerce' ),
+				__( 'Does the issue persist after disabling caching?', 'stacksuite-sales-manager-for-woocommerce' ),
 			),
 			'ready_to_submit' => false,
 		);

@@ -37,8 +37,8 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 	public function handle_connect() {
 		$this->verify_request();
 
-		$email  = $this->require_post( 'email', 'email', __( 'Email is required.', 'ai-sales-manager-for-woocommerce' ) );
-		$domain = $this->require_post( 'domain', 'text', __( 'Domain is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$email  = $this->require_post( 'email', 'email', __( 'Email is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
+		$domain = $this->require_post( 'domain', 'text', __( 'Domain is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$result = $this->api()->connect( $email, $domain );
 
@@ -66,13 +66,13 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 		if ( $is_new && $welcome_bonus > 0 ) {
 			$message = sprintf(
 				/* translators: %s: number of bonus tokens */
-				__( 'Welcome! Your account has been created and you received %s bonus tokens to get started.', 'ai-sales-manager-for-woocommerce' ),
+				__( 'Welcome! Your account has been created and you received %s bonus tokens to get started.', 'stacksuite-sales-manager-for-woocommerce' ),
 				number_format_i18n( $welcome_bonus )
 			);
 		} elseif ( $is_new ) {
-			$message = __( 'Welcome! Your account has been created successfully.', 'ai-sales-manager-for-woocommerce' );
+			$message = __( 'Welcome! Your account has been created successfully.', 'stacksuite-sales-manager-for-woocommerce' );
 		} else {
-			$message = __( 'Successfully connected to your existing account.', 'ai-sales-manager-for-woocommerce' );
+			$message = __( 'Successfully connected to your existing account.', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		$this->success( array(
@@ -115,17 +115,17 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 		$domain = $this->get_site_domain();
 
 		if ( empty( $email ) || ! is_email( $email ) ) {
-			$this->error( __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		if ( empty( $domain ) ) {
-			$this->error( __( 'Could not determine site domain.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Could not determine site domain.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = $this->api()->create_recovery_token( $email, $domain );
 
 		// Generic success message for security (don't reveal if email/domain exists)
-		$generic_message = __( 'If an account exists with this email for this site, you will receive a recovery link shortly.', 'ai-sales-manager-for-woocommerce' );
+		$generic_message = __( 'If an account exists with this email for this site, you will receive a recovery link shortly.', 'stacksuite-sales-manager-for-woocommerce' );
 
 		if ( is_wp_error( $result ) ) {
 			$this->success( array( 'message' => $generic_message ) );
@@ -152,7 +152,7 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && function_exists( 'wp_trigger_error' ) ) {
 				wp_trigger_error( __METHOD__, esc_html( 'AISales: Failed to send recovery email to ' . $email ), E_USER_NOTICE );
 			}
-			$this->error( __( 'Failed to send recovery email. Please try again later or contact support.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Failed to send recovery email. Please try again later or contact support.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -162,7 +162,7 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 	public function handle_validate_recovery_token() {
 		$this->verify_nonce();
 
-		$token = $this->require_post( 'token', 'text', __( 'Invalid recovery token.', 'ai-sales-manager-for-woocommerce' ) );
+		$token = $this->require_post( 'token', 'text', __( 'Invalid recovery token.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$result = $this->handle_api_result( $this->api()->validate_recovery_token( $token ) );
 
@@ -174,12 +174,12 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 			}
 
 			$this->success( array(
-				'message'  => __( 'API key recovered successfully! You are now connected.', 'ai-sales-manager-for-woocommerce' ),
+				'message'  => __( 'API key recovered successfully! You are now connected.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'redirect' => admin_url( 'admin.php?page=ai-sales-manager' ),
 			) );
 		}
 
-		$this->error( __( 'Invalid response from server.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Invalid response from server.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -206,15 +206,15 @@ class AISales_Ajax_Auth extends AISales_Ajax_Base {
 
 		$subject = sprintf(
 			/* translators: %s: store name */
-			__( '[%s] API Key Recovery', 'ai-sales-manager-for-woocommerce' ),
+			__( '[%s] API Key Recovery', 'stacksuite-sales-manager-for-woocommerce' ),
 			$store_name
 		);
 
 		$message = sprintf(
 			/* translators: 1: store name, 2: site domain, 3: recovery URL */
 			__(
-				"Hello,\n\nYou (or someone else) requested to recover your AI Sales Manager API key for %1\$s (%2\$s).\n\nClick the link below to recover your API key:\n%3\$s\n\nThis link will expire in 1 hour.\n\nIf you did not request this recovery, you can safely ignore this email.\n\nThanks,\n%1\$s",
-				'ai-sales-manager-for-woocommerce'
+				"Hello,\n\nYou (or someone else) requested to recover your StackSuite Sales Manager API key for %1\$s (%2\$s).\n\nClick the link below to recover your API key:\n%3\$s\n\nThis link will expire in 1 hour.\n\nIf you did not request this recovery, you can safely ignore this email.\n\nThanks,\n%1\$s",
+				'stacksuite-sales-manager-for-woocommerce'
 			),
 			$store_name,
 			$domain,

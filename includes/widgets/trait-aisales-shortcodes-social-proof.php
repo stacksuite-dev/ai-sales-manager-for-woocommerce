@@ -300,7 +300,7 @@ trait AISales_Shortcodes_Social_Proof {
 
 			$text = sprintf(
 				/* translators: 1: customer name, 2: product name */
-				__( '%1$s purchased %2$s', 'ai-sales-manager-for-woocommerce' ),
+				__( '%1$s purchased %2$s', 'stacksuite-sales-manager-for-woocommerce' ),
 				esc_html( $customer_name ),
 				esc_html( $order_data['product_name'] )
 			);
@@ -308,7 +308,7 @@ trait AISales_Shortcodes_Social_Proof {
 			if ( ! empty( $location ) ) {
 				$text .= ' ' . sprintf(
 					/* translators: %s: customer location */
-					__( 'from %s', 'ai-sales-manager-for-woocommerce' ),
+					__( 'from %s', 'stacksuite-sales-manager-for-woocommerce' ),
 					esc_html( $location )
 				);
 			}
@@ -525,7 +525,7 @@ trait AISales_Shortcodes_Social_Proof {
 		if ( $show_count ) {
 			$count_text = sprintf(
 				/* translators: %s: number of reviews */
-				_n( '(%s review)', '(%s reviews)', $review_count, 'ai-sales-manager-for-woocommerce' ),
+				_n( '(%s review)', '(%s reviews)', $review_count, 'stacksuite-sales-manager-for-woocommerce' ),
 				$this->format_number( $review_count )
 			);
 			$content .= '<span class="aisales-review-summary__count">' . esc_html( $count_text ) . '</span>';
@@ -689,11 +689,11 @@ trait AISales_Shortcodes_Social_Proof {
 	private function format_customer_name( $name, $privacy ) {
 		$name = trim( (string) $name );
 		if ( empty( $name ) ) {
-			return __( 'Someone', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Someone', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		if ( 'anonymous' === $privacy ) {
-			return __( 'Someone', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Someone', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		if ( 'first_city' === $privacy ) {

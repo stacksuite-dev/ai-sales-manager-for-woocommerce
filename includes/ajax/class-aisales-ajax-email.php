@@ -71,7 +71,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 	public function handle_save_email_template() {
 		$this->verify_request();
 
-		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$name          = $this->get_post( 'name', 'text' );
 		$subject       = $this->get_post( 'subject', 'text' );
 		$heading       = $this->get_post( 'heading', 'text' );
@@ -84,7 +84,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$valid_types   = array_keys( $email_manager->get_template_types() );
 
 		if ( ! in_array( $template_type, $valid_types, true ) ) {
-			$this->error( __( 'Invalid template type.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid template type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$template_data = array(
@@ -99,12 +99,12 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 
 		if ( $saved ) {
 			$this->success( array(
-				'message'  => __( 'Template saved successfully.', 'ai-sales-manager-for-woocommerce' ),
+				'message'  => __( 'Template saved successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'template' => $email_manager->get_template( $template_type ),
 			) );
 		}
 
-		$this->error( __( 'Failed to save template.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Failed to save template.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -114,10 +114,10 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$this->verify_request();
 
 		if ( ! $this->api()->is_connected() ) {
-			$this->error( __( 'Please connect to AI Sales Manager first.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Please connect to StackSuite Sales Manager first.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
-		$template_type   = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$template_type   = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$custom_prompt   = $this->get_post( 'custom_prompt', 'textarea' );
 		$regenerate_part = $this->get_post( 'regenerate_part', 'key' );
 
@@ -141,7 +141,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$result = $this->handle_api_result( $this->api()->generate_email_template( $request_body ) );
 
 		if ( ! isset( $result['template'] ) ) {
-			$this->error( __( 'Invalid API response.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid API response.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Update local balance if returned
@@ -191,7 +191,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$content   = wp_kses_post( $this->get_post( 'content', 'raw' ) );
 
 		if ( empty( $recipient ) || ! is_email( $recipient ) ) {
-			$this->error( __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$preview = $this->email_manager()->preview_template( array(
@@ -201,7 +201,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		) );
 
 		if ( empty( $preview['subject'] ) ) {
-			$preview['subject'] = __( 'Test Email Preview', 'ai-sales-manager-for-woocommerce' );
+			$preview['subject'] = __( 'Test Email Preview', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		$html    = $this->generate_email_preview_html( $preview );
@@ -210,11 +210,11 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 
 		if ( $sent ) {
 			$this->success( array(
-				'message' => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ),
+				'message' => __( 'Test email sent successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			) );
 		}
 
-		$this->error( __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Failed to send test email.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -235,11 +235,11 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$success       = $mail_provider->save_settings( $settings );
 
 		if ( ! $success ) {
-			$this->error( __( 'Failed to save settings.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Failed to save settings.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$this->success( array(
-			'message' => __( 'Email delivery settings saved.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Email delivery settings saved.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -252,20 +252,20 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$recipient = $this->get_post( 'recipient', 'email' );
 
 		if ( empty( $recipient ) || ! is_email( $recipient ) ) {
-			$this->error( __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
-		$subject = __( 'Email Delivery Test', 'ai-sales-manager-for-woocommerce' );
-		$body    = __( 'This is a test email sent from AI Sales Manager to verify your email delivery settings.', 'ai-sales-manager-for-woocommerce' );
+		$subject = __( 'Email Delivery Test', 'stacksuite-sales-manager-for-woocommerce' );
+		$body    = __( 'This is a test email sent from StackSuite Sales Manager to verify your email delivery settings.', 'stacksuite-sales-manager-for-woocommerce' );
 		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 
 		$sent = wp_mail( $recipient, $subject, $body, $headers );
 
 		if ( $sent ) {
-			$this->success( array( 'message' => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ) ) );
+			$this->success( array( 'message' => __( 'Test email sent successfully.', 'stacksuite-sales-manager-for-woocommerce' ) ) );
 		}
 
-		$this->error( __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Failed to send test email.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -274,17 +274,17 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 	public function handle_toggle_email_template() {
 		$this->verify_request();
 
-		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$enabled       = $this->get_post( 'enabled', 'bool', false );
 
 		$email_manager = $this->email_manager();
 
 		if ( $enabled ) {
 			$success = $email_manager->enable_template( $template_type );
-			$message = __( 'Template enabled successfully.', 'ai-sales-manager-for-woocommerce' );
+			$message = __( 'Template enabled successfully.', 'stacksuite-sales-manager-for-woocommerce' );
 		} else {
 			$success = $email_manager->disable_template( $template_type );
-			$message = __( 'Template disabled successfully.', 'ai-sales-manager-for-woocommerce' );
+			$message = __( 'Template disabled successfully.', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 
 		if ( $success ) {
@@ -294,7 +294,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 			) );
 		}
 
-		$this->error( __( 'Failed to update template status.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Failed to update template status.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -303,18 +303,18 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 	public function handle_delete_email_template() {
 		$this->verify_request();
 
-		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$template_type = $this->require_post( 'template_type', 'key', __( 'Template type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$email_manager = $this->email_manager();
 		$success       = $email_manager->delete_template( $template_type );
 
 		if ( $success ) {
 			$this->success( array(
-				'message' => __( 'Template deleted successfully.', 'ai-sales-manager-for-woocommerce' ),
+				'message' => __( 'Template deleted successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			) );
 		}
 
-		$this->error( __( 'Failed to delete template.', 'ai-sales-manager-for-woocommerce' ) );
+		$this->error( __( 'Failed to delete template.', 'stacksuite-sales-manager-for-woocommerce' ) );
 	}
 
 	/**
@@ -326,7 +326,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		$context = $this->get_json_post( 'context', true, array() );
 
 		if ( empty( $context ) ) {
-			$this->error( __( 'Invalid wizard context.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid wizard context.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Sanitize context values
@@ -340,7 +340,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		update_option( 'aisales_email_wizard_context', $sanitized );
 
 		$this->success( array(
-			'message' => __( 'Wizard context saved.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Wizard context saved.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -357,7 +357,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 		delete_option( 'aisales_email_wizard_context' );
 
 		$this->success( array(
-			'message' => __( 'Email setup completed successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Email setup completed successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -418,7 +418,7 @@ class AISales_Ajax_Email extends AISales_Ajax_Base {
 
 		if ( empty( $footer_text ) ) {
 			/* translators: %s: site name */
-			$footer_text = sprintf( __( '%s - Powered by WooCommerce', 'ai-sales-manager-for-woocommerce' ), $store_name );
+			$footer_text = sprintf( __( '%s - Powered by WooCommerce', 'stacksuite-sales-manager-for-woocommerce' ), $store_name );
 		}
 
 		$header_text_color = $this->get_contrasting_color( $base_color );

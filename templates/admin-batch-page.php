@@ -21,10 +21,10 @@ defined( 'ABSPATH' ) || exit;
 		<div class="aisales-batch-header__left">
 			<span class="aisales-batch-title">
 				<span class="dashicons dashicons-update"></span>
-				<?php esc_html_e( 'Manage Catalog', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Manage Catalog', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
 			<span class="aisales-batch-subtitle">
-				<?php esc_html_e( 'AI-powered product optimization at scale', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'AI-powered product optimization at scale', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
 		</div>
 		<div class="aisales-batch-header__right">
@@ -37,27 +37,27 @@ defined( 'ABSPATH' ) || exit;
 	<div class="aisales-batch-steps">
 		<div class="aisales-batch-step aisales-batch-step--active" data-step="1">
 			<span class="aisales-batch-step__number">1</span>
-			<span class="aisales-batch-step__label"><?php esc_html_e( 'Select Products', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-batch-step__label"><?php esc_html_e( 'Select Products', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-batch-step__connector"></div>
 		<div class="aisales-batch-step" data-step="2">
 			<span class="aisales-batch-step__number">2</span>
-			<span class="aisales-batch-step__label"><?php esc_html_e( 'Configure', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-batch-step__label"><?php esc_html_e( 'Configure', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-batch-step__connector"></div>
 		<div class="aisales-batch-step" data-step="3">
 			<span class="aisales-batch-step__number">3</span>
-			<span class="aisales-batch-step__label"><?php esc_html_e( 'Preview & Refine', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-batch-step__label"><?php esc_html_e( 'Preview & Refine', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-batch-step__connector"></div>
 		<div class="aisales-batch-step" data-step="4">
 			<span class="aisales-batch-step__number">4</span>
-			<span class="aisales-batch-step__label"><?php esc_html_e( 'Process', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-batch-step__label"><?php esc_html_e( 'Process', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-batch-step__connector"></div>
 		<div class="aisales-batch-step" data-step="5">
 			<span class="aisales-batch-step__number">5</span>
-			<span class="aisales-batch-step__label"><?php esc_html_e( 'Apply', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-batch-step__label"><?php esc_html_e( 'Apply', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 	</div>
 
@@ -70,11 +70,11 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-card__header">
 					<h3>
 						<span class="dashicons dashicons-products"></span>
-						<?php esc_html_e( 'Select Products to Enhance', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Select Products to Enhance', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</h3>
 					<div class="aisales-card__header-action">
 						<span class="aisales-selected-count">
-							<span id="aisales-selected-count">0</span> <?php esc_html_e( 'selected', 'ai-sales-manager-for-woocommerce' ); ?>
+							<span id="aisales-selected-count">0</span> <?php esc_html_e( 'selected', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</span>
 					</div>
 				</div>
@@ -82,27 +82,27 @@ defined( 'ABSPATH' ) || exit;
 					<!-- Filters -->
 					<div class="aisales-batch-filters">
 						<div class="aisales-batch-filter">
-							<input type="text" id="aisales-product-search" class="aisales-input" placeholder="<?php esc_attr_e( 'Search products...', 'ai-sales-manager-for-woocommerce' ); ?>">
+							<input type="text" id="aisales-product-search" class="aisales-input" placeholder="<?php esc_attr_e( 'Search products...', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
 						</div>
 						<div class="aisales-batch-filter">
 							<select id="aisales-category-filter" class="aisales-select">
-								<option value=""><?php esc_html_e( 'All Categories', 'ai-sales-manager-for-woocommerce' ); ?></option>
+								<option value=""><?php esc_html_e( 'All Categories', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
 							</select>
 						</div>
 						<div class="aisales-batch-filter">
 							<select id="aisales-status-filter" class="aisales-select">
-								<option value=""><?php esc_html_e( 'All Statuses', 'ai-sales-manager-for-woocommerce' ); ?></option>
-								<option value="publish"><?php esc_html_e( 'Published', 'ai-sales-manager-for-woocommerce' ); ?></option>
-								<option value="draft"><?php esc_html_e( 'Draft', 'ai-sales-manager-for-woocommerce' ); ?></option>
-								<option value="pending"><?php esc_html_e( 'Pending', 'ai-sales-manager-for-woocommerce' ); ?></option>
+								<option value=""><?php esc_html_e( 'All Statuses', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+								<option value="publish"><?php esc_html_e( 'Published', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+								<option value="draft"><?php esc_html_e( 'Draft', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+								<option value="pending"><?php esc_html_e( 'Pending', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
 							</select>
 						</div>
 						<div class="aisales-batch-filter-actions">
 							<button type="button" class="aisales-btn aisales-btn--secondary aisales-btn--sm" id="aisales-select-all">
-								<?php esc_html_e( 'Select All', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Select All', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 							<button type="button" class="aisales-btn aisales-btn--secondary aisales-btn--sm" id="aisales-deselect-all">
-								<?php esc_html_e( 'Deselect All', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Deselect All', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 						</div>
 					</div>
@@ -112,7 +112,7 @@ defined( 'ABSPATH' ) || exit;
 						<!-- Products will be rendered here by JavaScript -->
 						<div class="aisales-batch-products__loading">
 							<span class="spinner is-active"></span>
-							<?php esc_html_e( 'Loading products...', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Loading products...', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</div>
 					</div>
 				</div>
@@ -122,12 +122,12 @@ defined( 'ABSPATH' ) || exit;
 			<div class="aisales-batch-actions">
 				<div class="aisales-batch-actions__left">
 					<span class="aisales-batch-info">
-						<?php esc_html_e( 'Select at least one product to continue', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Select at least one product to continue', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</span>
 				</div>
 				<div class="aisales-batch-actions__right">
 					<button type="button" class="aisales-btn aisales-btn--primary" id="aisales-step1-next" disabled>
-						<?php esc_html_e( 'Next: Configure Enhancements', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Next: Configure Enhancements', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						<span class="dashicons dashicons-arrow-right-alt2"></span>
 					</button>
 				</div>
@@ -142,7 +142,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-card__header">
 						<h3>
 							<span class="dashicons dashicons-admin-tools"></span>
-							<?php esc_html_e( 'What to Enhance', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'What to Enhance', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 					</div>
 					<div class="aisales-card__body">
@@ -154,8 +154,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-text"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'Product Description', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Full product description with features and benefits', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'Product Description', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Full product description with features and benefits', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -166,8 +166,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-editor-paragraph"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'Short Description', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Brief summary for product listings', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'Short Description', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Brief summary for product listings', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -178,8 +178,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-search"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'SEO Title', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Optimized page title for search engines', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'SEO Title', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Optimized page title for search engines', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -190,8 +190,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-media-text"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'SEO Meta Description', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Compelling meta description for search results', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'SEO Meta Description', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Compelling meta description for search results', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -202,8 +202,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-tag"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'Product Tags', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Relevant tags for better discoverability', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'Product Tags', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Relevant tags for better discoverability', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -214,8 +214,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-category"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'Category Suggestions', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Better category placement recommendations', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'Category Suggestions', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Better category placement recommendations', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -226,8 +226,8 @@ defined( 'ABSPATH' ) || exit;
 										<span class="dashicons dashicons-format-image"></span>
 									</span>
 									<div class="aisales-enhancement-option__info">
-										<strong><?php esc_html_e( 'Image Alt Text', 'ai-sales-manager-for-woocommerce' ); ?></strong>
-										<span><?php esc_html_e( 'Accessible and SEO-friendly alt text', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<strong><?php esc_html_e( 'Image Alt Text', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'Accessible and SEO-friendly alt text', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</div>
 								</div>
 							</label>
@@ -240,22 +240,22 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-card__header">
 						<h3>
 							<span class="dashicons dashicons-lightbulb"></span>
-							<?php esc_html_e( 'Your Direction', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Your Direction', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 					</div>
 					<div class="aisales-card__body">
 						<div class="aisales-form-group">
 							<label class="aisales-label" for="aisales-direction">
-								<?php esc_html_e( 'Tell AI what you want (optional)', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Tell AI what you want (optional)', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<textarea 
 								id="aisales-direction" 
 								class="aisales-textarea" 
 								rows="4"
-								placeholder="<?php esc_attr_e( 'e.g., "Focus on luxury and premium quality. Use sophisticated language. Emphasize craftsmanship and attention to detail."', 'ai-sales-manager-for-woocommerce' ); ?>"
+								placeholder="<?php esc_attr_e( 'e.g., "Focus on luxury and premium quality. Use sophisticated language. Emphasize craftsmanship and attention to detail."', 'stacksuite-sales-manager-for-woocommerce' ); ?>"
 							></textarea>
 							<span class="aisales-help-text">
-								<?php esc_html_e( 'Describe the tone, style, or specific aspects you want the AI to focus on.', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Describe the tone, style, or specific aspects you want the AI to focus on.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</span>
 						</div>
 
@@ -263,23 +263,23 @@ defined( 'ABSPATH' ) || exit;
 						<div class="aisales-token-estimate" id="aisales-token-estimate">
 							<div class="aisales-token-estimate__header">
 								<span class="dashicons dashicons-calculator"></span>
-								<?php esc_html_e( 'Estimated Cost', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Estimated Cost', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</div>
 							<div class="aisales-token-estimate__body">
 								<div class="aisales-token-estimate__row">
-									<span><?php esc_html_e( 'Products:', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span><?php esc_html_e( 'Products:', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									<span id="aisales-estimate-products">0</span>
 								</div>
 								<div class="aisales-token-estimate__row">
-									<span><?php esc_html_e( 'Enhancements:', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span><?php esc_html_e( 'Enhancements:', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									<span id="aisales-estimate-enhancements">0</span>
 								</div>
 								<div class="aisales-token-estimate__row aisales-token-estimate__row--total">
-									<span><?php esc_html_e( 'Est. Tokens:', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span><?php esc_html_e( 'Est. Tokens:', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									<span id="aisales-estimate-tokens">~0</span>
 								</div>
 								<div class="aisales-token-estimate__row">
-									<span><?php esc_html_e( 'Your Balance:', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span><?php esc_html_e( 'Your Balance:', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									<span id="aisales-estimate-balance"><?php echo esc_html( number_format( $balance ) ); ?></span>
 								</div>
 							</div>
@@ -293,12 +293,12 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-batch-actions__left">
 					<button type="button" class="aisales-btn aisales-btn--secondary" id="aisales-step2-back">
 						<span class="dashicons dashicons-arrow-left-alt2"></span>
-						<?php esc_html_e( 'Back', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Back', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 				<div class="aisales-batch-actions__right">
 					<button type="button" class="aisales-btn aisales-btn--primary" id="aisales-step2-next" disabled>
-						<?php esc_html_e( 'Generate Preview', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Generate Preview', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						<span class="dashicons dashicons-arrow-right-alt2"></span>
 					</button>
 				</div>
@@ -313,8 +313,8 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-batch-loading-animation">
 						<span class="dashicons dashicons-update aisales-spin"></span>
 					</div>
-					<h3><?php esc_html_e( 'Generating Preview...', 'ai-sales-manager-for-woocommerce' ); ?></h3>
-					<p id="aisales-preview-status"><?php esc_html_e( 'Initializing...', 'ai-sales-manager-for-woocommerce' ); ?></p>
+					<h3><?php esc_html_e( 'Generating Preview...', 'stacksuite-sales-manager-for-woocommerce' ); ?></h3>
+					<p id="aisales-preview-status"><?php esc_html_e( 'Initializing...', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					<div class="aisales-progress">
 						<div class="aisales-progress__fill aisales-progress__fill--brand" id="aisales-preview-progress" style="width: 0%"></div>
 					</div>
@@ -327,17 +327,17 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-card__header">
 						<h3>
 							<span class="dashicons dashicons-visibility"></span>
-							<?php esc_html_e( 'Preview Results', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Preview Results', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<div class="aisales-card__header-action">
 							<span class="aisales-badge aisales-badge--info" id="aisales-preview-count-badge">
-								<?php esc_html_e( 'sample products', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'sample products', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</span>
 						</div>
 					</div>
 					<div class="aisales-card__body">
 						<p class="aisales-preview-intro">
-							<?php esc_html_e( 'Review how AI enhanced these sample products. You can refine the direction if needed.', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Review how AI enhanced these sample products. You can refine the direction if needed.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</p>
 
 						<!-- Preview Products Tabs -->
@@ -357,7 +357,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-card__header aisales-card__header--clickable" id="aisales-refinement-toggle">
 						<h3>
 							<span class="dashicons dashicons-admin-settings"></span>
-							<?php esc_html_e( 'Adjust Direction', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Adjust Direction', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<span class="dashicons dashicons-arrow-down-alt2 aisales-collapse-icon"></span>
 					</div>
@@ -368,28 +368,28 @@ defined( 'ABSPATH' ) || exit;
 							<div class="aisales-refinement-section">
 								<h4>
 									<span class="dashicons dashicons-text-page"></span>
-									<?php esc_html_e( 'Length & Structure', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Length & Structure', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</h4>
 								<div class="aisales-refinement-options">
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[length_structure][]" value="shorter_descriptions">
-										<span><?php esc_html_e( 'Shorter descriptions (under 100 words)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Shorter descriptions (under 100 words)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[length_structure][]" value="longer_descriptions">
-										<span><?php esc_html_e( 'Longer descriptions (200-300 words)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Longer descriptions (200-300 words)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[length_structure][]" value="use_bullet_points">
-										<span><?php esc_html_e( 'Use bullet points for features', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Use bullet points for features', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[length_structure][]" value="add_paragraphs">
-										<span><?php esc_html_e( 'Short paragraphs (2-3 sentences)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Short paragraphs (2-3 sentences)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[length_structure][]" value="seo_title_60">
-										<span><?php esc_html_e( 'SEO titles under 60 characters', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'SEO titles under 60 characters', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 								</div>
 							</div>
@@ -398,32 +398,32 @@ defined( 'ABSPATH' ) || exit;
 							<div class="aisales-refinement-section">
 								<h4>
 									<span class="dashicons dashicons-format-status"></span>
-									<?php esc_html_e( 'Tone & Style', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Tone & Style', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</h4>
 								<div class="aisales-refinement-options">
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_professional">
-										<span><?php esc_html_e( 'More professional/formal', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More professional/formal', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_casual">
-										<span><?php esc_html_e( 'More casual/conversational', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More casual/conversational', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_luxurious">
-										<span><?php esc_html_e( 'More luxurious/premium', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More luxurious/premium', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_playful">
-										<span><?php esc_html_e( 'More playful/energetic', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More playful/energetic', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_technical">
-										<span><?php esc_html_e( 'More technical/detailed', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More technical/detailed', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tone_style][]" value="more_emotional">
-										<span><?php esc_html_e( 'More emotional/storytelling', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More emotional/storytelling', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 								</div>
 							</div>
@@ -432,40 +432,40 @@ defined( 'ABSPATH' ) || exit;
 							<div class="aisales-refinement-section">
 								<h4>
 									<span class="dashicons dashicons-editor-alignleft"></span>
-									<?php esc_html_e( 'Content Focus', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Content Focus', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</h4>
 								<div class="aisales-refinement-options">
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="focus_benefits">
-										<span><?php esc_html_e( 'Focus on customer benefits', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Focus on customer benefits', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="focus_features">
-										<span><?php esc_html_e( 'Focus on product features', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Focus on product features', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="add_urgency">
-										<span><?php esc_html_e( 'Add urgency (limited time, etc.)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Add urgency (limited time, etc.)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="remove_urgency">
-										<span><?php esc_html_e( 'Remove urgency/pressure', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Remove urgency/pressure', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="emphasize_value">
-										<span><?php esc_html_e( 'Emphasize value/savings', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Emphasize value/savings', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="emphasize_quality">
-										<span><?php esc_html_e( 'Emphasize quality/craftsmanship', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Emphasize quality/craftsmanship', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="add_social_proof">
-										<span><?php esc_html_e( 'Add social proof (bestseller, popular)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Add social proof (bestseller, popular)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[content_focus][]" value="eco_friendly">
-										<span><?php esc_html_e( 'Eco-friendly/sustainable focus', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Eco-friendly/sustainable focus', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 								</div>
 							</div>
@@ -474,28 +474,28 @@ defined( 'ABSPATH' ) || exit;
 							<div class="aisales-refinement-section">
 								<h4>
 									<span class="dashicons dashicons-search"></span>
-									<?php esc_html_e( 'SEO Specific', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'SEO Specific', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</h4>
 								<div class="aisales-refinement-options">
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[seo_specific][]" value="product_name_first">
-										<span><?php esc_html_e( 'Product name at start of SEO title', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Product name at start of SEO title', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[seo_specific][]" value="include_brand">
-										<span><?php esc_html_e( 'Include brand name in titles', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Include brand name in titles', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[seo_specific][]" value="location_keywords">
-										<span><?php esc_html_e( 'Add location/regional keywords', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Add location/regional keywords', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[seo_specific][]" value="price_in_meta">
-										<span><?php esc_html_e( 'Mention price in meta description', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Mention price in meta description', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[seo_specific][]" value="cta_in_meta">
-										<span><?php esc_html_e( 'Call-to-action in meta description', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Call-to-action in meta description', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 								</div>
 							</div>
@@ -504,24 +504,24 @@ defined( 'ABSPATH' ) || exit;
 							<div class="aisales-refinement-section">
 								<h4>
 									<span class="dashicons dashicons-tag"></span>
-									<?php esc_html_e( 'Tags & Categories', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Tags & Categories', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</h4>
 								<div class="aisales-refinement-options">
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tags_categories][]" value="fewer_tags">
-										<span><?php esc_html_e( 'Fewer tags (max 5 per product)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Fewer tags (max 5 per product)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tags_categories][]" value="more_tags">
-										<span><?php esc_html_e( 'More tags (8-12 per product)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'More tags (8-12 per product)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tags_categories][]" value="existing_tags_only">
-										<span><?php esc_html_e( 'Only use existing store tags', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Only use existing store tags', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 									<label class="aisales-refinement-option">
 										<input type="checkbox" name="refinement[tags_categories][]" value="conservative_categories">
-										<span><?php esc_html_e( 'Conservative category changes', 'ai-sales-manager-for-woocommerce' ); ?></span>
+										<span><?php esc_html_e( 'Conservative category changes', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 									</label>
 								</div>
 							</div>
@@ -530,27 +530,27 @@ defined( 'ABSPATH' ) || exit;
 						<!-- Additional Comments -->
 						<div class="aisales-form-group">
 							<label class="aisales-label" for="aisales-refinement-comments">
-								<?php esc_html_e( 'Additional Comments', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Additional Comments', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<textarea 
 								id="aisales-refinement-comments" 
 								class="aisales-textarea" 
 								rows="3"
-								placeholder="<?php esc_attr_e( 'Any other specific feedback or adjustments...', 'ai-sales-manager-for-woocommerce' ); ?>"
+								placeholder="<?php esc_attr_e( 'Any other specific feedback or adjustments...', 'stacksuite-sales-manager-for-woocommerce' ); ?>"
 							></textarea>
 						</div>
 
 						<!-- File Attachments -->
 						<div class="aisales-form-group">
 							<label class="aisales-label">
-								<?php esc_html_e( 'Reference Files (optional)', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Reference Files (optional)', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</label>
 							<div class="aisales-file-upload">
 								<input type="file" id="aisales-refinement-files" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.md" multiple>
 								<div class="aisales-file-upload__dropzone" id="aisales-dropzone">
 									<span class="dashicons dashicons-upload"></span>
-									<span><?php esc_html_e( 'Drop files here or click to upload', 'ai-sales-manager-for-woocommerce' ); ?></span>
-									<span class="aisales-file-upload__hint"><?php esc_html_e( 'PDF, images, text (max 10MB)', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span><?php esc_html_e( 'Drop files here or click to upload', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+									<span class="aisales-file-upload__hint"><?php esc_html_e( 'PDF, images, text (max 10MB)', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 								</div>
 								<div class="aisales-file-list" id="aisales-file-list"></div>
 							</div>
@@ -559,7 +559,7 @@ defined( 'ABSPATH' ) || exit;
 						<div class="aisales-refinement-actions">
 							<button type="button" class="aisales-btn aisales-btn--primary" id="aisales-regenerate-preview">
 								<span class="dashicons dashicons-update"></span>
-								<?php esc_html_e( 'Regenerate Preview', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Regenerate Preview', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 						</div>
 					</div>
@@ -571,16 +571,16 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-batch-actions__left">
 					<button type="button" class="aisales-btn aisales-btn--secondary" id="aisales-step3-back">
 						<span class="dashicons dashicons-arrow-left-alt2"></span>
-						<?php esc_html_e( 'Back', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Back', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 					<button type="button" class="aisales-btn aisales-btn--danger aisales-btn--outline" id="aisales-cancel-batch">
-						<?php esc_html_e( 'Cancel Batch', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Cancel Batch', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 				<div class="aisales-batch-actions__right">
 					<button type="button" class="aisales-btn aisales-btn--success" id="aisales-approve-preview">
 						<span class="dashicons dashicons-yes-alt"></span>
-						<?php esc_html_e( 'Looks Good! Process All Products', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Looks Good! Process All Products', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 			</div>
@@ -592,11 +592,11 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-card__header">
 					<h3>
 						<span class="dashicons dashicons-admin-generic"></span>
-						<?php esc_html_e( 'Processing Products', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Processing Products', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</h3>
 					<div class="aisales-card__header-action">
 						<span class="aisales-badge aisales-badge--primary" id="aisales-process-status">
-							<?php esc_html_e( 'Running', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Running', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</span>
 					</div>
 				</div>
@@ -605,26 +605,26 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-process-stats">
 						<div class="aisales-process-stat">
 							<span class="aisales-process-stat__value" id="aisales-processed-count">0</span>
-							<span class="aisales-process-stat__label"><?php esc_html_e( 'Processed', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-process-stat__label"><?php esc_html_e( 'Processed', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-process-stat aisales-process-stat--success">
 							<span class="aisales-process-stat__value" id="aisales-success-count">0</span>
-							<span class="aisales-process-stat__label"><?php esc_html_e( 'Successful', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-process-stat__label"><?php esc_html_e( 'Successful', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-process-stat aisales-process-stat--danger">
 							<span class="aisales-process-stat__value" id="aisales-failed-count">0</span>
-							<span class="aisales-process-stat__label"><?php esc_html_e( 'Failed', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-process-stat__label"><?php esc_html_e( 'Failed', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-process-stat">
 							<span class="aisales-process-stat__value" id="aisales-tokens-count">0</span>
-							<span class="aisales-process-stat__label"><?php esc_html_e( 'Tokens Used', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-process-stat__label"><?php esc_html_e( 'Tokens Used', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 					</div>
 
 					<!-- Progress Bar -->
 					<div class="aisales-process-progress">
 						<div class="aisales-process-progress__header">
-							<span id="aisales-current-product"><?php esc_html_e( 'Starting...', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span id="aisales-current-product"><?php esc_html_e( 'Starting...', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 							<span><span id="aisales-progress-percent">0</span>%</span>
 						</div>
 						<div class="aisales-progress aisales-progress--lg">
@@ -644,16 +644,16 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-batch-actions__left">
 					<button type="button" class="aisales-btn aisales-btn--secondary" id="aisales-pause-process">
 						<span class="dashicons dashicons-controls-pause"></span>
-						<?php esc_html_e( 'Pause', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Pause', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 					<button type="button" class="aisales-btn aisales-btn--secondary" id="aisales-resume-process" style="display: none;">
 						<span class="dashicons dashicons-controls-play"></span>
-						<?php esc_html_e( 'Resume', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Resume', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 				<div class="aisales-batch-actions__right">
 					<button type="button" class="aisales-btn aisales-btn--danger aisales-btn--outline" id="aisales-cancel-process">
-						<?php esc_html_e( 'Cancel', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Cancel', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 			</div>
@@ -665,11 +665,11 @@ defined( 'ABSPATH' ) || exit;
 				<div class="aisales-card__header">
 					<h3>
 						<span class="dashicons dashicons-yes-alt"></span>
-						<?php esc_html_e( 'Review & Apply Results', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Review & Apply Results', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</h3>
 					<div class="aisales-card__header-action">
 						<span class="aisales-badge aisales-badge--success" id="aisales-results-badge">
-							<?php esc_html_e( 'Complete', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Complete', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</span>
 					</div>
 				</div>
@@ -678,19 +678,19 @@ defined( 'ABSPATH' ) || exit;
 					<div class="aisales-results-summary">
 						<div class="aisales-results-summary__stat">
 							<span class="dashicons dashicons-yes-alt aisales-text-success"></span>
-							<span><strong id="aisales-final-success">0</strong> <?php esc_html_e( 'products enhanced', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><strong id="aisales-final-success">0</strong> <?php esc_html_e( 'products enhanced', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-results-summary__stat aisales-results-summary__stat--failed" id="aisales-failed-summary" style="display: none;">
 							<span class="dashicons dashicons-warning aisales-text-danger"></span>
-							<span><strong id="aisales-final-failed">0</strong> <?php esc_html_e( 'products failed', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><strong id="aisales-final-failed">0</strong> <?php esc_html_e( 'products failed', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 							<button type="button" class="aisales-btn aisales-btn--warning aisales-btn--sm" id="aisales-retry-failed" style="margin-left: 10px;">
 								<span class="dashicons dashicons-update"></span>
-								<?php esc_html_e( 'Retry Failed', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Retry Failed', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 						</div>
 						<div class="aisales-results-summary__stat">
 							<span class="dashicons dashicons-money-alt"></span>
-							<span><strong id="aisales-final-tokens">0</strong> <?php esc_html_e( 'tokens used', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><strong id="aisales-final-tokens">0</strong> <?php esc_html_e( 'tokens used', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 					</div>
 
@@ -702,10 +702,10 @@ defined( 'ABSPATH' ) || exit;
 									<th class="aisales-results-table__check">
 										<input type="checkbox" id="aisales-select-all-results" checked>
 									</th>
-									<th><?php esc_html_e( 'Product', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th><?php esc_html_e( 'Changes', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th><?php esc_html_e( 'Status', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th><?php esc_html_e( 'Actions', 'ai-sales-manager-for-woocommerce' ); ?></th>
+									<th><?php esc_html_e( 'Product', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th><?php esc_html_e( 'Changes', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th><?php esc_html_e( 'Status', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th><?php esc_html_e( 'Actions', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 								</tr>
 							</thead>
 							<tbody id="aisales-results-body">
@@ -720,17 +720,17 @@ defined( 'ABSPATH' ) || exit;
 			<div class="aisales-batch-actions">
 				<div class="aisales-batch-actions__left">
 					<span class="aisales-batch-info">
-						<span id="aisales-apply-count">0</span> <?php esc_html_e( 'products selected to apply', 'ai-sales-manager-for-woocommerce' ); ?>
+						<span id="aisales-apply-count">0</span> <?php esc_html_e( 'products selected to apply', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</span>
 				</div>
 				<div class="aisales-batch-actions__right">
 					<button type="button" class="aisales-btn aisales-btn--secondary" id="aisales-new-batch">
 						<span class="dashicons dashicons-plus-alt2"></span>
-						<?php esc_html_e( 'Start New Batch', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Start New Batch', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 					<button type="button" class="aisales-btn aisales-btn--success" id="aisales-apply-results">
 						<span class="dashicons dashicons-yes"></span>
-						<?php esc_html_e( 'Apply Selected Changes', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Apply Selected Changes', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 			</div>
@@ -742,7 +742,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="aisales-modal-overlay" id="aisales-result-modal-overlay"></div>
 <div class="aisales-modal" id="aisales-result-modal">
 	<div class="aisales-modal__header">
-		<h3 id="aisales-result-modal-title"><?php esc_html_e( 'Change Details', 'ai-sales-manager-for-woocommerce' ); ?></h3>
+		<h3 id="aisales-result-modal-title"><?php esc_html_e( 'Change Details', 'stacksuite-sales-manager-for-woocommerce' ); ?></h3>
 		<button type="button" class="aisales-modal__close" id="aisales-result-modal-close">
 			<span class="dashicons dashicons-no-alt"></span>
 		</button>
@@ -753,11 +753,11 @@ defined( 'ABSPATH' ) || exit;
 	<div class="aisales-modal__footer">
 		<a href="#" target="_blank" rel="noopener noreferrer" class="aisales-btn aisales-btn--secondary" id="aisales-result-modal-view">
 			<span class="dashicons dashicons-external"></span>
-			<?php esc_html_e( 'View Product', 'ai-sales-manager-for-woocommerce' ); ?>
+			<?php esc_html_e( 'View Product', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 		</a>
 		<a href="#" target="_blank" rel="noopener noreferrer" class="aisales-btn aisales-btn--primary" id="aisales-result-modal-edit">
 			<span class="dashicons dashicons-edit"></span>
-			<?php esc_html_e( 'Edit Product', 'ai-sales-manager-for-woocommerce' ); ?>
+			<?php esc_html_e( 'Edit Product', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 		</a>
 	</div>
 </div>
@@ -790,14 +790,14 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 		<div class="aisales-diff-field__content">
 			<div class="aisales-diff-field__current">
-				<span class="aisales-diff-field__subtitle"><?php esc_html_e( 'Current', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span class="aisales-diff-field__subtitle"><?php esc_html_e( 'Current', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				<div class="aisales-diff-field__value">{current_value}</div>
 			</div>
 			<div class="aisales-diff-field__arrow">
 				<span class="dashicons dashicons-arrow-right-alt"></span>
 			</div>
 			<div class="aisales-diff-field__suggested">
-				<span class="aisales-diff-field__subtitle"><?php esc_html_e( 'Suggested', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span class="aisales-diff-field__subtitle"><?php esc_html_e( 'Suggested', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				<div class="aisales-diff-field__value">{suggested_value}</div>
 			</div>
 		</div>

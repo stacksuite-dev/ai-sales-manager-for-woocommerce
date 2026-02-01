@@ -44,7 +44,7 @@ class AISales_Product_Metabox {
 	public function add_meta_box() {
 		add_meta_box(
 			'aisales-tools',
-			__( 'AI Tools', 'ai-sales-manager-for-woocommerce' ),
+			__( 'AI Tools', 'stacksuite-sales-manager-for-woocommerce' ),
 			array( $this, 'render_meta_box' ),
 			'product',
 			'side',
@@ -72,10 +72,10 @@ class AISales_Product_Metabox {
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-agent&product_id=' . $post->ID ) ); ?>"
 				   class="button button-primary button-large aisales-agent-btn">
 					<span class="dashicons dashicons-format-chat"></span>
-					<?php esc_html_e( 'Open AI Agent', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Open AI Agent', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</a>
 				<p class="aisales-agent-description">
-					<?php esc_html_e( 'Chat with AI to improve your product content, generate descriptions, suggest tags, and more.', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Chat with AI to improve your product content, generate descriptions, suggest tags, and more.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</p>
 			</div>
 		</div>
@@ -90,11 +90,11 @@ class AISales_Product_Metabox {
 		<div class="aisales-metabox aisales-not-connected">
 			<p>
 				<span class="dashicons dashicons-admin-network"></span>
-				<?php esc_html_e( 'Connect your account to use AI tools.', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Connect your account to use AI tools.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</p>
 			<p>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager' ) ); ?>" class="button button-primary">
-					<?php esc_html_e( 'Connect Account', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Connect Account', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</a>
 			</p>
 		</div>

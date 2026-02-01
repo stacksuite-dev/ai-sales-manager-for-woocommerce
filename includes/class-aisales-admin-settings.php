@@ -78,8 +78,8 @@ class AISales_Admin_Settings {
 	 */
 	public function add_menu_page() {
 		add_menu_page(
-			__( 'AI Sales Manager', 'ai-sales-manager-for-woocommerce' ),
-			__( 'AI Sales Manager', 'ai-sales-manager-for-woocommerce' ),
+			__( 'StackSuite Sales Manager', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'StackSuite Sales Manager', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-manager',
 			array( $this, 'render_page' ),
@@ -98,8 +98,8 @@ class AISales_Admin_Settings {
 			$this->page_toast = array(
 				'type'     => 'success',
 				'icon'     => 'dashicons-yes-alt',
-				'title'    => __( 'Top-Up Successful!', 'ai-sales-manager-for-woocommerce' ),
-				'message'  => __( '10,000 tokens have been added to your account.', 'ai-sales-manager-for-woocommerce' ),
+				'title'    => __( 'Top-Up Successful!', 'stacksuite-sales-manager-for-woocommerce' ),
+				'message'  => __( '10,000 tokens have been added to your account.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'duration' => 5000,
 			);
 		}
@@ -109,8 +109,8 @@ class AISales_Admin_Settings {
 			$this->page_toast = array(
 				'type'     => 'info',
 				'icon'     => 'dashicons-unlock',
-				'title'    => __( 'Disconnected', 'ai-sales-manager-for-woocommerce' ),
-				'message'  => __( 'Your account has been disconnected from this site.', 'ai-sales-manager-for-woocommerce' ),
+				'title'    => __( 'Disconnected', 'stacksuite-sales-manager-for-woocommerce' ),
+				'message'  => __( 'Your account has been disconnected from this site.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'duration' => 4000,
 			);
 		}
@@ -166,11 +166,11 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-superhero-alt"></span>
 					</div>
 					<div class="aisales-page-header__content">
-						<h1 class="aisales-page-header__title"><?php esc_html_e( 'AI Sales Manager', 'ai-sales-manager-for-woocommerce' ); ?></h1>
-						<p class="aisales-page-header__subtitle"><?php esc_html_e( 'AI-powered tools for your WooCommerce products', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h1 class="aisales-page-header__title"><?php esc_html_e( 'StackSuite Sales Manager', 'stacksuite-sales-manager-for-woocommerce' ); ?></h1>
+						<p class="aisales-page-header__subtitle"><?php esc_html_e( 'AI-powered tools for your WooCommerce products', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 					<div class="aisales-page-header__right">
-						<button type="button" class="aisales-store-context-btn" id="aisales-open-context" title="<?php esc_attr_e( 'Store Context Settings', 'ai-sales-manager-for-woocommerce' ); ?>">
+						<button type="button" class="aisales-store-context-btn" id="aisales-open-context" title="<?php esc_attr_e( 'Store Context Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
 							<span class="dashicons dashicons-store"></span>
 							<span class="aisales-store-name"><?php echo esc_html( $store_name ); ?></span>
 							<span class="aisales-context-status aisales-context-status--<?php echo esc_attr( $context_status ); ?>"></span>
@@ -190,22 +190,22 @@ class AISales_Admin_Settings {
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=dashboard' ) ); ?>"
 					   class="aisales-nav__tab <?php echo 'dashboard' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
 						<span class="dashicons dashicons-dashboard"></span>
-						<?php esc_html_e( 'Dashboard', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Dashboard', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=usage' ) ); ?>"
 					   class="aisales-nav__tab <?php echo 'usage' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
 						<span class="dashicons dashicons-chart-area"></span>
-						<?php esc_html_e( 'Usage History', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Usage History', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=billing' ) ); ?>"
 					   class="aisales-nav__tab <?php echo 'billing' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
 						<span class="dashicons dashicons-money-alt"></span>
-						<?php esc_html_e( 'Billing', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Billing', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=account' ) ); ?>"
 					   class="aisales-nav__tab <?php echo 'account' === $this->current_tab ? 'aisales-nav__tab--active' : ''; ?>">
 						<span class="dashicons dashicons-admin-users"></span>
-						<?php esc_html_e( 'Account', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Account', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</a>
 				</nav>
 
@@ -257,9 +257,9 @@ class AISales_Admin_Settings {
 					<div class="aisales-auth__logo">
 						<span class="dashicons dashicons-superhero-alt"></span>
 					</div>
-					<h2 class="aisales-auth__title"><?php esc_html_e( 'Welcome to AI Sales Manager', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2 class="aisales-auth__title"><?php esc_html_e( 'Welcome to StackSuite Sales Manager', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 					<p class="aisales-auth__subtitle">
-						<?php esc_html_e( 'AI-powered tools for your WooCommerce products', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'AI-powered tools for your WooCommerce products', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</p>
 				</div>
 
@@ -268,33 +268,33 @@ class AISales_Admin_Settings {
 					<div class="aisales-form-group">
 						<label for="aisales-connect-email" class="aisales-form-label">
 							<span class="dashicons dashicons-email"></span>
-							<?php esc_html_e( 'Email Address', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Email Address', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</label>
 						<input type="email" id="aisales-connect-email" class="aisales-form-input"
 							   placeholder="you@example.com" value="<?php echo esc_attr( $admin_email ); ?>" required>
-						<span class="aisales-form-hint"><?php esc_html_e( 'We\'ll use this for purchase receipts and notifications.', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-form-hint"><?php esc_html_e( 'We\'ll use this for purchase receipts and notifications.', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 
 					<div class="aisales-form-group">
 						<label class="aisales-form-label">
 							<span class="dashicons dashicons-admin-site-alt3"></span>
-							<?php esc_html_e( 'Site Domain', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Site Domain', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</label>
 						<div class="aisales-form-static">
 							<span class="dashicons dashicons-lock"></span>
 							<code><?php echo esc_html( $domain ); ?></code>
 						</div>
-						<span class="aisales-form-hint"><?php esc_html_e( 'Your site domain is used as your unique account identifier.', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-form-hint"><?php esc_html_e( 'Your site domain is used as your unique account identifier.', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						<input type="hidden" id="aisales-connect-domain" value="<?php echo esc_attr( $domain ); ?>">
 					</div>
 
 					<button type="button" id="aisales-connect-btn" class="aisales-btn aisales-btn--primary aisales-btn--lg aisales-btn--full">
 						<span class="spinner"></span>
-						<?php esc_html_e( 'Get Started', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Get Started', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 
 					<p class="aisales-auth__footer-text">
-						<?php esc_html_e( 'Enter the same email to reconnect an existing account.', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Enter the same email to reconnect an existing account.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</p>
 				</div>
 
@@ -306,30 +306,30 @@ class AISales_Admin_Settings {
 			<div class="aisales-auth__pricing aisales-card">
 				<div class="aisales-pricing">
 					<div class="aisales-pricing__header">
-						<span class="aisales-pricing__badge"><?php esc_html_e( 'Simple Pricing', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-pricing__badge"><?php esc_html_e( 'Simple Pricing', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						<div class="aisales-pricing__amount">
 							<span class="aisales-pricing__currency">$</span>
 							<span class="aisales-pricing__value">9</span>
 						</div>
-						<div class="aisales-pricing__period"><?php esc_html_e( 'for 10,000 tokens', 'ai-sales-manager-for-woocommerce' ); ?></div>
+						<div class="aisales-pricing__period"><?php esc_html_e( 'for 10,000 tokens', 'stacksuite-sales-manager-for-woocommerce' ); ?></div>
 					</div>
 					<ul class="aisales-pricing__features">
 						<li>
-							<span class="aisales-op-badge aisales-op-badge--content"><?php esc_html_e( 'Content', 'ai-sales-manager-for-woocommerce' ); ?></span>
-							<span>~200 <?php esc_html_e( 'tokens/product', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-op-badge aisales-op-badge--content"><?php esc_html_e( 'Content', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+							<span>~200 <?php esc_html_e( 'tokens/product', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</li>
 						<li>
-							<span class="aisales-op-badge aisales-op-badge--taxonomy"><?php esc_html_e( 'Taxonomy', 'ai-sales-manager-for-woocommerce' ); ?></span>
-							<span>~100 <?php esc_html_e( 'tokens/product', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-op-badge aisales-op-badge--taxonomy"><?php esc_html_e( 'Taxonomy', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+							<span>~100 <?php esc_html_e( 'tokens/product', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</li>
 						<li>
-							<span class="aisales-op-badge aisales-op-badge--image_generate"><?php esc_html_e( 'Images', 'ai-sales-manager-for-woocommerce' ); ?></span>
-							<span>~1,000 <?php esc_html_e( 'tokens/image', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span class="aisales-op-badge aisales-op-badge--image_generate"><?php esc_html_e( 'Images', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+							<span>~1,000 <?php esc_html_e( 'tokens/image', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</li>
 					</ul>
 					<div class="aisales-pricing__note">
 						<span class="dashicons dashicons-info"></span>
-						<?php esc_html_e( 'No subscription. Pay only for what you use.', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'No subscription. Pay only for what you use.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</div>
 				</div>
 			</div>
@@ -413,7 +413,7 @@ class AISales_Admin_Settings {
 			<div class="aisales-alert aisales-alert--danger aisales-mb-5">
 				<span class="dashicons dashicons-warning"></span>
 				<div class="aisales-alert__content">
-					<strong><?php esc_html_e( 'API Connection Error:', 'ai-sales-manager-for-woocommerce' ); ?></strong>
+					<strong><?php esc_html_e( 'API Connection Error:', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
 					<?php echo esc_html( $account->get_error_message() ); ?>
 				</div>
 			</div>
@@ -426,12 +426,12 @@ class AISales_Admin_Settings {
 					<div class="aisales-card__icon">
 						<span class="dashicons dashicons-database"></span>
 					</div>
-					<h2><?php esc_html_e( 'Token Balance', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Token Balance', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 				</div>
 
 				<div class="aisales-balance aisales-balance--hero">
 					<span class="aisales-balance__amount"><?php echo esc_html( number_format( $balance ) ); ?></span>
-					<span class="aisales-balance__label"><?php esc_html_e( 'tokens available', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-balance__label"><?php esc_html_e( 'tokens available', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 
 				<div class="aisales-progress aisales-progress--thick aisales-mb-4">
@@ -443,14 +443,14 @@ class AISales_Admin_Settings {
 					<div class="aisales-alert aisales-alert--warning aisales-alert--compact aisales-mb-4">
 						<span class="dashicons dashicons-warning"></span>
 						<div class="aisales-alert__content">
-							<?php esc_html_e( 'Low balance! Top up to continue using AI tools.', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Low balance! Top up to continue using AI tools.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</div>
 					</div>
 				<?php endif; ?>
 
 				<button type="button" id="aisales-topup-btn" class="aisales-btn aisales-btn--gradient aisales-btn--lg aisales-btn--full">
 					<span class="dashicons dashicons-plus-alt2"></span>
-					<?php esc_html_e( 'Top Up $9 → 10,000 tokens', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Top Up $9 → 10,000 tokens', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</button>
 			</div>
 
@@ -460,25 +460,25 @@ class AISales_Admin_Settings {
 					<div class="aisales-card__icon aisales-card__icon--success">
 						<span class="dashicons dashicons-chart-bar"></span>
 					</div>
-					<h2><?php esc_html_e( 'AI Activity', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'AI Activity', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 				</div>
 
 				<div class="aisales-stats-grid aisales-stats-grid--4col">
 					<div class="aisales-stat-card aisales-stat-card--content">
 						<span class="aisales-stat-card__value"><?php echo esc_html( $content_count ); ?></span>
-						<span class="aisales-stat-card__label"><?php esc_html_e( 'Content', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-stat-card__label"><?php esc_html_e( 'Content', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-stat-card aisales-stat-card--taxonomy">
 						<span class="aisales-stat-card__value"><?php echo esc_html( $operation_counts['taxonomy'] ); ?></span>
-						<span class="aisales-stat-card__label"><?php esc_html_e( 'Tags', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-stat-card__label"><?php esc_html_e( 'Tags', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-stat-card aisales-stat-card--image">
 						<span class="aisales-stat-card__value"><?php echo esc_html( $image_count ); ?></span>
-						<span class="aisales-stat-card__label"><?php esc_html_e( 'Images', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-stat-card__label"><?php esc_html_e( 'Images', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-stat-card aisales-stat-card--chat">
 						<span class="aisales-stat-card__value"><?php echo esc_html( $chat_count ); ?></span>
-						<span class="aisales-stat-card__label"><?php esc_html_e( 'Chats', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-stat-card__label"><?php esc_html_e( 'Chats', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 				</div>
 
@@ -494,7 +494,7 @@ class AISales_Admin_Settings {
 			<div class="aisales-section__header">
 				<h3 class="aisales-section__title">
 					<span class="dashicons dashicons-screenoptions"></span>
-					<?php esc_html_e( 'Features', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Features', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</h3>
 			</div>
 			<div class="aisales-feature-grid">
@@ -504,8 +504,8 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-format-chat"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'AI Agent', 'ai-sales-manager-for-woocommerce' ); ?></h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Chat with AI about your store', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'AI Agent', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Chat with AI about your store', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 					<span class="dashicons dashicons-arrow-right-alt2 aisales-feature-card__arrow"></span>
 				</a>
@@ -516,8 +516,8 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-email-alt"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Email Templates', 'ai-sales-manager-for-woocommerce' ); ?></h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'AI-generated email content', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Email Templates', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'AI-generated email content', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 					<span class="dashicons dashicons-arrow-right-alt2 aisales-feature-card__arrow"></span>
 				</a>
@@ -528,8 +528,8 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-art"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ); ?></h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Configure brand voice & style', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Configure brand voice & style', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 					<span class="dashicons dashicons-arrow-right-alt2 aisales-feature-card__arrow"></span>
 				</a>
@@ -540,11 +540,11 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-welcome-widgets-menus"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Widgets', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Widgets', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 						<p class="aisales-feature-card__desc">
 							<?php
 							/* translators: %d: number of enabled widgets */
-							echo esc_html( sprintf( __( '%d widgets enabled', 'ai-sales-manager-for-woocommerce' ), $enabled_widgets_count ) );
+							echo esc_html( sprintf( __( '%d widgets enabled', 'stacksuite-sales-manager-for-woocommerce' ), $enabled_widgets_count ) );
 							?>
 						</p>
 					</div>
@@ -557,11 +557,11 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-cart"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Abandoned Carts', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Abandoned Carts', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 						<p class="aisales-feature-card__desc">
 							<?php
 							/* translators: %1$d: abandoned carts, %2$d: recovered carts */
-							echo esc_html( sprintf( __( '%1$d abandoned, %2$d recovered', 'ai-sales-manager-for-woocommerce' ), $cart_stats['abandoned'], $cart_stats['recovered'] ) );
+							echo esc_html( sprintf( __( '%1$d abandoned, %2$d recovered', 'stacksuite-sales-manager-for-woocommerce' ), $cart_stats['abandoned'], $cart_stats['recovered'] ) );
 							?>
 						</p>
 					</div>
@@ -574,8 +574,8 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-update"></span>
 					</div>
 					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Manage Catalog', 'ai-sales-manager-for-woocommerce' ); ?></h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Enhance multiple products at once', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'Manage Catalog', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Enhance multiple products at once', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 					<span class="dashicons dashicons-arrow-right-alt2 aisales-feature-card__arrow"></span>
 				</a>
@@ -589,10 +589,10 @@ class AISales_Admin_Settings {
 					<div class="aisales-card__icon">
 						<span class="dashicons dashicons-clock"></span>
 					</div>
-					<h2><?php esc_html_e( 'Recent Activity', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Recent Activity', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager&tab=usage' ) ); ?>"
 					   class="aisales-btn aisales-btn--secondary aisales-btn--sm aisales-card__header-action">
-						<?php esc_html_e( 'View All', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'View All', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</a>
 				</div>
 
@@ -600,9 +600,9 @@ class AISales_Admin_Settings {
 					<table class="aisales-table-modern">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Date', 'ai-sales-manager-for-woocommerce' ); ?></th>
-								<th><?php esc_html_e( 'Operation', 'ai-sales-manager-for-woocommerce' ); ?></th>
-								<th><?php esc_html_e( 'Tokens Used', 'ai-sales-manager-for-woocommerce' ); ?></th>
+								<th><?php esc_html_e( 'Date', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+								<th><?php esc_html_e( 'Operation', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+								<th><?php esc_html_e( 'Tokens Used', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -624,8 +624,8 @@ class AISales_Admin_Settings {
 				<?php else : ?>
 					<div class="aisales-empty-state--enhanced">
 						<span class="dashicons dashicons-clock"></span>
-						<p><?php esc_html_e( 'No usage yet', 'ai-sales-manager-for-woocommerce' ); ?></p>
-						<p><?php esc_html_e( 'Start by editing a product and using the AI tools!', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<p><?php esc_html_e( 'No usage yet', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
+						<p><?php esc_html_e( 'Start by editing a product and using the AI tools!', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -636,7 +636,7 @@ class AISales_Admin_Settings {
 			<div class="aisales-section__header">
 				<h3 class="aisales-section__title">
 					<span class="dashicons dashicons-calendar-alt"></span>
-					<?php esc_html_e( 'Coming Soon', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Coming Soon', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</h3>
 			</div>
 			<div class="aisales-feature-grid aisales-feature-grid--2col">
@@ -647,10 +647,10 @@ class AISales_Admin_Settings {
 					</div>
 					<div class="aisales-feature-card__content">
 						<h4 class="aisales-feature-card__title">
-							<?php esc_html_e( 'Market Research', 'ai-sales-manager-for-woocommerce' ); ?>
-							<span class="aisales-badge aisales-badge--soon"><?php esc_html_e( 'Soon', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<?php esc_html_e( 'Market Research', 'stacksuite-sales-manager-for-woocommerce' ); ?>
+							<span class="aisales-badge aisales-badge--soon"><?php esc_html_e( 'Soon', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'AI-powered competitor analysis, pricing insights, and market trends', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'AI-powered competitor analysis, pricing insights, and market trends', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				</div>
 
@@ -661,10 +661,10 @@ class AISales_Admin_Settings {
 					</div>
 					<div class="aisales-feature-card__content">
 						<h4 class="aisales-feature-card__title">
-							<?php esc_html_e( 'Customer Credits', 'ai-sales-manager-for-woocommerce' ); ?>
-							<span class="aisales-badge aisales-badge--soon"><?php esc_html_e( 'Soon', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<?php esc_html_e( 'Customer Credits', 'stacksuite-sales-manager-for-woocommerce' ); ?>
+							<span class="aisales-badge aisales-badge--soon"><?php esc_html_e( 'Soon', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Store credit system with AI-suggested rewards and loyalty programs', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Store credit system with AI-suggested rewards and loyalty programs', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				</div>
 			</div>
@@ -676,31 +676,31 @@ class AISales_Admin_Settings {
 				<div class="aisales-howto__icon">
 					<span class="dashicons dashicons-lightbulb"></span>
 				</div>
-				<h3 class="aisales-howto__title"><?php esc_html_e( 'Getting Started', 'ai-sales-manager-for-woocommerce' ); ?></h3>
+				<h3 class="aisales-howto__title"><?php esc_html_e( 'Getting Started', 'stacksuite-sales-manager-for-woocommerce' ); ?></h3>
 			</div>
 			<div class="aisales-howto__grid">
 				<div class="aisales-howto__column">
-					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'Product Enhancement', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'Product Enhancement', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 					<ol class="aisales-howto__steps">
-						<li class="aisales-howto__step"><?php esc_html_e( 'Go to Products → Edit any product', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'Find the "AI Tools" panel in the sidebar', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'Generate descriptions, tags, or images', 'ai-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Go to Products → Edit any product', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Find the "AI Tools" panel in the sidebar', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Generate descriptions, tags, or images', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
 					</ol>
 				</div>
 				<div class="aisales-howto__column">
-					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'AI Agent Chat', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'AI Agent Chat', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 					<ol class="aisales-howto__steps">
-						<li class="aisales-howto__step"><?php esc_html_e( 'Open AI Agent from the menu', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'Ask questions about your store', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'Get insights and recommendations', 'ai-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Open AI Agent from the menu', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Ask questions about your store', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Get insights and recommendations', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
 					</ol>
 				</div>
 				<div class="aisales-howto__column">
-					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'Cart Recovery', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+					<h4 class="aisales-howto__subtitle"><?php esc_html_e( 'Cart Recovery', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 					<ol class="aisales-howto__steps">
-						<li class="aisales-howto__step"><?php esc_html_e( 'Configure abandoned cart settings', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'AI generates recovery emails', 'ai-sales-manager-for-woocommerce' ); ?></li>
-						<li class="aisales-howto__step"><?php esc_html_e( 'Monitor recovery stats', 'ai-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Configure abandoned cart settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'AI generates recovery emails', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
+						<li class="aisales-howto__step"><?php esc_html_e( 'Monitor recovery stats', 'stacksuite-sales-manager-for-woocommerce' ); ?></li>
 					</ol>
 				</div>
 			</div>
@@ -745,7 +745,7 @@ class AISales_Admin_Settings {
 			<div class="aisales-alert aisales-alert--danger aisales-mb-5">
 				<span class="dashicons dashicons-warning"></span>
 				<div class="aisales-alert__content">
-					<strong><?php esc_html_e( 'API Connection Error:', 'ai-sales-manager-for-woocommerce' ); ?></strong>
+					<strong><?php esc_html_e( 'API Connection Error:', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
 					<?php echo esc_html( $error_message ); ?>
 				</div>
 			</div>
@@ -760,28 +760,28 @@ class AISales_Admin_Settings {
 						<span class="dashicons dashicons-database"></span>
 					</div>
 					<span class="aisales-stat-card__value"><?php echo esc_html( number_format( $total_tokens ) ); ?></span>
-					<span class="aisales-stat-card__label"><?php esc_html_e( 'Total Tokens Used', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-stat-card__label"><?php esc_html_e( 'Total Tokens Used', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 				<div class="aisales-stat-card aisales-stat-card--content">
 					<div class="aisales-stat-card__icon">
 						<span class="dashicons dashicons-edit"></span>
 					</div>
 					<span class="aisales-stat-card__value"><?php echo esc_html( $operation_counts['content'] ); ?></span>
-					<span class="aisales-stat-card__label"><?php esc_html_e( 'Content', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-stat-card__label"><?php esc_html_e( 'Content', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 				<div class="aisales-stat-card aisales-stat-card--taxonomy">
 					<div class="aisales-stat-card__icon">
 						<span class="dashicons dashicons-tag"></span>
 					</div>
 					<span class="aisales-stat-card__value"><?php echo esc_html( $operation_counts['taxonomy'] ); ?></span>
-					<span class="aisales-stat-card__label"><?php esc_html_e( 'Taxonomy', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-stat-card__label"><?php esc_html_e( 'Taxonomy', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 				<div class="aisales-stat-card aisales-stat-card--image">
 					<div class="aisales-stat-card__icon">
 						<span class="dashicons dashicons-format-image"></span>
 					</div>
 					<span class="aisales-stat-card__value"><?php echo esc_html( $operation_counts['image_generate'] + $operation_counts['image_improve'] ); ?></span>
-					<span class="aisales-stat-card__label"><?php esc_html_e( 'Images', 'ai-sales-manager-for-woocommerce' ); ?></span>
+					<span class="aisales-stat-card__label"><?php esc_html_e( 'Images', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				</div>
 			</div>
 
@@ -791,7 +791,7 @@ class AISales_Admin_Settings {
 					<div class="aisales-card__icon aisales-card__icon--purple">
 						<span class="dashicons dashicons-chart-area"></span>
 					</div>
-					<h2><?php esc_html_e( 'Usage History', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Usage History', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 				</div>
 
 				<?php if ( ! empty( $usage['logs'] ) ) : ?>
@@ -799,12 +799,12 @@ class AISales_Admin_Settings {
 						<table class="aisales-table-modern">
 							<thead>
 								<tr>
-									<th class="aisales-table__col--date"><?php esc_html_e( 'Date', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th class="aisales-table__col--operation"><?php esc_html_e( 'Operation', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Input', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Output', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Total', 'ai-sales-manager-for-woocommerce' ); ?></th>
-									<th class="aisales-table__col--product"><?php esc_html_e( 'Product', 'ai-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--date"><?php esc_html_e( 'Date', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--operation"><?php esc_html_e( 'Operation', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Input', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Output', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--tokens"><?php esc_html_e( 'Total', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+									<th class="aisales-table__col--product"><?php esc_html_e( 'Product', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -847,8 +847,8 @@ class AISales_Admin_Settings {
 						<div class="aisales-empty-state__icon">
 							<span class="dashicons dashicons-chart-area"></span>
 						</div>
-						<h3><?php esc_html_e( 'No usage history yet', 'ai-sales-manager-for-woocommerce' ); ?></h3>
-						<p><?php esc_html_e( 'Start by editing a product and using the AI tools to generate content, tags, or images.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h3><?php esc_html_e( 'No usage history yet', 'stacksuite-sales-manager-for-woocommerce' ); ?></h3>
+						<p><?php esc_html_e( 'Start by editing a product and using the AI tools to generate content, tags, or images.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -894,7 +894,7 @@ class AISales_Admin_Settings {
 			<div class="aisales-alert aisales-alert--danger aisales-mb-5">
 				<span class="dashicons dashicons-warning"></span>
 				<div class="aisales-alert__content">
-					<strong><?php esc_html_e( 'API Connection Error:', 'ai-sales-manager-for-woocommerce' ); ?></strong>
+					<strong><?php esc_html_e( 'API Connection Error:', 'stacksuite-sales-manager-for-woocommerce' ); ?></strong>
 					<?php echo esc_html( $account->get_error_message() ); ?>
 				</div>
 			</div>
@@ -909,32 +909,32 @@ class AISales_Admin_Settings {
 						<div class="aisales-card__icon aisales-card__icon--blue">
 							<span class="dashicons dashicons-admin-users"></span>
 						</div>
-						<h2><?php esc_html_e( 'Account Information', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+						<h2><?php esc_html_e( 'Account Information', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 					</div>
 
 					<div class="aisales-account__info">
 						<div class="aisales-account__row">
 							<span class="aisales-account__label">
 								<span class="dashicons dashicons-email"></span>
-								<?php esc_html_e( 'Email', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Email', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</span>
 							<span class="aisales-account__value"><?php echo esc_html( $email ); ?></span>
 						</div>
 						<div class="aisales-account__row">
 							<span class="aisales-account__label">
 								<span class="dashicons dashicons-admin-site-alt3"></span>
-								<?php esc_html_e( 'Connected Site', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Connected Site', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</span>
 							<span class="aisales-account__value"><?php echo esc_html( $site_url ); ?></span>
 						</div>
 						<div class="aisales-account__row aisales-account__row--highlight">
 							<span class="aisales-account__label">
 								<span class="dashicons dashicons-database"></span>
-								<?php esc_html_e( 'Token Balance', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Token Balance', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</span>
 							<span class="aisales-account__value aisales-account__value--balance">
 								<?php echo esc_html( number_format( $balance ) ); ?>
-								<small><?php esc_html_e( 'tokens', 'ai-sales-manager-for-woocommerce' ); ?></small>
+								<small><?php esc_html_e( 'tokens', 'stacksuite-sales-manager-for-woocommerce' ); ?></small>
 							</span>
 						</div>
 					</div>
@@ -942,7 +942,7 @@ class AISales_Admin_Settings {
 					<div class="aisales-card__footer">
 						<a href="<?php echo esc_url( AISALES_API_URL . '/dashboard' ); ?>" target="_blank" class="aisales-btn aisales-btn--gradient">
 							<span class="dashicons dashicons-external"></span>
-							<?php esc_html_e( 'Manage Account', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Manage Account', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</a>
 					</div>
 				</div>
@@ -953,20 +953,20 @@ class AISales_Admin_Settings {
 						<div class="aisales-card__icon aisales-card__icon--red">
 							<span class="dashicons dashicons-warning"></span>
 						</div>
-						<h2><?php esc_html_e( 'Danger Zone', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+						<h2><?php esc_html_e( 'Danger Zone', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 					</div>
 
 					<div class="aisales-card__body">
 						<p class="aisales-text-muted aisales-mb-4">
-							<?php esc_html_e( 'Disconnect your account from this WordPress site. Your SaaS account and token balance will remain intact — you can reconnect anytime using the same email.', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Disconnect your account from this WordPress site. Your SaaS account and token balance will remain intact — you can reconnect anytime using the same email.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</p>
 
 						<form method="post">
 							<?php wp_nonce_field( 'aisales_disconnect_nonce' ); ?>
 							<button type="submit" name="aisales_disconnect" class="aisales-btn aisales-btn--danger"
-									onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect? You can reconnect anytime.', 'ai-sales-manager-for-woocommerce' ); ?>');">
+									onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect? You can reconnect anytime.', 'stacksuite-sales-manager-for-woocommerce' ); ?>');">
 								<span class="dashicons dashicons-dismiss"></span>
-								<?php esc_html_e( 'Disconnect Account', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Disconnect Account', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 						</form>
 					</div>
@@ -989,10 +989,10 @@ class AISales_Admin_Settings {
 
 		if ( $diff < HOUR_IN_SECONDS ) {
 			/* translators: %d: number of minutes */
-			return sprintf( __( '%d min ago', 'ai-sales-manager-for-woocommerce' ), floor( $diff / MINUTE_IN_SECONDS ) );
+			return sprintf( __( '%d min ago', 'stacksuite-sales-manager-for-woocommerce' ), floor( $diff / MINUTE_IN_SECONDS ) );
 		} elseif ( $diff < DAY_IN_SECONDS ) {
 			/* translators: %d: number of hours */
-			return sprintf( __( '%d hours ago', 'ai-sales-manager-for-woocommerce' ), floor( $diff / HOUR_IN_SECONDS ) );
+			return sprintf( __( '%d hours ago', 'stacksuite-sales-manager-for-woocommerce' ), floor( $diff / HOUR_IN_SECONDS ) );
 		} else {
 			return wp_date( 'M j, g:i a', $timestamp );
 		}
@@ -1006,10 +1006,10 @@ class AISales_Admin_Settings {
 	 */
 	private function format_operation( $operation ) {
 		$labels = array(
-			'content'        => __( 'Content', 'ai-sales-manager-for-woocommerce' ),
-			'taxonomy'       => __( 'Taxonomy', 'ai-sales-manager-for-woocommerce' ),
-			'image_generate' => __( 'Image Generate', 'ai-sales-manager-for-woocommerce' ),
-			'image_improve'  => __( 'Image Improve', 'ai-sales-manager-for-woocommerce' ),
+			'content'        => __( 'Content', 'stacksuite-sales-manager-for-woocommerce' ),
+			'taxonomy'       => __( 'Taxonomy', 'stacksuite-sales-manager-for-woocommerce' ),
+			'image_generate' => __( 'Image Generate', 'stacksuite-sales-manager-for-woocommerce' ),
+			'image_improve'  => __( 'Image Improve', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 
 		return isset( $labels[ $operation ] ) ? $labels[ $operation ] : $operation;

@@ -78,7 +78,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		check_ajax_referer( $this->nonce_action, $this->nonce_field );
 
 		if ( ! current_user_can( $capability ) ) {
-			$this->error( __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Permission denied.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -94,7 +94,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		$product = $this->get_validated_product( $product_id );
 
 		if ( ! in_array( $field, $this->allowed_product_fields, true ) ) {
-			$this->error( __( 'Invalid field.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid field.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get value with appropriate sanitization
@@ -131,7 +131,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		$this->success( array(
-			'message' => __( 'Product updated successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Product updated successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			'field'   => $field,
 		) );
 	}
@@ -148,7 +148,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		$term = $this->get_validated_category( $category_id );
 
 		if ( ! in_array( $field, $this->allowed_category_fields, true ) ) {
-			$this->error( __( 'Invalid field.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid field.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get value with appropriate sanitization
@@ -178,7 +178,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		$this->success( array(
-			'message' => __( 'Category updated successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Category updated successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			'field'   => $field,
 		) );
 	}
@@ -252,13 +252,13 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 	public function handle_apply_catalog_change() {
 		$this->verify_chat_request( 'manage_woocommerce' );
 
-		$action_type = $this->require_post( 'action_type', 'key', __( 'Action type is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$action_type = $this->require_post( 'action_type', 'key', __( 'Action type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$params_raw = $this->get_post( 'params', 'raw' );
 		if ( is_string( $params_raw ) ) {
 			$params = json_decode( $params_raw, true );
 			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				$this->error( __( 'Invalid params format.', 'ai-sales-manager-for-woocommerce' ) );
+				$this->error( __( 'Invalid params format.', 'stacksuite-sales-manager-for-woocommerce' ) );
 			}
 		} else {
 			$params = is_array( $params_raw ) ? $params_raw : array();
@@ -295,7 +295,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		$product = $this->get_validated_product( $product_id );
 
 		if ( empty( $image_url ) ) {
-			$this->error( __( 'Image URL is required.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Image URL is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Download and attach image
@@ -309,7 +309,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		set_post_thumbnail( $product_id, $attachment_id );
 
 		$this->success( array(
-			'message'       => __( 'Featured image set successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message'       => __( 'Featured image set successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			'attachment_id' => $attachment_id,
 			'image_url'     => wp_get_attachment_url( $attachment_id ),
 		) );
@@ -327,7 +327,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		$term = $this->get_validated_category( $category_id );
 
 		if ( empty( $image_url ) ) {
-			$this->error( __( 'Image URL is required.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Image URL is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Download and attach image
@@ -341,7 +341,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		update_term_meta( $category_id, 'thumbnail_id', $attachment_id );
 
 		$this->success( array(
-			'message'       => __( 'Category thumbnail set successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message'       => __( 'Category thumbnail set successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 			'attachment_id' => $attachment_id,
 			'image_url'     => wp_get_attachment_url( $attachment_id ),
 		) );
@@ -358,7 +358,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		$fields      = $this->get_json_post( 'fields', true, array() );
 
 		if ( empty( $fields ) ) {
-			$this->error( __( 'No fields to update.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'No fields to update.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = null;
@@ -373,7 +373,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 				break;
 
 			default:
-				$this->error( __( 'Invalid entity type.', 'ai-sales-manager-for-woocommerce' ) );
+				$this->error( __( 'Invalid entity type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		if ( is_wp_error( $result ) ) {
@@ -381,7 +381,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 		}
 
 		$this->success( array(
-			'message' => __( 'Changes applied successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Changes applied successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -477,7 +477,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 	private function apply_batch_to_product( $product_id, $fields ) {
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'invalid_product', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'invalid_product', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		foreach ( $fields as $field => $value ) {
@@ -508,7 +508,7 @@ class AISales_Ajax_Products extends AISales_Ajax_Base {
 	private function apply_batch_to_category( $category_id, $fields ) {
 		$term = get_term( $category_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			return new WP_Error( 'invalid_category', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'invalid_category', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$term_data = array();

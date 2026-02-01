@@ -1,6 +1,6 @@
 <?php
 /**
- * AI Sales Manager Uninstall
+ * StackSuite Sales Manager Uninstall
  *
  * Fired when the plugin is uninstalled (deleted) via WordPress admin.
  * This file is called automatically by WordPress when the plugin is deleted.

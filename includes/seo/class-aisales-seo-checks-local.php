@@ -47,10 +47,10 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'title_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Title too short', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Title too short', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current length, 2: minimum length */
-					__( 'Title is %1$d characters. Optimal length is %2$d-%3$d characters.', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Title is %1$d characters. Optimal length is %2$d-%3$d characters.', 'stacksuite-sales-manager-for-woocommerce' ),
 					strlen( $title ),
 					self::TITLE_MIN_LENGTH,
 					self::TITLE_MAX_LENGTH
@@ -61,10 +61,10 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'title_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Title too long', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Title too long', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current length, 2: maximum length */
-					__( 'Title is %1$d characters. May be truncated in search results (max %2$d).', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Title is %1$d characters. May be truncated in search results (max %2$d).', 'stacksuite-sales-manager-for-woocommerce' ),
 					strlen( $title ),
 					self::TITLE_MAX_LENGTH
 				),
@@ -78,18 +78,18 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'meta_description_missing',
 				'severity'      => 'critical',
-				'title'         => __( 'Missing meta description', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'No meta description set. Search engines will auto-generate one.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Missing meta description', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'No meta description set. Search engines will auto-generate one.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		} elseif ( strlen( $meta_desc ) < self::META_DESC_MIN_LENGTH ) {
 			$issues[] = array(
 				'check'         => 'meta_description_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Meta description too short', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Meta description too short', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current length, 2: minimum length */
-					__( 'Meta description is %1$d characters. Optimal is %2$d-%3$d.', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Meta description is %1$d characters. Optimal is %2$d-%3$d.', 'stacksuite-sales-manager-for-woocommerce' ),
 					strlen( $meta_desc ),
 					self::META_DESC_MIN_LENGTH,
 					self::META_DESC_MAX_LENGTH
@@ -100,10 +100,10 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'meta_description_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Meta description too long', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Meta description too long', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current length, 2: maximum length */
-					__( 'Meta description is %1$d characters. May be truncated (max %2$d).', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Meta description is %1$d characters. May be truncated (max %2$d).', 'stacksuite-sales-manager-for-woocommerce' ),
 					strlen( $meta_desc ),
 					self::META_DESC_MAX_LENGTH
 				),
@@ -119,8 +119,8 @@ class AISales_SEO_Checks_Local {
 				$issues[] = array(
 					'check'         => 'image_alt_missing',
 					'severity'      => 'warning',
-					'title'         => __( 'Missing image alt text', 'ai-sales-manager-for-woocommerce' ),
-					'description'   => __( 'Product image has no alt text. Important for accessibility and SEO.', 'ai-sales-manager-for-woocommerce' ),
+					'title'         => __( 'Missing image alt text', 'stacksuite-sales-manager-for-woocommerce' ),
+					'description'   => __( 'Product image has no alt text. Important for accessibility and SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 					'current_value' => '',
 				);
 			}
@@ -128,8 +128,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'image_missing',
 				'severity'      => 'critical',
-				'title'         => __( 'No product image', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Product has no featured image. Images improve conversions and SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No product image', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Product has no featured image. Images improve conversions and SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -144,16 +144,16 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'content_thin',
 				'severity'      => 'critical',
-				'title'         => __( 'Thin content', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Thin content', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current word count, 2: minimum word count */
-					__( 'Only %1$d words. Add more content (at least %2$d words) for better SEO.', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Only %1$d words. Add more content (at least %2$d words) for better SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 					$word_count,
 					self::MIN_CONTENT_WORDS
 				),
 				'current_value' => sprintf(
 					/* translators: %d: word count */
-					__( '%d words', 'ai-sales-manager-for-woocommerce' ),
+					__( '%d words', 'stacksuite-sales-manager-for-woocommerce' ),
 					$word_count
 				),
 			);
@@ -165,8 +165,8 @@ class AISales_SEO_Checks_Local {
 				$issues[] = array(
 					'check'         => 'heading_structure',
 					'severity'      => 'warning',
-					'title'         => __( 'No headings in description', 'ai-sales-manager-for-woocommerce' ),
-					'description'   => __( 'Long descriptions should use headings (H2, H3) for better readability.', 'ai-sales-manager-for-woocommerce' ),
+					'title'         => __( 'No headings in description', 'stacksuite-sales-manager-for-woocommerce' ),
+					'description'   => __( 'Long descriptions should use headings (H2, H3) for better readability.', 'stacksuite-sales-manager-for-woocommerce' ),
 					'current_value' => '',
 				);
 			}
@@ -178,8 +178,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'internal_links',
 				'severity'      => 'warning',
-				'title'         => __( 'No internal links', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Consider adding internal links to related products or categories.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No internal links', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Consider adding internal links to related products or categories.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -189,8 +189,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'price_missing',
 				'severity'      => 'warning',
-				'title'         => __( 'No price set', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Products without prices may not appear in Google Shopping.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No price set', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Products without prices may not appear in Google Shopping.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -200,8 +200,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'sku_missing',
 				'severity'      => 'warning',
-				'title'         => __( 'No SKU set', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'SKUs help with inventory management and can improve product structured data.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No SKU set', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'SKUs help with inventory management and can improve product structured data.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -223,8 +223,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'title_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Category name too short', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Category names should be descriptive for better SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Category name too short', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Category names should be descriptive for better SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => $term->name,
 			);
 		}
@@ -234,16 +234,16 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'description_missing',
 				'severity'      => 'critical',
-				'title'         => __( 'No category description', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Add a description to help search engines understand this category.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No category description', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Add a description to help search engines understand this category.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		} elseif ( str_word_count( wp_strip_all_tags( $term->description ) ) < 30 ) {
 			$issues[] = array(
 				'check'         => 'description_short',
 				'severity'      => 'warning',
-				'title'         => __( 'Category description too short', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Add more content to the category description (at least 30 words).', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Category description too short', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Add more content to the category description (at least 30 words).', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => $term->description,
 			);
 		}
@@ -254,8 +254,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'thumbnail_missing',
 				'severity'      => 'warning',
-				'title'         => __( 'No category image', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Category images improve visual appeal and can appear in search results.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No category image', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Category images improve visual appeal and can appear in search results.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -265,8 +265,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'empty_category',
 				'severity'      => 'warning',
-				'title'         => __( 'Empty category', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'This category has no products. Consider adding products or removing it.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Empty category', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'This category has no products. Consider adding products or removing it.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '0 products',
 			);
 		}
@@ -276,8 +276,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'slug_numeric',
 				'severity'      => 'warning',
-				'title'         => __( 'Non-descriptive URL slug', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Use descriptive words in the URL slug instead of just numbers.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Non-descriptive URL slug', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Use descriptive words in the URL slug instead of just numbers.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => $term->slug,
 			);
 		}
@@ -300,10 +300,10 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'title_length',
 				'severity'      => 'warning',
-				'title'         => __( 'Page title too short', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Page title too short', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current length, 2: minimum length, 3: maximum length */
-					__( 'Title is %1$d characters. Optimal is %2$d-%3$d.', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Title is %1$d characters. Optimal is %2$d-%3$d.', 'stacksuite-sales-manager-for-woocommerce' ),
 					strlen( $title ),
 					self::TITLE_MIN_LENGTH,
 					self::TITLE_MAX_LENGTH
@@ -318,8 +318,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'meta_description_missing',
 				'severity'      => 'critical',
-				'title'         => __( 'Missing meta description', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Add a meta description for better search result snippets.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Missing meta description', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Add a meta description for better search result snippets.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -331,16 +331,16 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'content_thin',
 				'severity'      => 'critical',
-				'title'         => __( 'Thin content', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Thin content', 'stacksuite-sales-manager-for-woocommerce' ),
 				'description'   => sprintf(
 					/* translators: 1: current word count, 2: minimum word count */
-					__( 'Only %1$d words. Add more content (at least %2$d words).', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Only %1$d words. Add more content (at least %2$d words).', 'stacksuite-sales-manager-for-woocommerce' ),
 					$word_count,
 					self::MIN_CONTENT_WORDS
 				),
 				'current_value' => sprintf(
 					/* translators: %d: word count */
-					__( '%d words', 'ai-sales-manager-for-woocommerce' ),
+					__( '%d words', 'stacksuite-sales-manager-for-woocommerce' ),
 					$word_count
 				),
 			);
@@ -351,8 +351,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'featured_image_missing',
 				'severity'      => 'warning',
-				'title'         => __( 'No featured image', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Featured images improve social sharing and visual appeal.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No featured image', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Featured images improve social sharing and visual appeal.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -368,8 +368,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'heading_structure',
 				'severity'      => 'warning',
-				'title'         => __( 'No subheadings', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Long content should use subheadings (H2, H3) for better structure.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No subheadings', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Long content should use subheadings (H2, H3) for better structure.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -380,8 +380,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'internal_links',
 				'severity'      => 'warning',
-				'title'         => __( 'No internal links', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Add internal links to improve site navigation and SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No internal links', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Add internal links to improve site navigation and SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -403,10 +403,10 @@ class AISales_SEO_Checks_Local {
 				$issues[] = array(
 					'check'         => 'image_alt_missing',
 					'severity'      => 'warning',
-					'title'         => __( 'Images missing alt text', 'ai-sales-manager-for-woocommerce' ),
+					'title'         => __( 'Images missing alt text', 'stacksuite-sales-manager-for-woocommerce' ),
 					'description'   => sprintf(
 						/* translators: %d: number of images */
-						__( '%d images are missing alt text.', 'ai-sales-manager-for-woocommerce' ),
+						__( '%d images are missing alt text.', 'stacksuite-sales-manager-for-woocommerce' ),
 						$images_without_alt
 					),
 					'current_value' => '',
@@ -435,8 +435,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'category_missing',
 				'severity'      => 'warning',
-				'title'         => __( 'No category assigned', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Assign a relevant category to improve organization and SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'No category assigned', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Assign a relevant category to improve organization and SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => '',
 			);
 		}
@@ -460,8 +460,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'       => 'permalinks',
 				'severity'    => 'critical',
-				'title'       => __( 'Plain permalinks', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Using plain permalinks. Switch to "Post name" for better SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'Plain permalinks', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Using plain permalinks. Switch to "Post name" for better SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -472,8 +472,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'       => 'search_visibility',
 				'severity'    => 'critical',
-				'title'       => __( 'Search engines blocked', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Your site is set to discourage search engines. Uncheck this in Settings > Reading.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'Search engines blocked', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Your site is set to discourage search engines. Uncheck this in Settings > Reading.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -482,8 +482,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'       => 'ssl',
 				'severity'    => 'critical',
-				'title'       => __( 'Not using HTTPS', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Your site is not using HTTPS. This affects SEO rankings and security.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'Not using HTTPS', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Your site is not using HTTPS. This affects SEO rankings and security.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -498,8 +498,8 @@ class AISales_SEO_Checks_Local {
 				$issues[] = array(
 					'check'       => 'sitemap',
 					'severity'    => 'warning',
-					'title'       => __( 'No XML sitemap found', 'ai-sales-manager-for-woocommerce' ),
-					'description' => __( 'Consider adding an XML sitemap to help search engines index your site.', 'ai-sales-manager-for-woocommerce' ),
+					'title'       => __( 'No XML sitemap found', 'stacksuite-sales-manager-for-woocommerce' ),
+					'description' => __( 'Consider adding an XML sitemap to help search engines index your site.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 		}
@@ -511,8 +511,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'       => 'robots_txt',
 				'severity'    => 'warning',
-				'title'       => __( 'No robots.txt found', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Add a robots.txt file to guide search engine crawlers.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'No robots.txt found', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Add a robots.txt file to guide search engine crawlers.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -523,16 +523,16 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'       => 'site_title',
 				'severity'    => 'critical',
-				'title'       => __( 'No site title', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Set a site title in Settings > General for better branding and SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'No site title', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Set a site title in Settings > General for better branding and SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 		if ( empty( $site_tagline ) || 'Just another WordPress site' === $site_tagline ) {
 			$issues[] = array(
 				'check'       => 'site_tagline',
 				'severity'    => 'warning',
-				'title'       => __( 'Default or missing tagline', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Set a custom tagline in Settings > General to describe your site.', 'ai-sales-manager-for-woocommerce' ),
+				'title'       => __( 'Default or missing tagline', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Set a custom tagline in Settings > General to describe your site.', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -557,8 +557,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'homepage_title',
 				'severity'      => 'warning',
-				'title'         => __( 'Site title too short', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Your site title should be descriptive for better SEO.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Site title too short', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Your site title should be descriptive for better SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => $site_title,
 			);
 		}
@@ -576,8 +576,8 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'homepage_meta_description',
 				'severity'      => 'critical',
-				'title'         => __( 'Missing or default homepage meta description', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Set a unique meta description for your homepage.', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Missing or default homepage meta description', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Set a unique meta description for your homepage.', 'stacksuite-sales-manager-for-woocommerce' ),
 				'current_value' => $meta_desc,
 			);
 		}
@@ -587,9 +587,9 @@ class AISales_SEO_Checks_Local {
 			$issues[] = array(
 				'check'         => 'homepage_static',
 				'severity'      => 'warning',
-				'title'         => __( 'Homepage shows latest posts', 'ai-sales-manager-for-woocommerce' ),
-				'description'   => __( 'Consider using a static homepage for better control over SEO and content.', 'ai-sales-manager-for-woocommerce' ),
-				'current_value' => __( 'Latest posts', 'ai-sales-manager-for-woocommerce' ),
+				'title'         => __( 'Homepage shows latest posts', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description'   => __( 'Consider using a static homepage for better control over SEO and content.', 'stacksuite-sales-manager-for-woocommerce' ),
+				'current_value' => __( 'Latest posts', 'stacksuite-sales-manager-for-woocommerce' ),
 			);
 		}
 
@@ -602,11 +602,11 @@ class AISales_SEO_Checks_Local {
 					$issues[] = array(
 						'check'         => 'homepage_content',
 						'severity'      => 'warning',
-						'title'         => __( 'Thin homepage content', 'ai-sales-manager-for-woocommerce' ),
-						'description'   => __( 'Homepage has limited text content. Add more to improve SEO.', 'ai-sales-manager-for-woocommerce' ),
+						'title'         => __( 'Thin homepage content', 'stacksuite-sales-manager-for-woocommerce' ),
+						'description'   => __( 'Homepage has limited text content. Add more to improve SEO.', 'stacksuite-sales-manager-for-woocommerce' ),
 						'current_value' => sprintf(
 							/* translators: %d: word count */
-							__( '%d words', 'ai-sales-manager-for-woocommerce' ),
+							__( '%d words', 'stacksuite-sales-manager-for-woocommerce' ),
 							$word_count
 						),
 					);

@@ -65,10 +65,10 @@ class AISales_Ajax_Billing extends AISales_Ajax_Base {
 	public function handle_quick_topup() {
 		$this->verify_request();
 
-		$plan_id = $this->require_post( 'plan_id', 'text', __( 'No plan selected.', 'ai-sales-manager-for-woocommerce' ) );
+		$plan_id = $this->require_post( 'plan_id', 'text', __( 'No plan selected.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		if ( ! in_array( $plan_id, $this->valid_plans, true ) ) {
-			$this->error( __( 'Invalid plan selected.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid plan selected.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = $this->handle_api_result( $this->api()->create_checkout( $plan_id ) );
@@ -105,8 +105,8 @@ class AISales_Ajax_Billing extends AISales_Ajax_Base {
 
 		$this->success( array(
 			'message'  => $enabled
-				? __( 'Auto top-up enabled.', 'ai-sales-manager-for-woocommerce' )
-				: __( 'Auto top-up disabled.', 'ai-sales-manager-for-woocommerce' ),
+				? __( 'Auto top-up enabled.', 'stacksuite-sales-manager-for-woocommerce' )
+				: __( 'Auto top-up disabled.', 'stacksuite-sales-manager-for-woocommerce' ),
 			'settings' => $result,
 		) );
 	}
@@ -145,7 +145,7 @@ class AISales_Ajax_Billing extends AISales_Ajax_Base {
 	public function handle_confirm_setup() {
 		$this->verify_request();
 
-		$session_id = $this->require_post( 'session_id', 'text', __( 'Session ID required.', 'ai-sales-manager-for-woocommerce' ) );
+		$session_id = $this->require_post( 'session_id', 'text', __( 'Session ID required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$this->handle_api_result( $this->api()->confirm_setup( $session_id ) );
 
@@ -165,7 +165,7 @@ class AISales_Ajax_Billing extends AISales_Ajax_Base {
 		$this->handle_api_result( $this->api()->remove_payment_method() );
 
 		$this->success( array(
-			'message' => __( 'Payment method removed.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Payment method removed.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 }

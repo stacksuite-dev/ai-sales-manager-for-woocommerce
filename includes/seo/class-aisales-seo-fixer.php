@@ -37,13 +37,13 @@ class AISales_SEO_Fixer {
 	 */
 	public function generate_fix( $issue ) {
 		if ( empty( $issue['check'] ) || empty( $issue['item_type'] ) ) {
-			return new WP_Error( 'invalid_issue', __( 'Invalid issue data.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'invalid_issue', __( 'Invalid issue data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Validate fix type is supported.
 		$fix_type = $this->get_fix_type( $issue['check'] );
 		if ( ! $fix_type ) {
-			return new WP_Error( 'unsupported_fix', __( 'This issue type cannot be auto-fixed.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'unsupported_fix', __( 'This issue type cannot be auto-fixed.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Build comprehensive request data.
@@ -135,7 +135,7 @@ class AISales_SEO_Fixer {
 				return $this->get_post_context( $item_id, $item_type );
 
 			default:
-				return new WP_Error( 'unsupported_type', __( 'Unsupported item type.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'unsupported_type', __( 'Unsupported item type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -148,7 +148,7 @@ class AISales_SEO_Fixer {
 	private function get_product_context( $product_id ) {
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'product_not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'product_not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get category names.
@@ -222,7 +222,7 @@ class AISales_SEO_Fixer {
 	private function get_category_context( $term_id ) {
 		$term = get_term( $term_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			return new WP_Error( 'category_not_found', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'category_not_found', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get parent category if exists.
@@ -269,7 +269,7 @@ class AISales_SEO_Fixer {
 	private function get_post_context( $post_id, $post_type ) {
 		$post = get_post( $post_id );
 		if ( ! $post ) {
-			return new WP_Error( 'post_not_found', __( 'Content not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'post_not_found', __( 'Content not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get categories for posts.
@@ -592,7 +592,7 @@ class AISales_SEO_Fixer {
 	 */
 	public function apply_fix( $issue, $fix ) {
 		if ( empty( $fix['field'] ) || ! isset( $fix['suggested_value'] ) ) {
-			return new WP_Error( 'invalid_fix', __( 'Invalid fix data.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'invalid_fix', __( 'Invalid fix data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$item_type = $issue['item_type'] ?? '';
@@ -607,7 +607,7 @@ class AISales_SEO_Fixer {
 			case 'post':
 				return $this->apply_post_fix( $item_id, $fix );
 			default:
-				return new WP_Error( 'unsupported_item', __( 'Cannot apply fix to this item type.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'unsupported_item', __( 'Cannot apply fix to this item type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -621,7 +621,7 @@ class AISales_SEO_Fixer {
 	private function apply_product_fix( $product_id, $fix ) {
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'product_not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'product_not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		switch ( $fix['field'] ) {
@@ -640,7 +640,7 @@ class AISales_SEO_Fixer {
 				break;
 
 			default:
-				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Clear SEO cache.
@@ -659,7 +659,7 @@ class AISales_SEO_Fixer {
 	private function apply_category_fix( $term_id, $fix ) {
 		$term = get_term( $term_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			return new WP_Error( 'category_not_found', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'category_not_found', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		switch ( $fix['field'] ) {
@@ -677,7 +677,7 @@ class AISales_SEO_Fixer {
 				break;
 
 			default:
-				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Clear SEO cache.
@@ -696,7 +696,7 @@ class AISales_SEO_Fixer {
 	private function apply_post_fix( $post_id, $fix ) {
 		$post = get_post( $post_id );
 		if ( ! $post ) {
-			return new WP_Error( 'post_not_found', __( 'Content not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'post_not_found', __( 'Content not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		switch ( $fix['field'] ) {
@@ -719,7 +719,7 @@ class AISales_SEO_Fixer {
 				break;
 
 			default:
-				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'unsupported_field', __( 'Cannot update this field.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Clear SEO cache.

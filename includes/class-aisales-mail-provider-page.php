@@ -40,7 +40,7 @@ class AISales_Mail_Provider_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager.
+	 * Add submenu page under StackSuite Sales Manager.
 	 *
 	 * Note: Menu item removed - Email Settings now accessed via Email Templates page.
 	 * Keeping method for backward compatibility in case of direct URL access.
@@ -119,13 +119,13 @@ class AISales_Mail_Provider_Page {
 	 */
 	private function get_i18n_strings() {
 		return array(
-			'save'         => __( 'Save Settings', 'ai-sales-manager-for-woocommerce' ),
-			'saved'        => __( 'Email delivery settings saved.', 'ai-sales-manager-for-woocommerce' ),
-			'saveFailed'   => __( 'Failed to save settings.', 'ai-sales-manager-for-woocommerce' ),
-			'invalidEmail' => __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ),
-			'testing'      => __( 'Sending test email...', 'ai-sales-manager-for-woocommerce' ),
-			'testSent'     => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ),
-			'testFailed'   => __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ),
+			'save'         => __( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+			'saved'        => __( 'Email delivery settings saved.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'saveFailed'   => __( 'Failed to save settings.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'invalidEmail' => __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'testing'      => __( 'Sending test email...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'testSent'     => __( 'Test email sent successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'testFailed'   => __( 'Failed to send test email.', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 }

@@ -42,13 +42,13 @@ class AISales_Email_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager
+	 * Add submenu page under StackSuite Sales Manager
 	 */
 	public function add_submenu_page() {
 		add_submenu_page(
 			'ai-sales-manager',
-			__( 'Email Templates', 'ai-sales-manager-for-woocommerce' ),
-			__( 'Email Templates', 'ai-sales-manager-for-woocommerce' ),
+			__( 'Email Templates', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'Email Templates', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-emails',
 			array( $this, 'render_page' )
@@ -164,13 +164,13 @@ class AISales_Email_Page {
 				'settings'   => AISales_Mail_Provider::instance()->get_settings(),
 				'adminEmail' => get_option( 'admin_email' ),
 				'i18n'       => array(
-					'save'         => __( 'Save Settings', 'ai-sales-manager-for-woocommerce' ),
-					'saved'        => __( 'Email delivery settings saved.', 'ai-sales-manager-for-woocommerce' ),
-					'saveFailed'   => __( 'Failed to save settings.', 'ai-sales-manager-for-woocommerce' ),
-					'invalidEmail' => __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ),
-					'testing'      => __( 'Sending test email...', 'ai-sales-manager-for-woocommerce' ),
-					'testSent'     => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ),
-					'testFailed'   => __( 'Failed to send test email.', 'ai-sales-manager-for-woocommerce' ),
+					'save'         => __( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+					'saved'        => __( 'Email delivery settings saved.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'saveFailed'   => __( 'Failed to save settings.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'invalidEmail' => __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'testing'      => __( 'Sending test email...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'testSent'     => __( 'Test email sent successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'testFailed'   => __( 'Failed to send test email.', 'stacksuite-sales-manager-for-woocommerce' ),
 				),
 			)
 		);
@@ -258,21 +258,21 @@ class AISales_Email_Page {
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'aisales_nonce' ),
 				'i18n'    => array(
-					'step1Title'         => __( 'Personalize Your Emails', 'ai-sales-manager-for-woocommerce' ),
-					'step2Title'         => __( 'Choose Templates', 'ai-sales-manager-for-woocommerce' ),
-					'step3Title'         => __( 'Generating...', 'ai-sales-manager-for-woocommerce' ),
-					'step4Title'         => __( 'All Done!', 'ai-sales-manager-for-woocommerce' ),
-					'brandSettingsTitle' => __( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ),
-					'skipSetup'          => __( 'Skip setup', 'ai-sales-manager-for-woocommerce' ),
-					'continue'           => __( 'Continue', 'ai-sales-manager-for-woocommerce' ),
-					'back'               => __( 'Back', 'ai-sales-manager-for-woocommerce' ),
-					'saveSettings'       => __( 'Save Settings', 'ai-sales-manager-for-woocommerce' ),
-					'settingsSaved'      => __( 'Brand settings saved successfully!', 'ai-sales-manager-for-woocommerce' ),
-					'generateCount'      => __( 'Generate {count} Template(s)', 'ai-sales-manager-for-woocommerce' ),
-					'viewTemplates'      => __( 'View Templates', 'ai-sales-manager-for-woocommerce' ),
-					'selectAtLeastOne'   => __( 'Please select at least one template to generate.', 'ai-sales-manager-for-woocommerce' ),
-					'partialSuccess'     => __( 'Almost there!', 'ai-sales-manager-for-woocommerce' ),
-					'partialSuccessMsg'  => __( '{success} templates generated, {errors} failed.', 'ai-sales-manager-for-woocommerce' ),
+					'step1Title'         => __( 'Personalize Your Emails', 'stacksuite-sales-manager-for-woocommerce' ),
+					'step2Title'         => __( 'Choose Templates', 'stacksuite-sales-manager-for-woocommerce' ),
+					'step3Title'         => __( 'Generating...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'step4Title'         => __( 'All Done!', 'stacksuite-sales-manager-for-woocommerce' ),
+					'brandSettingsTitle' => __( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+					'skipSetup'          => __( 'Skip setup', 'stacksuite-sales-manager-for-woocommerce' ),
+					'continue'           => __( 'Continue', 'stacksuite-sales-manager-for-woocommerce' ),
+					'back'               => __( 'Back', 'stacksuite-sales-manager-for-woocommerce' ),
+					'saveSettings'       => __( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+					'settingsSaved'      => __( 'Brand settings saved successfully!', 'stacksuite-sales-manager-for-woocommerce' ),
+					'generateCount'      => __( 'Generate {count} Template(s)', 'stacksuite-sales-manager-for-woocommerce' ),
+					'viewTemplates'      => __( 'View Templates', 'stacksuite-sales-manager-for-woocommerce' ),
+					'selectAtLeastOne'   => __( 'Please select at least one template to generate.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'partialSuccess'     => __( 'Almost there!', 'stacksuite-sales-manager-for-woocommerce' ),
+					'partialSuccessMsg'  => __( '{success} templates generated, {errors} failed.', 'stacksuite-sales-manager-for-woocommerce' ),
 				),
 			)
 		);
@@ -286,46 +286,46 @@ class AISales_Email_Page {
 	private function get_i18n_strings() {
 		return array(
 			// General.
-			'loading'           => __( 'Loading...', 'ai-sales-manager-for-woocommerce' ),
-			'error'             => __( 'Error', 'ai-sales-manager-for-woocommerce' ),
-			'success'           => __( 'Success', 'ai-sales-manager-for-woocommerce' ),
-			'cancel'            => __( 'Cancel', 'ai-sales-manager-for-woocommerce' ),
-			'confirm'           => __( 'Confirm', 'ai-sales-manager-for-woocommerce' ),
-			'delete'            => __( 'Delete', 'ai-sales-manager-for-woocommerce' ),
-			'save'              => __( 'Save', 'ai-sales-manager-for-woocommerce' ),
+			'loading'           => __( 'Loading...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'error'             => __( 'Error', 'stacksuite-sales-manager-for-woocommerce' ),
+			'success'           => __( 'Success', 'stacksuite-sales-manager-for-woocommerce' ),
+			'cancel'            => __( 'Cancel', 'stacksuite-sales-manager-for-woocommerce' ),
+			'confirm'           => __( 'Confirm', 'stacksuite-sales-manager-for-woocommerce' ),
+			'delete'            => __( 'Delete', 'stacksuite-sales-manager-for-woocommerce' ),
+			'save'              => __( 'Save', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Status.
-			'active'            => __( 'Active', 'ai-sales-manager-for-woocommerce' ),
-			'draft'             => __( 'Draft', 'ai-sales-manager-for-woocommerce' ),
-			'notCreated'        => __( 'Not Created', 'ai-sales-manager-for-woocommerce' ),
+			'active'            => __( 'Active', 'stacksuite-sales-manager-for-woocommerce' ),
+			'draft'             => __( 'Draft', 'stacksuite-sales-manager-for-woocommerce' ),
+			'notCreated'        => __( 'Not Created', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Actions.
-			'generating'        => __( 'Generating...', 'ai-sales-manager-for-woocommerce' ),
-			'saving'            => __( 'Saving...', 'ai-sales-manager-for-woocommerce' ),
-			'deleting'          => __( 'Deleting...', 'ai-sales-manager-for-woocommerce' ),
-			'previewing'        => __( 'Loading preview...', 'ai-sales-manager-for-woocommerce' ),
+			'generating'        => __( 'Generating...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'saving'            => __( 'Saving...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'deleting'          => __( 'Deleting...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'previewing'        => __( 'Loading preview...', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Messages.
-			'templateGenerated' => __( 'Template generated successfully!', 'ai-sales-manager-for-woocommerce' ),
-			'templateSaved'     => __( 'Template saved successfully!', 'ai-sales-manager-for-woocommerce' ),
-			'templateActivated' => __( 'Template activated!', 'ai-sales-manager-for-woocommerce' ),
-			'templateDeleted'   => __( 'Template deleted.', 'ai-sales-manager-for-woocommerce' ),
-			'allGenerated'      => __( 'All templates generated!', 'ai-sales-manager-for-woocommerce' ),
-			'confirmDelete'     => __( 'Are you sure you want to delete this template?', 'ai-sales-manager-for-woocommerce' ),
-			'connectionError'   => __( 'Connection error. Please try again.', 'ai-sales-manager-for-woocommerce' ),
+			'templateGenerated' => __( 'Template generated successfully!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'templateSaved'     => __( 'Template saved successfully!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'templateActivated' => __( 'Template activated!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'templateDeleted'   => __( 'Template deleted.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'allGenerated'      => __( 'All templates generated!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'confirmDelete'     => __( 'Are you sure you want to delete this template?', 'stacksuite-sales-manager-for-woocommerce' ),
+			'connectionError'   => __( 'Connection error. Please try again.', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Preview.
-			'previewNote'       => __( 'Preview uses sample order data', 'ai-sales-manager-for-woocommerce' ),
-			'mobile'            => __( 'Mobile', 'ai-sales-manager-for-woocommerce' ),
-			'tablet'            => __( 'Tablet', 'ai-sales-manager-for-woocommerce' ),
-			'desktop'           => __( 'Desktop', 'ai-sales-manager-for-woocommerce' ),
+			'previewNote'       => __( 'Preview uses sample order data', 'stacksuite-sales-manager-for-woocommerce' ),
+			'mobile'            => __( 'Mobile', 'stacksuite-sales-manager-for-woocommerce' ),
+			'tablet'            => __( 'Tablet', 'stacksuite-sales-manager-for-woocommerce' ),
+			'desktop'           => __( 'Desktop', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Test email.
-			'sendTest'          => __( 'Send Test', 'ai-sales-manager-for-woocommerce' ),
-			'sendTestEmail'     => __( 'Send Test Email', 'ai-sales-manager-for-woocommerce' ),
-			'sendingTest'       => __( 'Sending test email...', 'ai-sales-manager-for-woocommerce' ),
-			'invalidEmail'      => __( 'Please enter a valid email address.', 'ai-sales-manager-for-woocommerce' ),
-			'testSendSuccess'   => __( 'Test email sent successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'sendTest'          => __( 'Send Test', 'stacksuite-sales-manager-for-woocommerce' ),
+			'sendTestEmail'     => __( 'Send Test Email', 'stacksuite-sales-manager-for-woocommerce' ),
+			'sendingTest'       => __( 'Sending test email...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'invalidEmail'      => __( 'Please enter a valid email address.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'testSendSuccess'   => __( 'Test email sent successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 
@@ -380,22 +380,22 @@ class AISales_Email_Page {
 	private function group_templates_by_category( $templates ) {
 		$groups = array(
 			'transactional' => array(
-				'label'     => __( 'Transactional Emails', 'ai-sales-manager-for-woocommerce' ),
+				'label'     => __( 'Transactional Emails', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'      => 'dashicons-cart',
 				'templates' => array(),
 			),
 			'customer'      => array(
-				'label'     => __( 'Customer Emails', 'ai-sales-manager-for-woocommerce' ),
+				'label'     => __( 'Customer Emails', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'      => 'dashicons-admin-users',
 				'templates' => array(),
 			),
 			'admin'         => array(
-				'label'     => __( 'Admin Notifications', 'ai-sales-manager-for-woocommerce' ),
+				'label'     => __( 'Admin Notifications', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'      => 'dashicons-admin-tools',
 				'templates' => array(),
 			),
 			'recovery'      => array(
-				'label'     => __( 'Cart Recovery', 'ai-sales-manager-for-woocommerce' ),
+				'label'     => __( 'Cart Recovery', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'      => 'dashicons-update',
 				'templates' => array(),
 			),

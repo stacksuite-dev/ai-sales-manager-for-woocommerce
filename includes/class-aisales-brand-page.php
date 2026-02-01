@@ -43,13 +43,13 @@ class AISales_Brand_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager
+	 * Add submenu page under StackSuite Sales Manager
 	 */
 	public function add_submenu_page() {
 		add_submenu_page(
 			'ai-sales-manager',
-			__( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ),
-			__( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ),
+			__( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-brand',
 			array( $this, 'render_page' )
@@ -144,24 +144,24 @@ class AISales_Brand_Page {
 	 */
 	private function get_industries() {
 		return array(
-			''                    => __( 'Select an industry...', 'ai-sales-manager-for-woocommerce' ),
-			'fashion'             => __( 'Fashion & Apparel', 'ai-sales-manager-for-woocommerce' ),
-			'electronics'         => __( 'Electronics & Technology', 'ai-sales-manager-for-woocommerce' ),
-			'health_beauty'       => __( 'Health & Beauty', 'ai-sales-manager-for-woocommerce' ),
-			'home_garden'         => __( 'Home & Garden', 'ai-sales-manager-for-woocommerce' ),
-			'food_beverage'       => __( 'Food & Beverage', 'ai-sales-manager-for-woocommerce' ),
-			'sports_outdoors'     => __( 'Sports & Outdoors', 'ai-sales-manager-for-woocommerce' ),
-			'toys_games'          => __( 'Toys & Games', 'ai-sales-manager-for-woocommerce' ),
-			'books_media'         => __( 'Books & Media', 'ai-sales-manager-for-woocommerce' ),
-			'automotive'          => __( 'Automotive', 'ai-sales-manager-for-woocommerce' ),
-			'jewelry_accessories' => __( 'Jewelry & Accessories', 'ai-sales-manager-for-woocommerce' ),
-			'pet_supplies'        => __( 'Pet Supplies', 'ai-sales-manager-for-woocommerce' ),
-			'arts_crafts'         => __( 'Arts & Crafts', 'ai-sales-manager-for-woocommerce' ),
-			'baby_kids'           => __( 'Baby & Kids', 'ai-sales-manager-for-woocommerce' ),
-			'office_supplies'     => __( 'Office Supplies', 'ai-sales-manager-for-woocommerce' ),
-			'services'            => __( 'Services', 'ai-sales-manager-for-woocommerce' ),
-			'digital_products'    => __( 'Digital Products', 'ai-sales-manager-for-woocommerce' ),
-			'other'               => __( 'Other', 'ai-sales-manager-for-woocommerce' ),
+			''                    => __( 'Select an industry...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'fashion'             => __( 'Fashion & Apparel', 'stacksuite-sales-manager-for-woocommerce' ),
+			'electronics'         => __( 'Electronics & Technology', 'stacksuite-sales-manager-for-woocommerce' ),
+			'health_beauty'       => __( 'Health & Beauty', 'stacksuite-sales-manager-for-woocommerce' ),
+			'home_garden'         => __( 'Home & Garden', 'stacksuite-sales-manager-for-woocommerce' ),
+			'food_beverage'       => __( 'Food & Beverage', 'stacksuite-sales-manager-for-woocommerce' ),
+			'sports_outdoors'     => __( 'Sports & Outdoors', 'stacksuite-sales-manager-for-woocommerce' ),
+			'toys_games'          => __( 'Toys & Games', 'stacksuite-sales-manager-for-woocommerce' ),
+			'books_media'         => __( 'Books & Media', 'stacksuite-sales-manager-for-woocommerce' ),
+			'automotive'          => __( 'Automotive', 'stacksuite-sales-manager-for-woocommerce' ),
+			'jewelry_accessories' => __( 'Jewelry & Accessories', 'stacksuite-sales-manager-for-woocommerce' ),
+			'pet_supplies'        => __( 'Pet Supplies', 'stacksuite-sales-manager-for-woocommerce' ),
+			'arts_crafts'         => __( 'Arts & Crafts', 'stacksuite-sales-manager-for-woocommerce' ),
+			'baby_kids'           => __( 'Baby & Kids', 'stacksuite-sales-manager-for-woocommerce' ),
+			'office_supplies'     => __( 'Office Supplies', 'stacksuite-sales-manager-for-woocommerce' ),
+			'services'            => __( 'Services', 'stacksuite-sales-manager-for-woocommerce' ),
+			'digital_products'    => __( 'Digital Products', 'stacksuite-sales-manager-for-woocommerce' ),
+			'other'               => __( 'Other', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 
@@ -173,28 +173,28 @@ class AISales_Brand_Page {
 	private function get_brand_tones() {
 		return array(
 			'professional' => array(
-				'label'       => __( 'Professional', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Formal, trustworthy, and business-focused', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Professional', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Formal, trustworthy, and business-focused', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-businessman',
 			),
 			'friendly'     => array(
-				'label'       => __( 'Friendly', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Warm, approachable, and conversational', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Friendly', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Warm, approachable, and conversational', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-smiley',
 			),
 			'casual'       => array(
-				'label'       => __( 'Casual', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Relaxed, informal, and easy-going', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Casual', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Relaxed, informal, and easy-going', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-coffee',
 			),
 			'luxury'       => array(
-				'label'       => __( 'Luxury', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Elegant, sophisticated, and premium', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Luxury', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Elegant, sophisticated, and premium', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-star-filled',
 			),
 			'playful'      => array(
-				'label'       => __( 'Playful', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Fun, energetic, and creative', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Playful', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Fun, energetic, and creative', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-heart',
 			),
 		);
@@ -207,12 +207,12 @@ class AISales_Brand_Page {
 	 */
 	private function get_price_positions() {
 		return array(
-			''          => __( 'Select positioning...', 'ai-sales-manager-for-woocommerce' ),
-			'budget'    => __( 'Budget-Friendly', 'ai-sales-manager-for-woocommerce' ),
-			'value'     => __( 'Value for Money', 'ai-sales-manager-for-woocommerce' ),
-			'mid_range' => __( 'Mid-Range', 'ai-sales-manager-for-woocommerce' ),
-			'premium'   => __( 'Premium', 'ai-sales-manager-for-woocommerce' ),
-			'luxury'    => __( 'Luxury', 'ai-sales-manager-for-woocommerce' ),
+			''          => __( 'Select positioning...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'budget'    => __( 'Budget-Friendly', 'stacksuite-sales-manager-for-woocommerce' ),
+			'value'     => __( 'Value for Money', 'stacksuite-sales-manager-for-woocommerce' ),
+			'mid_range' => __( 'Mid-Range', 'stacksuite-sales-manager-for-woocommerce' ),
+			'premium'   => __( 'Premium', 'stacksuite-sales-manager-for-woocommerce' ),
+			'luxury'    => __( 'Luxury', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 
@@ -224,23 +224,23 @@ class AISales_Brand_Page {
 	private function get_promotion_styles() {
 		return array(
 			'aggressive' => array(
-				'label'       => __( 'Aggressive', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Frequent sales, urgency language, flash deals', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Aggressive', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Frequent sales, urgency language, flash deals', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-megaphone',
 			),
 			'moderate'   => array(
-				'label'       => __( 'Moderate', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Seasonal promotions, occasional discounts', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Moderate', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Seasonal promotions, occasional discounts', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-calendar-alt',
 			),
 			'minimal'    => array(
-				'label'       => __( 'Minimal', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Rare discounts, focus on value over price', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Minimal', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Rare discounts, focus on value over price', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-awards',
 			),
 			'never'      => array(
-				'label'       => __( 'Never Discount', 'ai-sales-manager-for-woocommerce' ),
-				'description' => __( 'Premium positioning, no sales or promotions', 'ai-sales-manager-for-woocommerce' ),
+				'label'       => __( 'Never Discount', 'stacksuite-sales-manager-for-woocommerce' ),
+				'description' => __( 'Premium positioning, no sales or promotions', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'        => 'dashicons-lock',
 			),
 		);
@@ -254,60 +254,60 @@ class AISales_Brand_Page {
 	private function get_i18n_strings() {
 		return array(
 			// General.
-			'loading'              => __( 'Loading...', 'ai-sales-manager-for-woocommerce' ),
-			'error'                => __( 'Error', 'ai-sales-manager-for-woocommerce' ),
-			'success'              => __( 'Success', 'ai-sales-manager-for-woocommerce' ),
-			'cancel'               => __( 'Cancel', 'ai-sales-manager-for-woocommerce' ),
-			'save'                 => __( 'Save', 'ai-sales-manager-for-woocommerce' ),
-			'saving'               => __( 'Saving...', 'ai-sales-manager-for-woocommerce' ),
-			'saved'                => __( 'Saved!', 'ai-sales-manager-for-woocommerce' ),
+			'loading'              => __( 'Loading...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'error'                => __( 'Error', 'stacksuite-sales-manager-for-woocommerce' ),
+			'success'              => __( 'Success', 'stacksuite-sales-manager-for-woocommerce' ),
+			'cancel'               => __( 'Cancel', 'stacksuite-sales-manager-for-woocommerce' ),
+			'save'                 => __( 'Save', 'stacksuite-sales-manager-for-woocommerce' ),
+			'saving'               => __( 'Saving...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'saved'                => __( 'Saved!', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Empty state.
-			'welcomeTitle'         => __( "Let's set up your brand identity", 'ai-sales-manager-for-woocommerce' ),
-			'welcomeDescription'   => __( 'Your brand settings help our AI generate content that matches your store\'s unique voice and style.', 'ai-sales-manager-for-woocommerce' ),
-			'aiAnalyze'            => __( 'AI Analyze My Store', 'ai-sales-manager-for-woocommerce' ),
-			'setupManually'        => __( 'Set up manually', 'ai-sales-manager-for-woocommerce' ),
+			'welcomeTitle'         => __( "Let's set up your brand identity", 'stacksuite-sales-manager-for-woocommerce' ),
+			'welcomeDescription'   => __( 'Your brand settings help our AI generate content that matches your store\'s unique voice and style.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'aiAnalyze'            => __( 'AI Analyze My Store', 'stacksuite-sales-manager-for-woocommerce' ),
+			'setupManually'        => __( 'Set up manually', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Analyzing state.
-			'analyzingTitle'       => __( 'Analyzing your store...', 'ai-sales-manager-for-woocommerce' ),
-			'analyzingStep1'       => __( 'Gathering store information', 'ai-sales-manager-for-woocommerce' ),
-			'analyzingStep2'       => __( 'Analyzing brand characteristics', 'ai-sales-manager-for-woocommerce' ),
-			'analyzingStep3'       => __( 'Generating suggestions', 'ai-sales-manager-for-woocommerce' ),
+			'analyzingTitle'       => __( 'Analyzing your store...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'analyzingStep1'       => __( 'Gathering store information', 'stacksuite-sales-manager-for-woocommerce' ),
+			'analyzingStep2'       => __( 'Analyzing brand characteristics', 'stacksuite-sales-manager-for-woocommerce' ),
+			'analyzingStep3'       => __( 'Generating suggestions', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Review state.
-			'reviewTitle'          => __( 'Review AI Suggestions', 'ai-sales-manager-for-woocommerce' ),
-			'reviewDescription'    => __( 'Our AI analyzed your store. Review and adjust these suggestions before saving.', 'ai-sales-manager-for-woocommerce' ),
-			'acceptSuggestions'    => __( 'Accept & Continue', 'ai-sales-manager-for-woocommerce' ),
-			'editSuggestions'      => __( 'Edit Suggestions', 'ai-sales-manager-for-woocommerce' ),
+			'reviewTitle'          => __( 'Review AI Suggestions', 'stacksuite-sales-manager-for-woocommerce' ),
+			'reviewDescription'    => __( 'Our AI analyzed your store. Review and adjust these suggestions before saving.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'acceptSuggestions'    => __( 'Accept & Continue', 'stacksuite-sales-manager-for-woocommerce' ),
+			'editSuggestions'      => __( 'Edit Suggestions', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Form.
-			'saveSettings'         => __( 'Save Settings', 'ai-sales-manager-for-woocommerce' ),
-			'settingsSaved'        => __( 'Brand settings saved successfully!', 'ai-sales-manager-for-woocommerce' ),
-			'resetToDetected'      => __( 'Reset to detected', 'ai-sales-manager-for-woocommerce' ),
-			'colorsReset'          => __( 'Colors reset to detected values.', 'ai-sales-manager-for-woocommerce' ),
+			'saveSettings'         => __( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+			'settingsSaved'        => __( 'Brand settings saved successfully!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'resetToDetected'      => __( 'Reset to detected', 'stacksuite-sales-manager-for-woocommerce' ),
+			'colorsReset'          => __( 'Colors reset to detected values.', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Cards.
-			'storeIdentity'        => __( 'Store Identity', 'ai-sales-manager-for-woocommerce' ),
-			'storeIdentityDesc'    => __( 'Basic information about your business', 'ai-sales-manager-for-woocommerce' ),
-			'brandVoice'           => __( 'Brand Voice', 'ai-sales-manager-for-woocommerce' ),
-			'brandVoiceDesc'       => __( 'How your brand communicates', 'ai-sales-manager-for-woocommerce' ),
-			'brandStyle'           => __( 'Brand Style', 'ai-sales-manager-for-woocommerce' ),
-			'brandStyleDesc'       => __( 'Visual identity for your emails', 'ai-sales-manager-for-woocommerce' ),
+			'storeIdentity'        => __( 'Store Identity', 'stacksuite-sales-manager-for-woocommerce' ),
+			'storeIdentityDesc'    => __( 'Basic information about your business', 'stacksuite-sales-manager-for-woocommerce' ),
+			'brandVoice'           => __( 'Brand Voice', 'stacksuite-sales-manager-for-woocommerce' ),
+			'brandVoiceDesc'       => __( 'How your brand communicates', 'stacksuite-sales-manager-for-woocommerce' ),
+			'brandStyle'           => __( 'Brand Style', 'stacksuite-sales-manager-for-woocommerce' ),
+			'brandStyleDesc'       => __( 'Visual identity for your emails', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Fields.
-			'storeName'            => __( 'Store Name', 'ai-sales-manager-for-woocommerce' ),
-			'industry'             => __( 'Industry', 'ai-sales-manager-for-woocommerce' ),
-			'targetAudience'       => __( 'Target Audience', 'ai-sales-manager-for-woocommerce' ),
-			'targetAudiencePlaceholder' => __( 'e.g., Young professionals aged 25-35 interested in sustainable fashion', 'ai-sales-manager-for-woocommerce' ),
-			'brandTone'            => __( 'Brand Tone', 'ai-sales-manager-for-woocommerce' ),
-			'primaryColor'         => __( 'Primary Color', 'ai-sales-manager-for-woocommerce' ),
-			'textColor'            => __( 'Text Color', 'ai-sales-manager-for-woocommerce' ),
-			'backgroundColor'      => __( 'Background Color', 'ai-sales-manager-for-woocommerce' ),
-			'fontFamily'           => __( 'Font Family', 'ai-sales-manager-for-woocommerce' ),
+			'storeName'            => __( 'Store Name', 'stacksuite-sales-manager-for-woocommerce' ),
+			'industry'             => __( 'Industry', 'stacksuite-sales-manager-for-woocommerce' ),
+			'targetAudience'       => __( 'Target Audience', 'stacksuite-sales-manager-for-woocommerce' ),
+			'targetAudiencePlaceholder' => __( 'e.g., Young professionals aged 25-35 interested in sustainable fashion', 'stacksuite-sales-manager-for-woocommerce' ),
+			'brandTone'            => __( 'Brand Tone', 'stacksuite-sales-manager-for-woocommerce' ),
+			'primaryColor'         => __( 'Primary Color', 'stacksuite-sales-manager-for-woocommerce' ),
+			'textColor'            => __( 'Text Color', 'stacksuite-sales-manager-for-woocommerce' ),
+			'backgroundColor'      => __( 'Background Color', 'stacksuite-sales-manager-for-woocommerce' ),
+			'fontFamily'           => __( 'Font Family', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Errors.
-			'connectionError'      => __( 'Connection error. Please try again.', 'ai-sales-manager-for-woocommerce' ),
-			'analyzeError'         => __( 'Could not analyze store. Please try again or set up manually.', 'ai-sales-manager-for-woocommerce' ),
+			'connectionError'      => __( 'Connection error. Please try again.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'analyzeError'         => __( 'Could not analyze store. Please try again or set up manually.', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 

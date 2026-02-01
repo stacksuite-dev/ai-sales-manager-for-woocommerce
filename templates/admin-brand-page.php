@@ -48,7 +48,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 		<div class="aisales-brand-page__header-left">
 			<span class="aisales-brand-page__title">
 				<span class="dashicons dashicons-art"></span>
-				<?php esc_html_e( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
 		</div>
 		<div class="aisales-brand-page__header-right">
@@ -56,7 +56,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				<!-- AI Re-analyze Button (pill style like balance indicator) -->
 				<button type="button" class="aisales-btn aisales-btn--pill" id="aisales-brand-reanalyze-btn">
 					<span class="dashicons dashicons-admin-customizer"></span>
-					<?php esc_html_e( 'AI Re-analyze', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'AI Re-analyze', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</button>
 			<?php endif; ?>
 			<!-- Balance Indicator -->
@@ -69,11 +69,11 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 		<div class="aisales-brand-page__not-connected">
 			<div class="aisales-empty-state">
 				<span class="dashicons dashicons-warning"></span>
-				<h2><?php esc_html_e( 'Not Connected', 'ai-sales-manager-for-woocommerce' ); ?></h2>
-				<p><?php esc_html_e( 'Please connect your AI Sales Manager account to configure brand settings.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+				<h2><?php esc_html_e( 'Not Connected', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
+				<p><?php esc_html_e( 'Please connect your StackSuite Sales Manager account to configure brand settings.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager' ) ); ?>" class="aisales-btn aisales-btn--primary">
 					<span class="dashicons dashicons-admin-network"></span>
-					<?php esc_html_e( 'Go to Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Go to Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</a>
 			</div>
 		</div>
@@ -85,31 +85,31 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 					<div class="aisales-brand-welcome__icon">
 						<span class="dashicons dashicons-art"></span>
 					</div>
-					<h2 class="aisales-brand-welcome__title"><?php esc_html_e( "Let's set up your brand identity", 'ai-sales-manager-for-woocommerce' ); ?></h2>
+					<h2 class="aisales-brand-welcome__title"><?php esc_html_e( "Let's set up your brand identity", 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 					<p class="aisales-brand-welcome__description">
-						<?php esc_html_e( "Your brand settings help our AI generate content that matches your store's unique voice and style. This ensures consistent, on-brand emails and product descriptions.", 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( "Your brand settings help our AI generate content that matches your store's unique voice and style. This ensures consistent, on-brand emails and product descriptions.", 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</p>
 					<div class="aisales-brand-welcome__actions">
 						<button type="button" class="aisales-btn aisales-btn--primary aisales-btn--lg" id="aisales-brand-analyze-btn">
 							<span class="dashicons dashicons-admin-customizer"></span>
-							<?php esc_html_e( 'AI Analyze My Store', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'AI Analyze My Store', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</button>
 						<button type="button" class="aisales-btn aisales-btn--ghost" id="aisales-brand-manual-btn">
-							<?php esc_html_e( 'Set up manually', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Set up manually', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</button>
 					</div>
 					<div class="aisales-brand-welcome__features">
 						<div class="aisales-brand-welcome__feature">
 							<span class="dashicons dashicons-yes-alt"></span>
-							<span><?php esc_html_e( 'Detects your industry and niche', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><?php esc_html_e( 'Detects your industry and niche', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-brand-welcome__feature">
 							<span class="dashicons dashicons-yes-alt"></span>
-							<span><?php esc_html_e( 'Identifies your target audience', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><?php esc_html_e( 'Identifies your target audience', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 						<div class="aisales-brand-welcome__feature">
 							<span class="dashicons dashicons-yes-alt"></span>
-							<span><?php esc_html_e( 'Suggests an appropriate brand tone', 'ai-sales-manager-for-woocommerce' ); ?></span>
+							<span><?php esc_html_e( 'Suggests an appropriate brand tone', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 						</div>
 					</div>
 				</div>
@@ -122,25 +122,25 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				<div class="aisales-brand-analyzing__spinner">
 					<div class="aisales-spinner aisales-spinner--lg"></div>
 				</div>
-				<h2 class="aisales-brand-analyzing__title"><?php esc_html_e( 'Analyzing your store...', 'ai-sales-manager-for-woocommerce' ); ?></h2>
+				<h2 class="aisales-brand-analyzing__title"><?php esc_html_e( 'Analyzing your store...', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
 				<div class="aisales-brand-analyzing__steps">
 					<div class="aisales-brand-analyzing__step" data-step="1">
 						<span class="aisales-brand-analyzing__step-icon">
 							<span class="dashicons dashicons-search"></span>
 						</span>
-						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Gathering store information', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Gathering store information', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-brand-analyzing__step" data-step="2">
 						<span class="aisales-brand-analyzing__step-icon">
 							<span class="dashicons dashicons-admin-customizer"></span>
 						</span>
-						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Analyzing brand characteristics', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Analyzing brand characteristics', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<div class="aisales-brand-analyzing__step" data-step="3">
 						<span class="aisales-brand-analyzing__step-icon">
 							<span class="dashicons dashicons-lightbulb"></span>
 						</span>
-						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Generating suggestions', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-brand-analyzing__step-text"><?php esc_html_e( 'Generating suggestions', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 				</div>
 			</div>
@@ -152,8 +152,8 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				<div class="aisales-brand-review__header">
 					<span class="dashicons dashicons-chart-area"></span>
 					<div class="aisales-brand-review__header-text">
-						<h2 class="aisales-brand-review__title"><?php esc_html_e( 'AI Analyze Result', 'ai-sales-manager-for-woocommerce' ); ?></h2>
-						<p class="aisales-brand-review__description"><?php esc_html_e( 'Here is what we discovered about your store. Click Continue to customize these settings.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h2 class="aisales-brand-review__title"><?php esc_html_e( 'AI Analyze Result', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
+						<p class="aisales-brand-review__description"><?php esc_html_e( 'Here is what we discovered about your store. Click Continue to customize these settings.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				</div>
 				<div class="aisales-brand-review__content">
@@ -162,7 +162,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				</div>
 				<div class="aisales-brand-review__actions">
 					<button type="button" class="aisales-btn aisales-btn--ai aisales-btn--lg" id="aisales-brand-continue-btn">
-						<?php esc_html_e( 'Continue', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Continue', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						<span class="dashicons dashicons-arrow-right-alt"></span>
 					</button>
 				</div>
@@ -178,8 +178,8 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				<div class="aisales-brand-settings__header">
 					<span class="dashicons dashicons-art"></span>
 					<div class="aisales-brand-settings__header-text">
-						<h2 class="aisales-brand-settings__title"><?php esc_html_e( 'Brand Settings', 'ai-sales-manager-for-woocommerce' ); ?></h2>
-						<p class="aisales-brand-settings__description"><?php esc_html_e( 'Configure your store identity, voice, and visual style for AI-generated content.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h2 class="aisales-brand-settings__title"><?php esc_html_e( 'Brand Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></h2>
+						<p class="aisales-brand-settings__description"><?php esc_html_e( 'Configure your store identity, voice, and visual style for AI-generated content.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 					</div>
 				</div>
 
@@ -189,40 +189,40 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 					<div class="aisales-settings-section">
 						<h3 class="aisales-settings-section__title">
 							<span class="dashicons dashicons-store"></span>
-							<?php esc_html_e( 'Store Identity', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Store Identity', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<div class="aisales-settings-section__content">
 							<!-- Store Name -->
 							<div class="aisales-form-group">
 								<label for="aisales-store-name" class="aisales-form-label">
-									<?php esc_html_e( 'Store Name', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Store Name', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<input type="text" 
 									id="aisales-store-name" 
 									name="store_name" 
 									class="aisales-form-input" 
 									value="<?php echo esc_attr( $aisales_current_store_name ); ?>"
-									placeholder="<?php esc_attr_e( 'Your Store Name', 'ai-sales-manager-for-woocommerce' ); ?>">
+									placeholder="<?php esc_attr_e( 'Your Store Name', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
 							</div>
 
 							<!-- Tagline -->
 							<div class="aisales-form-group">
 								<label for="aisales-tagline" class="aisales-form-label">
-									<?php esc_html_e( 'Tagline / Value Proposition', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Tagline / Value Proposition', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<input type="text" 
 									id="aisales-tagline" 
 									name="tagline" 
 									class="aisales-form-input" 
 									value="<?php echo esc_attr( $aisales_current_tagline ); ?>"
-									placeholder="<?php esc_attr_e( 'e.g., Handcrafted coffee for the modern connoisseur', 'ai-sales-manager-for-woocommerce' ); ?>">
-								<p class="aisales-form-help"><?php esc_html_e( 'A short phrase that captures your brand essence.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+									placeholder="<?php esc_attr_e( 'e.g., Handcrafted coffee for the modern connoisseur', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
+								<p class="aisales-form-help"><?php esc_html_e( 'A short phrase that captures your brand essence.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Industry -->
 							<div class="aisales-form-group">
 								<label for="aisales-industry" class="aisales-form-label">
-									<?php esc_html_e( 'Industry', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Industry', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-industry" name="business_niche" class="aisales-form-select">
 									<?php foreach ( $aisales_industries as $aisales_value => $aisales_label ) : ?>
@@ -239,27 +239,27 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 					<div class="aisales-settings-section">
 						<h3 class="aisales-settings-section__title">
 							<span class="dashicons dashicons-groups"></span>
-							<?php esc_html_e( 'Audience & Positioning', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Audience & Positioning', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<div class="aisales-settings-section__content">
 							<!-- Target Audience -->
 							<div class="aisales-form-group">
 								<label for="aisales-target-audience" class="aisales-form-label">
-									<?php esc_html_e( 'Target Audience', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Target Audience', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<textarea 
 									id="aisales-target-audience" 
 									name="target_audience" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., Young professionals aged 25-35 who value quality and sustainability', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_target_audience ); ?></textarea>
-								<p class="aisales-form-help"><?php esc_html_e( 'Who are your ideal customers? Include demographics, interests, and values.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+									placeholder="<?php esc_attr_e( 'e.g., Young professionals aged 25-35 who value quality and sustainability', 'stacksuite-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_target_audience ); ?></textarea>
+								<p class="aisales-form-help"><?php esc_html_e( 'Who are your ideal customers? Include demographics, interests, and values.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Price Positioning -->
 							<div class="aisales-form-group">
 								<label for="aisales-price-position" class="aisales-form-label">
-									<?php esc_html_e( 'Price Positioning', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Price Positioning', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-price-position" name="price_position" class="aisales-form-select">
 									<?php foreach ( $aisales_price_positions as $aisales_value => $aisales_label ) : ?>
@@ -268,35 +268,35 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 										</option>
 									<?php endforeach; ?>
 								</select>
-								<p class="aisales-form-help"><?php esc_html_e( 'This affects how AI discusses pricing and value in communications.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+								<p class="aisales-form-help"><?php esc_html_e( 'This affects how AI discusses pricing and value in communications.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Business Differentiator -->
 							<div class="aisales-form-group">
 								<label for="aisales-differentiator" class="aisales-form-label">
-									<?php esc_html_e( 'What Makes You Different?', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'What Makes You Different?', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<textarea 
 									id="aisales-differentiator" 
 									name="differentiator" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., We source directly from family farms and roast in small batches for peak freshness', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_differentiator ); ?></textarea>
-								<p class="aisales-form-help"><?php esc_html_e( 'Your unique selling points and competitive advantages.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+									placeholder="<?php esc_attr_e( 'e.g., We source directly from family farms and roast in small batches for peak freshness', 'stacksuite-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_differentiator ); ?></textarea>
+								<p class="aisales-form-help"><?php esc_html_e( 'Your unique selling points and competitive advantages.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Customer Pain Points -->
 							<div class="aisales-form-group">
 								<label for="aisales-pain-points" class="aisales-form-label">
-									<?php esc_html_e( 'Customer Pain Points', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Customer Pain Points', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<textarea 
 									id="aisales-pain-points" 
 									name="pain_points" 
 									class="aisales-form-textarea" 
 									rows="2"
-									placeholder="<?php esc_attr_e( 'e.g., Hard to find consistent quality, overwhelmed by choices, unsure what to buy', 'ai-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_pain_points ); ?></textarea>
-								<p class="aisales-form-help"><?php esc_html_e( 'What problems does your store solve for customers?', 'ai-sales-manager-for-woocommerce' ); ?></p>
+									placeholder="<?php esc_attr_e( 'e.g., Hard to find consistent quality, overwhelmed by choices, unsure what to buy', 'stacksuite-sales-manager-for-woocommerce' ); ?>"><?php echo esc_textarea( $aisales_current_pain_points ); ?></textarea>
+								<p class="aisales-form-help"><?php esc_html_e( 'What problems does your store solve for customers?', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 						</div>
 					</div>
@@ -305,13 +305,13 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 					<div class="aisales-settings-section">
 						<h3 class="aisales-settings-section__title">
 							<span class="dashicons dashicons-megaphone"></span>
-							<?php esc_html_e( 'Brand Voice', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Brand Voice', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<div class="aisales-settings-section__content">
 							<!-- Brand Tone Selection -->
 							<div class="aisales-form-group">
 								<label class="aisales-form-label">
-									<?php esc_html_e( 'Brand Tone', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Brand Tone', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options">
 									<?php foreach ( $aisales_tones as $aisales_value => $aisales_tone_data ) : ?>
@@ -335,21 +335,21 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 							<!-- Words to Avoid -->
 							<div class="aisales-form-group">
 								<label for="aisales-words-avoid" class="aisales-form-label">
-									<?php esc_html_e( 'Words or Phrases to Avoid', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Words or Phrases to Avoid', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<input type="text" 
 									id="aisales-words-avoid" 
 									name="words_to_avoid" 
 									class="aisales-form-input" 
 									value="<?php echo esc_attr( $aisales_current_words_avoid ); ?>"
-									placeholder="<?php esc_attr_e( 'e.g., cheap, discount, budget, competitor names', 'ai-sales-manager-for-woocommerce' ); ?>">
-								<p class="aisales-form-help"><?php esc_html_e( 'Comma-separated list of words AI should never use in your content.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+									placeholder="<?php esc_attr_e( 'e.g., cheap, discount, budget, competitor names', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
+								<p class="aisales-form-help"><?php esc_html_e( 'Comma-separated list of words AI should never use in your content.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Promotion Style -->
 							<div class="aisales-form-group">
 								<label class="aisales-form-label">
-									<?php esc_html_e( 'Promotion Style', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Promotion Style', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<div class="aisales-tone-options aisales-promo-options">
 									<?php foreach ( $aisales_promotion_styles as $aisales_value => $aisales_style_data ) : ?>
@@ -368,7 +368,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 										</label>
 									<?php endforeach; ?>
 								</div>
-								<p class="aisales-form-help"><?php esc_html_e( 'How aggressively should AI use urgency and promotional language?', 'ai-sales-manager-for-woocommerce' ); ?></p>
+								<p class="aisales-form-help"><?php esc_html_e( 'How aggressively should AI use urgency and promotional language?', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 						</div>
 					</div>
@@ -377,14 +377,14 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 					<div class="aisales-settings-section">
 						<h3 class="aisales-settings-section__title">
 							<span class="dashicons dashicons-admin-appearance"></span>
-							<?php esc_html_e( 'Brand Style', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Brand Style', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</h3>
 						<div class="aisales-settings-section__content">
 							<!-- Color Pickers -->
 							<div class="aisales-brand-colors">
 								<div class="aisales-form-group aisales-form-group--color">
 									<label for="aisales-primary-color" class="aisales-form-label">
-										<?php esc_html_e( 'Primary Color', 'ai-sales-manager-for-woocommerce' ); ?>
+										<?php esc_html_e( 'Primary Color', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 									</label>
 									<input type="text" 
 										id="aisales-primary-color" 
@@ -395,7 +395,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 								</div>
 								<div class="aisales-form-group aisales-form-group--color">
 									<label for="aisales-text-color" class="aisales-form-label">
-										<?php esc_html_e( 'Text Color', 'ai-sales-manager-for-woocommerce' ); ?>
+										<?php esc_html_e( 'Text Color', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 									</label>
 									<input type="text" 
 										id="aisales-text-color" 
@@ -406,7 +406,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 								</div>
 								<div class="aisales-form-group aisales-form-group--color">
 									<label for="aisales-bg-color" class="aisales-form-label">
-										<?php esc_html_e( 'Background Color', 'ai-sales-manager-for-woocommerce' ); ?>
+										<?php esc_html_e( 'Background Color', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 									</label>
 									<input type="text" 
 										id="aisales-bg-color" 
@@ -420,13 +420,13 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 							<!-- Reset Colors Button -->
 							<button type="button" class="aisales-btn aisales-btn--ghost aisales-btn--sm" id="aisales-reset-colors-btn">
 								<span class="dashicons dashicons-image-rotate"></span>
-								<?php esc_html_e( 'Reset to detected colors', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Reset to detected colors', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</button>
 
 							<!-- Font Family -->
 							<div class="aisales-form-group">
 								<label for="aisales-font-family" class="aisales-form-label">
-									<?php esc_html_e( 'Font Family', 'ai-sales-manager-for-woocommerce' ); ?>
+									<?php esc_html_e( 'Font Family', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 								</label>
 								<select id="aisales-font-family" name="font_family" class="aisales-form-select">
 									<?php foreach ( $aisales_safe_fonts as $aisales_slug => $aisales_font_data ) : ?>
@@ -435,20 +435,20 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 										</option>
 									<?php endforeach; ?>
 								</select>
-								<p class="aisales-form-help"><?php esc_html_e( 'Email-safe fonts that work across all email clients.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+								<p class="aisales-form-help"><?php esc_html_e( 'Email-safe fonts that work across all email clients.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							</div>
 
 							<!-- Live Preview -->
 							<div class="aisales-brand-preview">
-								<label class="aisales-form-label"><?php esc_html_e( 'Preview', 'ai-sales-manager-for-woocommerce' ); ?></label>
+								<label class="aisales-form-label"><?php esc_html_e( 'Preview', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 								<div class="aisales-brand-preview__box" id="aisales-brand-preview">
 									<div class="aisales-brand-preview__header" id="aisales-preview-header">
 										<?php echo esc_html( $aisales_current_store_name ); ?>
 									</div>
 									<div class="aisales-brand-preview__body" id="aisales-preview-body">
-										<p class="aisales-brand-preview__heading"><?php esc_html_e( 'Thank you for your order!', 'ai-sales-manager-for-woocommerce' ); ?></p>
-										<p class="aisales-brand-preview__text"><?php esc_html_e( 'We appreciate your business and are excited to get your order to you.', 'ai-sales-manager-for-woocommerce' ); ?></p>
-										<button type="button" class="aisales-brand-preview__button" id="aisales-preview-button"><?php esc_html_e( 'View Order', 'ai-sales-manager-for-woocommerce' ); ?></button>
+										<p class="aisales-brand-preview__heading"><?php esc_html_e( 'Thank you for your order!', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
+										<p class="aisales-brand-preview__text"><?php esc_html_e( 'We appreciate your business and are excited to get your order to you.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
+										<button type="button" class="aisales-brand-preview__button" id="aisales-preview-button"><?php esc_html_e( 'View Order', 'stacksuite-sales-manager-for-woocommerce' ); ?></button>
 									</div>
 								</div>
 							</div>
@@ -460,7 +460,7 @@ $aisales_current_font            = $aisales_store_context['font_family'] ?? $ais
 				<div class="aisales-brand-settings__actions">
 					<button type="submit" class="aisales-btn aisales-btn--ai aisales-btn--lg" id="aisales-brand-save-btn">
 						<span class="dashicons dashicons-saved"></span>
-						<?php esc_html_e( 'Save Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 			</div>

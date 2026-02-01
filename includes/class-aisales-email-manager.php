@@ -583,9 +583,9 @@ class AISales_Email_Manager {
 		<table style="width:100%;border-collapse:collapse;margin:16px 0;">
 			<thead>
 				<tr style="background:#f5f5f5;">
-					<th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Product', 'ai-sales-manager-for-woocommerce' ); ?></th>
-					<th style="padding:12px;text-align:center;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Qty', 'ai-sales-manager-for-woocommerce' ); ?></th>
-					<th style="padding:12px;text-align:right;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Price', 'ai-sales-manager-for-woocommerce' ); ?></th>
+					<th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Product', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+					<th style="padding:12px;text-align:center;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Qty', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
+					<th style="padding:12px;text-align:right;border-bottom:1px solid #ddd;"><?php esc_html_e( 'Price', 'stacksuite-sales-manager-for-woocommerce' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -892,9 +892,9 @@ class AISales_Email_Manager {
 		return '<table style="width:100%;border-collapse:collapse;margin:16px 0;">
 			<thead>
 				<tr style="background:#f5f5f5;">
-					<th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">' . esc_html__( 'Product', 'ai-sales-manager-for-woocommerce' ) . '</th>
-					<th style="padding:12px;text-align:center;border-bottom:1px solid #ddd;">' . esc_html__( 'Qty', 'ai-sales-manager-for-woocommerce' ) . '</th>
-					<th style="padding:12px;text-align:right;border-bottom:1px solid #ddd;">' . esc_html__( 'Price', 'ai-sales-manager-for-woocommerce' ) . '</th>
+					<th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">' . esc_html__( 'Product', 'stacksuite-sales-manager-for-woocommerce' ) . '</th>
+					<th style="padding:12px;text-align:center;border-bottom:1px solid #ddd;">' . esc_html__( 'Qty', 'stacksuite-sales-manager-for-woocommerce' ) . '</th>
+					<th style="padding:12px;text-align:right;border-bottom:1px solid #ddd;">' . esc_html__( 'Price', 'stacksuite-sales-manager-for-woocommerce' ) . '</th>
 				</tr>
 			</thead>
 			<tbody>

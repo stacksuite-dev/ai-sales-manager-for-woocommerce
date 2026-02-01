@@ -202,12 +202,12 @@ class AISales_Ajax_SEO extends AISales_Ajax_Base {
 
 		$issue_json = $this->get_post( 'issue', 'raw' );
 		if ( empty( $issue_json ) ) {
-			$this->error( __( 'No issue provided.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'No issue provided.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$issue = json_decode( $issue_json, true );
 		if ( ! $issue ) {
-			$this->error( __( 'Invalid issue data.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid issue data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Load the fixer if not already loaded.
@@ -247,14 +247,14 @@ class AISales_Ajax_SEO extends AISales_Ajax_Base {
 		$fix_json   = $this->get_post( 'fix', 'raw' );
 
 		if ( empty( $issue_json ) || empty( $fix_json ) ) {
-			$this->error( __( 'Missing issue or fix data.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Missing issue or fix data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$issue = json_decode( $issue_json, true );
 		$fix   = json_decode( $fix_json, true );
 
 		if ( ! $issue || ! $fix ) {
-			$this->error( __( 'Invalid issue or fix data.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid issue or fix data.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Load the fixer if not already loaded.
@@ -270,7 +270,7 @@ class AISales_Ajax_SEO extends AISales_Ajax_Base {
 		}
 
 		$this->success( array(
-			'message' => __( 'Fix applied successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Fix applied successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -282,7 +282,7 @@ class AISales_Ajax_SEO extends AISales_Ajax_Base {
 
 		$issue_id = $this->get_post( 'issue_id', 'text' );
 		if ( empty( $issue_id ) ) {
-			$this->error( __( 'No issue ID provided.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'No issue ID provided.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get current dismissed issues.
@@ -295,7 +295,7 @@ class AISales_Ajax_SEO extends AISales_Ajax_Base {
 		}
 
 		$this->success( array(
-			'message' => __( 'Issue dismissed.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Issue dismissed.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 }

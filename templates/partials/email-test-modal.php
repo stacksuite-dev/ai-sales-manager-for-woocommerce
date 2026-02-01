@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 	<div class="aisales-modal__header">
 		<h2 class="aisales-modal__title" id="aisales-email-test-modal-title">
 			<span class="dashicons dashicons-email-alt"></span>
-			<?php esc_html_e( 'Send Test Email', 'ai-sales-manager-for-woocommerce' ); ?>
+			<?php esc_html_e( 'Send Test Email', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 		</h2>
-		<button type="button" class="aisales-modal__close" id="aisales-email-test-modal-close" aria-label="<?php esc_attr_e( 'Close', 'ai-sales-manager-for-woocommerce' ); ?>">
+		<button type="button" class="aisales-modal__close" id="aisales-email-test-modal-close" aria-label="<?php esc_attr_e( 'Close', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
 			<span class="dashicons dashicons-no-alt"></span>
 		</button>
 	</div>
@@ -27,16 +27,16 @@ defined( 'ABSPATH' ) || exit;
 		<div class="aisales-form-group">
 			<label class="aisales-form-label" for="aisales-email-test-recipient">
 				<span class="dashicons dashicons-admin-users"></span>
-				<?php esc_html_e( 'Recipient Email', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Recipient Email', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</label>
 			<input
 				type="email"
 				class="aisales-form-input"
 				id="aisales-email-test-recipient"
-				placeholder="<?php esc_attr_e( 'name@example.com', 'ai-sales-manager-for-woocommerce' ); ?>"
+				placeholder="<?php esc_attr_e( 'name@example.com', 'stacksuite-sales-manager-for-woocommerce' ); ?>"
 			>
 			<span class="aisales-form-hint">
-				<?php esc_html_e( 'Uses sample order data and does not send to customers.', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Uses sample order data and does not send to customers.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
 		</div>
 	</div>
@@ -44,15 +44,15 @@ defined( 'ABSPATH' ) || exit;
 	<div class="aisales-modal__footer">
 		<div class="aisales-modal__info">
 			<span class="dashicons dashicons-info-outline"></span>
-			<?php esc_html_e( 'Preview your content in a real inbox.', 'ai-sales-manager-for-woocommerce' ); ?>
+			<?php esc_html_e( 'Preview your content in a real inbox.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 		</div>
 		<div class="aisales-modal__actions">
 			<button type="button" class="aisales-btn aisales-btn--outline" id="aisales-email-test-cancel">
-				<?php esc_html_e( 'Cancel', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Cancel', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 			<button type="button" class="aisales-btn aisales-btn--primary" id="aisales-email-test-send">
 				<span class="dashicons dashicons-email-alt"></span>
-				<?php esc_html_e( 'Send Test', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Send Test', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 		</div>
 	</div>

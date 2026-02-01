@@ -37,13 +37,13 @@ class AISales_Support_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager
+	 * Add submenu page under StackSuite Sales Manager
 	 */
 	public function add_submenu_page() {
 		add_submenu_page(
 			'ai-sales-manager',
-			__( 'Support Center', 'ai-sales-manager-for-woocommerce' ),
-			__( 'Support Center', 'ai-sales-manager-for-woocommerce' ),
+			__( 'Support Center', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'Support Center', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-support',
 			array( $this, 'render_page' )

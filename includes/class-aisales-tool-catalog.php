@@ -66,7 +66,7 @@ class AISales_Tool_Catalog {
 		$action_type = isset( $params['action_type'] ) ? sanitize_key( $params['action_type'] ) : '';
 
 		if ( empty( $action_type ) ) {
-			return new WP_Error( 'missing_param', __( 'action_type is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'action_type is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		switch ( $action_type ) {
@@ -86,7 +86,7 @@ class AISales_Tool_Catalog {
 				return $this->action_delete_category( $params );
 
 			default:
-				return new WP_Error( 'invalid_action', __( 'Unknown action type.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'invalid_action', __( 'Unknown action type.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 	}
 
@@ -649,12 +649,12 @@ class AISales_Tool_Catalog {
 		$from_category_id = isset( $params['from_category_id'] ) ? absint( $params['from_category_id'] ) : 0;
 
 		if ( ! $product_id || ! $to_category_id ) {
-			return new WP_Error( 'missing_param', __( 'product_id and to_category_id are required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'product_id and to_category_id are required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get current categories
@@ -690,7 +690,7 @@ class AISales_Tool_Catalog {
 		$new_parent_id = isset( $params['new_parent_id'] ) ? absint( $params['new_parent_id'] ) : 0;
 
 		if ( ! $category_id ) {
-			return new WP_Error( 'missing_param', __( 'category_id is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'category_id is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = wp_update_term(
@@ -721,7 +721,7 @@ class AISales_Tool_Catalog {
 		$description = isset( $params['description'] ) ? sanitize_textarea_field( $params['description'] ) : '';
 
 		if ( empty( $name ) ) {
-			return new WP_Error( 'missing_param', __( 'Category name is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'Category name is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = wp_insert_term(
@@ -764,18 +764,18 @@ class AISales_Tool_Catalog {
 		$target_id = isset( $params['target_category_id'] ) ? absint( $params['target_category_id'] ) : 0;
 
 		if ( ! $source_id || ! $target_id ) {
-			return new WP_Error( 'missing_param', __( 'source_category_id and target_category_id are required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'source_category_id and target_category_id are required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$source_term = get_term( $source_id, 'product_cat' );
 		$target_term = get_term( $target_id, 'product_cat' );
 
 		if ( ! $source_term || is_wp_error( $source_term ) ) {
-			return new WP_Error( 'not_found', __( 'Source category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_found', __( 'Source category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		if ( ! $target_term || is_wp_error( $target_term ) ) {
-			return new WP_Error( 'not_found', __( 'Target category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_found', __( 'Target category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Move all products from source to target
@@ -834,12 +834,12 @@ class AISales_Tool_Catalog {
 		$force       = isset( $params['force'] ) && $params['force'];
 
 		if ( ! $category_id ) {
-			return new WP_Error( 'missing_param', __( 'category_id is required.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'missing_param', __( 'category_id is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$term = get_term( $category_id, 'product_cat' );
 		if ( ! $term || is_wp_error( $term ) ) {
-			return new WP_Error( 'not_found', __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'not_found', __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Safety check - don't delete categories with products unless forced
@@ -848,7 +848,7 @@ class AISales_Tool_Catalog {
 				'has_products',
 				sprintf(
 					/* translators: %1$s: category name, %2$d: product count */
-					__( 'Category "%1$s" has %2$d products. Use force=true to delete anyway.', 'ai-sales-manager-for-woocommerce' ),
+					__( 'Category "%1$s" has %2$d products. Use force=true to delete anyway.', 'stacksuite-sales-manager-for-woocommerce' ),
 					$term->name,
 					$term->count
 				)

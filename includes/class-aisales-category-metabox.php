@@ -161,29 +161,29 @@ class AISales_Category_Metabox {
 		?>
 		<tr class="form-field">
 			<th scope="row" valign="top">
-				<label><?php esc_html_e( 'AI Tools', 'ai-sales-manager-for-woocommerce' ); ?></label>
+				<label><?php esc_html_e( 'AI Tools', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 			</th>
 			<td>
 				<?php if ( $is_connected ) : ?>
 					<div class="aisales-category-metabox">
 						<div class="aisales-category-metabox__header">
 							<span class="dashicons dashicons-superhero"></span>
-							<h4><?php esc_html_e( 'AI-Powered Content', 'ai-sales-manager-for-woocommerce' ); ?></h4>
+							<h4><?php esc_html_e( 'AI-Powered Content', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
 						</div>
 						<div class="aisales-category-metabox__content">
-							<p><?php esc_html_e( 'Use AI to improve your category name, write compelling descriptions, and optimize for SEO.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+							<p><?php esc_html_e( 'Use AI to improve your category name, write compelling descriptions, and optimize for SEO.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 							<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-agent&category_id=' . $term->term_id . '&entity_type=category' ) ); ?>" class="button button-primary">
 								<span class="dashicons dashicons-format-chat"></span>
-								<?php esc_html_e( 'Open in AI Agent', 'ai-sales-manager-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Open in AI Agent', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 							</a>
 						</div>
 					</div>
 				<?php else : ?>
 					<div class="aisales-category-metabox aisales-category-metabox--not-connected">
 						<span class="dashicons dashicons-admin-network"></span>
-						<p><?php esc_html_e( 'Connect your account to use AI tools.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<p><?php esc_html_e( 'Connect your account to use AI tools.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager' ) ); ?>" class="button button-primary">
-							<?php esc_html_e( 'Connect Account', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Connect Account', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</a>
 					</div>
 				<?php endif; ?>
@@ -201,11 +201,11 @@ class AISales_Category_Metabox {
 		}
 		?>
 		<div class="form-field">
-			<label><?php esc_html_e( 'AI Tools', 'ai-sales-manager-for-woocommerce' ); ?></label>
+			<label><?php esc_html_e( 'AI Tools', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 			<div class="aisales-category-metabox aisales-category-metabox--add">
 				<p>
 					<span class="dashicons dashicons-info-outline"></span>
-					<?php esc_html_e( 'AI tools will be available after you create this category.', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'AI tools will be available after you create this category.', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</p>
 			</div>
 		</div>

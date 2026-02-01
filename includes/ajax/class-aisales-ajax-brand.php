@@ -64,7 +64,7 @@ class AISales_Ajax_Brand extends AISales_Ajax_Base {
 		update_option( 'aisales_brand_setup_complete', true );
 
 		$this->success( array(
-			'message' => __( 'Brand settings saved successfully.', 'ai-sales-manager-for-woocommerce' ),
+			'message' => __( 'Brand settings saved successfully.', 'stacksuite-sales-manager-for-woocommerce' ),
 		) );
 	}
 
@@ -75,7 +75,7 @@ class AISales_Ajax_Brand extends AISales_Ajax_Base {
 		$this->verify_request();
 
 		if ( ! $this->api()->is_connected() ) {
-			$this->error( __( 'Please connect to AI Sales Manager first.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Please connect to StackSuite Sales Manager first.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		// Get analysis context from brand page

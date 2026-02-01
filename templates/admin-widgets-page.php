@@ -34,15 +34,15 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<div class="aisales-widgets-header__left">
 			<span class="aisales-widgets-header__title">
 				<span class="dashicons dashicons-screenoptions"></span>
-				<?php esc_html_e( 'Widgets & Shortcodes', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Widgets & Shortcodes', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
-			<span class="aisales-widgets-header__subtitle"><?php esc_html_e( 'Boost conversions with free, powerful widgets', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-widgets-header__subtitle"><?php esc_html_e( 'Boost conversions with free, powerful widgets', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</div>
 		<div class="aisales-widgets-header__right">
 			<span class="aisales-widgets-active-badge">
 				<span class="dashicons dashicons-yes-alt"></span>
 				<span class="aisales-widgets-active-badge__count" id="aisales-widgets-active-count"><?php echo esc_html( $aisales_enabled_count ); ?></span>
-				<?php esc_html_e( 'active', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'active', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</span>
 		</div>
 	</header>
@@ -51,7 +51,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 	<nav class="aisales-widgets-tabs">
 		<button type="button" class="aisales-widgets-tab aisales-widgets-tab--active" data-category="all">
 			<span class="dashicons dashicons-grid-view"></span>
-			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'All Widgets', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'All Widgets', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 			<span class="aisales-widgets-tab__count"><?php echo esc_html( $aisales_total_count ); ?></span>
 		</button>
 		<?php foreach ( $aisales_categories as $aisales_cat_slug => $aisales_cat_data ) : ?>
@@ -63,7 +63,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<?php endforeach; ?>
 		<button type="button" class="aisales-widgets-tab" data-category="settings">
 			<span class="dashicons dashicons-admin-generic"></span>
-			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'Settings', 'ai-sales-manager-for-woocommerce' ); ?></span>
+			<span class="aisales-widgets-tab__text"><?php esc_html_e( 'Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 		</button>
 	</nav>
 
@@ -116,7 +116,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 				<div class="aisales-widget-card__preview">
 					<div class="aisales-widget-card__preview-label">
 						<span class="dashicons dashicons-visibility"></span>
-						<?php esc_html_e( 'Preview', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Preview', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</div>
 					<div class="aisales-widget-card__preview-content">
 						<?php aisales_render_widget_preview( $aisales_widget_key, $aisales_widget ); ?>
@@ -125,10 +125,10 @@ $aisales_total_count     = count( $aisales_all_widgets );
 
 				<!-- Shortcode Display -->
 				<div class="aisales-widget-card__shortcode">
-					<div class="aisales-widget-card__shortcode-label"><?php esc_html_e( 'Shortcode', 'ai-sales-manager-for-woocommerce' ); ?></div>
+					<div class="aisales-widget-card__shortcode-label"><?php esc_html_e( 'Shortcode', 'stacksuite-sales-manager-for-woocommerce' ); ?></div>
 					<div class="aisales-widget-card__shortcode-box">
 						<code class="aisales-widget-card__shortcode-code">[<?php echo esc_html( $aisales_widget['shortcode'] ); ?>]</code>
-						<button type="button" class="aisales-widget-card__copy-btn" data-shortcode="[<?php echo esc_attr( $aisales_widget['shortcode'] ); ?>]" title="<?php esc_attr_e( 'Copy to clipboard', 'ai-sales-manager-for-woocommerce' ); ?>">
+						<button type="button" class="aisales-widget-card__copy-btn" data-shortcode="[<?php echo esc_attr( $aisales_widget['shortcode'] ); ?>]" title="<?php esc_attr_e( 'Copy to clipboard', 'stacksuite-sales-manager-for-woocommerce' ); ?>">
 							<span class="dashicons dashicons-admin-page"></span>
 						</button>
 					</div>
@@ -138,11 +138,11 @@ $aisales_total_count     = count( $aisales_all_widgets );
 				<div class="aisales-widget-card__actions">
 					<button type="button" class="aisales-btn aisales-btn--outline aisales-btn--sm aisales-widget-card__settings-btn" data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>">
 						<span class="dashicons dashicons-admin-generic"></span>
-						<?php esc_html_e( 'Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 					<button type="button" class="aisales-btn aisales-btn--text aisales-btn--sm aisales-widget-card__docs-btn" data-widget="<?php echo esc_attr( $aisales_widget_key ); ?>">
 						<span class="dashicons dashicons-book"></span>
-						<?php esc_html_e( 'Docs', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Docs', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</button>
 				</div>
 			</div>
@@ -154,48 +154,48 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<div class="aisales-widgets-settings__section">
 				<h2 class="aisales-widgets-settings__title">
 					<span class="dashicons dashicons-admin-appearance"></span>
-					<?php esc_html_e( 'Appearance', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Appearance', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</h2>
 				<div class="aisales-widgets-settings__content">
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Styling Mode', 'ai-sales-manager-for-woocommerce' ); ?></label>
+						<label class="aisales-field__label"><?php esc_html_e( 'Styling Mode', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-field__options">
 							<label class="aisales-radio-card">
 								<input type="radio" name="styling_mode" value="inherit" <?php checked( $aisales_settings['styling_mode'], 'inherit' ); ?>>
 								<div class="aisales-radio-card__content">
 									<span class="dashicons dashicons-admin-customizer"></span>
-									<span class="aisales-radio-card__title"><?php esc_html_e( 'Inherit Theme', 'ai-sales-manager-for-woocommerce' ); ?></span>
-									<span class="aisales-radio-card__desc"><?php esc_html_e( 'Match your theme styles', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span class="aisales-radio-card__title"><?php esc_html_e( 'Inherit Theme', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+									<span class="aisales-radio-card__desc"><?php esc_html_e( 'Match your theme styles', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 								</div>
 							</label>
 							<label class="aisales-radio-card">
 								<input type="radio" name="styling_mode" value="custom" <?php checked( $aisales_settings['styling_mode'], 'custom' ); ?>>
 								<div class="aisales-radio-card__content">
 									<span class="dashicons dashicons-art"></span>
-									<span class="aisales-radio-card__title"><?php esc_html_e( 'Custom Styles', 'ai-sales-manager-for-woocommerce' ); ?></span>
-									<span class="aisales-radio-card__desc"><?php esc_html_e( 'Use custom colors', 'ai-sales-manager-for-woocommerce' ); ?></span>
+									<span class="aisales-radio-card__title"><?php esc_html_e( 'Custom Styles', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
+									<span class="aisales-radio-card__desc"><?php esc_html_e( 'Use custom colors', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 								</div>
 							</label>
 						</div>
 					</div>
 
 					<div class="aisales-field aisales-field--colors" id="custom-colors" style="<?php echo $aisales_settings['styling_mode'] !== 'custom' ? 'display:none;' : ''; ?>">
-						<label class="aisales-field__label"><?php esc_html_e( 'Custom Colors', 'ai-sales-manager-for-woocommerce' ); ?></label>
+						<label class="aisales-field__label"><?php esc_html_e( 'Custom Colors', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-color-grid">
 							<div class="aisales-color-field">
-								<label><?php esc_html_e( 'Primary', 'ai-sales-manager-for-woocommerce' ); ?></label>
+								<label><?php esc_html_e( 'Primary', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 								<input type="color" name="colors[primary]" value="<?php echo esc_attr( $aisales_settings['colors']['primary'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
-								<label><?php esc_html_e( 'Success', 'ai-sales-manager-for-woocommerce' ); ?></label>
+								<label><?php esc_html_e( 'Success', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 								<input type="color" name="colors[success]" value="<?php echo esc_attr( $aisales_settings['colors']['success'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
-								<label><?php esc_html_e( 'Urgency', 'ai-sales-manager-for-woocommerce' ); ?></label>
+								<label><?php esc_html_e( 'Urgency', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 								<input type="color" name="colors[urgency]" value="<?php echo esc_attr( $aisales_settings['colors']['urgency'] ); ?>">
 							</div>
 							<div class="aisales-color-field">
-								<label><?php esc_html_e( 'Text', 'ai-sales-manager-for-woocommerce' ); ?></label>
+								<label><?php esc_html_e( 'Text', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 								<input type="color" name="colors[text]" value="<?php echo esc_attr( $aisales_settings['colors']['text'] ); ?>">
 							</div>
 						</div>
@@ -206,21 +206,21 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<div class="aisales-widgets-settings__section">
 				<h2 class="aisales-widgets-settings__title">
 					<span class="dashicons dashicons-groups"></span>
-					<?php esc_html_e( 'Social Proof Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Social Proof Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</h2>
 				<div class="aisales-widgets-settings__content">
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Customer Privacy Level', 'ai-sales-manager-for-woocommerce' ); ?></label>
-						<p class="aisales-field__help"><?php esc_html_e( 'How to display customer information in recent purchase notifications', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<label class="aisales-field__label"><?php esc_html_e( 'Customer Privacy Level', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
+						<p class="aisales-field__help"><?php esc_html_e( 'How to display customer information in recent purchase notifications', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<select name="social_proof[privacy_level]" class="aisales-select">
-							<option value="full" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'full' ); ?>><?php esc_html_e( 'Full Name (John Smith)', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="first_city" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'first_city' ); ?>><?php esc_html_e( 'First Name + City (John from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="anonymous" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'anonymous' ); ?>><?php esc_html_e( 'Anonymous (Someone from NYC)', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="full" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'full' ); ?>><?php esc_html_e( 'Full Name (John Smith)', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="first_city" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'first_city' ); ?>><?php esc_html_e( 'First Name + City (John from NYC)', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="anonymous" <?php selected( $aisales_settings['social_proof']['privacy_level'], 'anonymous' ); ?>><?php esc_html_e( 'Anonymous (Someone from NYC)', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
 						</select>
 					</div>
 
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Popup Position', 'ai-sales-manager-for-woocommerce' ); ?></label>
+						<label class="aisales-field__label"><?php esc_html_e( 'Popup Position', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-position-grid">
 							<label class="aisales-position-option">
 								<input type="radio" name="social_proof[popup_position]" value="top-left" <?php checked( $aisales_settings['social_proof']['popup_position'], 'top-left' ); ?>>
@@ -250,7 +250,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 					</div>
 
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Popup Duration', 'ai-sales-manager-for-woocommerce' ); ?></label>
+						<label class="aisales-field__label"><?php esc_html_e( 'Popup Duration', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 						<div class="aisales-range-field">
 							<input type="range" name="social_proof[popup_duration]" min="3" max="15" value="<?php echo esc_attr( $aisales_settings['social_proof']['popup_duration'] ); ?>" class="aisales-range">
 							<span class="aisales-range-value"><span id="popup-duration-value"><?php echo esc_html( $aisales_settings['social_proof']['popup_duration'] ); ?></span>s</span>
@@ -262,12 +262,12 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<div class="aisales-widgets-settings__section">
 				<h2 class="aisales-widgets-settings__title">
 					<span class="dashicons dashicons-chart-area"></span>
-					<?php esc_html_e( 'Conversion Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Conversion Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</h2>
 				<div class="aisales-widgets-settings__content">
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Free Shipping Threshold', 'ai-sales-manager-for-woocommerce' ); ?></label>
-						<p class="aisales-field__help"><?php esc_html_e( 'Set to 0 to use your WooCommerce shipping settings', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<label class="aisales-field__label"><?php esc_html_e( 'Free Shipping Threshold', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
+						<p class="aisales-field__help"><?php esc_html_e( 'Set to 0 to use your WooCommerce shipping settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<div class="aisales-input-group">
 							<span class="aisales-input-group__prefix"><?php echo esc_html( get_woocommerce_currency_symbol() ); ?></span>
 							<input type="number" name="conversion[shipping_threshold]" value="<?php echo esc_attr( $aisales_settings['conversion']['shipping_threshold'] ); ?>" min="0" step="0.01" class="aisales-input">
@@ -275,20 +275,20 @@ $aisales_total_count     = count( $aisales_all_widgets );
 					</div>
 
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Stock Urgency Threshold', 'ai-sales-manager-for-woocommerce' ); ?></label>
-						<p class="aisales-field__help"><?php esc_html_e( 'Show "Only X left" when stock is at or below this number', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<label class="aisales-field__label"><?php esc_html_e( 'Stock Urgency Threshold', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
+						<p class="aisales-field__help"><?php esc_html_e( 'Show "Only X left" when stock is at or below this number', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<input type="number" name="conversion[stock_urgency_at]" value="<?php echo esc_attr( $aisales_settings['conversion']['stock_urgency_at'] ); ?>" min="1" max="100" class="aisales-input aisales-input--sm">
 					</div>
 
 					<div class="aisales-field">
-						<label class="aisales-field__label"><?php esc_html_e( 'Cache Duration', 'ai-sales-manager-for-woocommerce' ); ?></label>
-						<p class="aisales-field__help"><?php esc_html_e( 'How long to cache widget data for performance', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<label class="aisales-field__label"><?php esc_html_e( 'Cache Duration', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
+						<p class="aisales-field__help"><?php esc_html_e( 'How long to cache widget data for performance', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<select name="cache_duration" class="aisales-select">
-							<option value="900" <?php selected( $aisales_settings['cache_duration'], 900 ); ?>><?php esc_html_e( '15 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="1800" <?php selected( $aisales_settings['cache_duration'], 1800 ); ?>><?php esc_html_e( '30 minutes', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="3600" <?php selected( $aisales_settings['cache_duration'], 3600 ); ?>><?php esc_html_e( '1 hour', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="7200" <?php selected( $aisales_settings['cache_duration'], 7200 ); ?>><?php esc_html_e( '2 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
-							<option value="21600" <?php selected( $aisales_settings['cache_duration'], 21600 ); ?>><?php esc_html_e( '6 hours', 'ai-sales-manager-for-woocommerce' ); ?></option>
+							<option value="900" <?php selected( $aisales_settings['cache_duration'], 900 ); ?>><?php esc_html_e( '15 minutes', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="1800" <?php selected( $aisales_settings['cache_duration'], 1800 ); ?>><?php esc_html_e( '30 minutes', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="3600" <?php selected( $aisales_settings['cache_duration'], 3600 ); ?>><?php esc_html_e( '1 hour', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="7200" <?php selected( $aisales_settings['cache_duration'], 7200 ); ?>><?php esc_html_e( '2 hours', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
+							<option value="21600" <?php selected( $aisales_settings['cache_duration'], 21600 ); ?>><?php esc_html_e( '6 hours', 'stacksuite-sales-manager-for-woocommerce' ); ?></option>
 						</select>
 					</div>
 				</div>
@@ -297,7 +297,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<div class="aisales-widgets-settings__actions">
 				<button type="button" class="aisales-btn aisales-btn--primary" id="save-settings">
 					<span class="dashicons dashicons-saved"></span>
-					<?php esc_html_e( 'Save Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</button>
 			</div>
 		</div>
@@ -310,7 +310,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<div class="aisales-modal__header">
 			<h2 class="aisales-modal__title">
 				<span class="dashicons dashicons-admin-settings"></span>
-				<span id="builder-modal-title"><?php esc_html_e( 'Shortcode Builder', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span id="builder-modal-title"><?php esc_html_e( 'Shortcode Builder', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 			</h2>
 			<button type="button" class="aisales-modal__close" id="builder-modal-close">
 				<span class="dashicons dashicons-no-alt"></span>
@@ -324,19 +324,19 @@ $aisales_total_count     = count( $aisales_all_widgets );
 				<div class="aisales-builder__preview">
 					<div class="aisales-builder__preview-label">
 						<span class="dashicons dashicons-visibility"></span>
-						<?php esc_html_e( 'Live Preview', 'ai-sales-manager-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Live Preview', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 					</div>
 					<div class="aisales-builder__preview-content" id="builder-preview">
 						<!-- Preview will be rendered here -->
 					</div>
 				</div>
 				<div class="aisales-builder__output">
-					<label class="aisales-builder__output-label"><?php esc_html_e( 'Generated Shortcode', 'ai-sales-manager-for-woocommerce' ); ?></label>
+					<label class="aisales-builder__output-label"><?php esc_html_e( 'Generated Shortcode', 'stacksuite-sales-manager-for-woocommerce' ); ?></label>
 					<div class="aisales-builder__output-box">
 						<code id="builder-shortcode">[shortcode]</code>
 						<button type="button" class="aisales-btn aisales-btn--primary aisales-btn--sm" id="builder-copy">
 							<span class="dashicons dashicons-admin-page"></span>
-							<?php esc_html_e( 'Copy', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Copy', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</button>
 					</div>
 				</div>
@@ -345,7 +345,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<div class="aisales-modal__footer">
 			<div class="aisales-modal__info">
 				<span class="dashicons dashicons-info-outline"></span>
-				<?php esc_html_e( 'Paste this shortcode anywhere in your pages, posts, or widgets', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Paste this shortcode anywhere in your pages, posts, or widgets', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</div>
 		</div>
 	</div>
@@ -357,7 +357,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<div class="aisales-modal__header">
 			<h2 class="aisales-modal__title">
 				<span class="dashicons dashicons-book"></span>
-				<span id="docs-modal-title"><?php esc_html_e( 'Documentation', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span id="docs-modal-title"><?php esc_html_e( 'Documentation', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 			</h2>
 			<button type="button" class="aisales-modal__close" id="docs-modal-close">
 				<span class="dashicons dashicons-no-alt"></span>
@@ -377,7 +377,7 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<div class="aisales-modal__header">
 			<h2 class="aisales-modal__title">
 				<span class="dashicons dashicons-admin-generic"></span>
-				<span id="settings-modal-title"><?php esc_html_e( 'Widget Settings', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span id="settings-modal-title"><?php esc_html_e( 'Widget Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 			</h2>
 			<button type="button" class="aisales-modal__close" id="settings-modal-close">
 				<span class="dashicons dashicons-no-alt"></span>
@@ -388,19 +388,19 @@ $aisales_total_count     = count( $aisales_all_widgets );
 		<nav class="aisales-settings-tabs" id="settings-tabs">
 			<button type="button" class="aisales-settings-tab aisales-settings-tab--active" data-panel="appearance">
 				<span class="dashicons dashicons-admin-appearance aisales-settings-tab__icon"></span>
-				<?php esc_html_e( 'Appearance', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Appearance', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 			<button type="button" class="aisales-settings-tab" data-panel="display">
 				<span class="dashicons dashicons-visibility aisales-settings-tab__icon"></span>
-				<?php esc_html_e( 'Display', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Display', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 			<button type="button" class="aisales-settings-tab" data-panel="behavior">
 				<span class="dashicons dashicons-controls-play aisales-settings-tab__icon"></span>
-				<?php esc_html_e( 'Behavior', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Behavior', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 			<button type="button" class="aisales-settings-tab" data-panel="advanced">
 				<span class="dashicons dashicons-admin-tools aisales-settings-tab__icon"></span>
-				<?php esc_html_e( 'Advanced', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Advanced', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 		</nav>
 		
@@ -430,12 +430,12 @@ $aisales_total_count     = count( $aisales_all_widgets );
 			<div class="aisales-settings-footer__left">
 				<button type="button" class="aisales-settings-reset-btn" id="settings-reset">
 					<span class="dashicons dashicons-image-rotate"></span>
-					<?php esc_html_e( 'Reset to Defaults', 'ai-sales-manager-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Reset to Defaults', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 				</button>
 			</div>
 			<button type="button" class="aisales-settings-save-btn" id="settings-save">
 				<span class="dashicons dashicons-saved"></span>
-				<?php esc_html_e( 'Save Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Save Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</button>
 		</div>
 	</div>
@@ -470,8 +470,8 @@ function aisales_render_widget_preview( $key, $widget ) {
 					<span class="dashicons <?php echo esc_attr( $preview['icon'] ); ?>"></span>
 				</div>
 				<div class="aisales-preview__content">
-					<strong><?php echo esc_html( $preview['name'] ); ?></strong> <?php esc_html_e( 'from', 'ai-sales-manager-for-woocommerce' ); ?> <?php echo esc_html( $preview['location'] ); ?>
-					<br><small><?php esc_html_e( 'purchased this', 'ai-sales-manager-for-woocommerce' ); ?> <?php echo esc_html( $preview['time'] ); ?></small>
+					<strong><?php echo esc_html( $preview['name'] ); ?></strong> <?php esc_html_e( 'from', 'stacksuite-sales-manager-for-woocommerce' ); ?> <?php echo esc_html( $preview['location'] ); ?>
+					<br><small><?php esc_html_e( 'purchased this', 'stacksuite-sales-manager-for-woocommerce' ); ?> <?php echo esc_html( $preview['time'] ); ?></small>
 				</div>
 			</div>
 			<?php
@@ -506,7 +506,7 @@ function aisales_render_widget_preview( $key, $widget ) {
 					<?php endfor; ?>
 				</div>
 				<span class="aisales-preview__rating"><?php echo esc_html( $preview['rating'] ); ?></span>
-				<span class="aisales-preview__count">(<?php echo esc_html( $preview['count'] ); ?> <?php esc_html_e( 'reviews', 'ai-sales-manager-for-woocommerce' ); ?>)</span>
+				<span class="aisales-preview__count">(<?php echo esc_html( $preview['count'] ); ?> <?php esc_html_e( 'reviews', 'stacksuite-sales-manager-for-woocommerce' ); ?>)</span>
 			</div>
 			<?php
 			break;
@@ -531,17 +531,17 @@ function aisales_render_widget_preview( $key, $widget ) {
 				<div class="aisales-preview__timer">
 					<div class="aisales-preview__timer-block">
 						<span class="aisales-preview__timer-value"><?php echo esc_html( str_pad( $preview['hours'], 2, '0', STR_PAD_LEFT ) ); ?></span>
-						<span class="aisales-preview__timer-label"><?php esc_html_e( 'HRS', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-preview__timer-label"><?php esc_html_e( 'HRS', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<span class="aisales-preview__timer-sep">:</span>
 					<div class="aisales-preview__timer-block">
 						<span class="aisales-preview__timer-value"><?php echo esc_html( str_pad( $preview['minutes'], 2, '0', STR_PAD_LEFT ) ); ?></span>
-						<span class="aisales-preview__timer-label"><?php esc_html_e( 'MIN', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-preview__timer-label"><?php esc_html_e( 'MIN', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 					<span class="aisales-preview__timer-sep">:</span>
 					<div class="aisales-preview__timer-block">
 						<span class="aisales-preview__timer-value"><?php echo esc_html( str_pad( $preview['seconds'], 2, '0', STR_PAD_LEFT ) ); ?></span>
-						<span class="aisales-preview__timer-label"><?php esc_html_e( 'SEC', 'ai-sales-manager-for-woocommerce' ); ?></span>
+						<span class="aisales-preview__timer-label"><?php esc_html_e( 'SEC', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 					</div>
 				</div>
 			</div>
@@ -551,7 +551,7 @@ function aisales_render_widget_preview( $key, $widget ) {
 		case 'price_drop':
 			?>
 			<div class="aisales-preview aisales-preview--price-drop">
-				<span class="aisales-preview__badge"><?php echo esc_html( $preview['percentage'] ); ?> <?php esc_html_e( 'OFF', 'ai-sales-manager-for-woocommerce' ); ?></span>
+				<span class="aisales-preview__badge"><?php echo esc_html( $preview['percentage'] ); ?> <?php esc_html_e( 'OFF', 'stacksuite-sales-manager-for-woocommerce' ); ?></span>
 				<div class="aisales-preview__prices">
 					<span class="aisales-preview__original"><?php echo esc_html( $preview['original'] ); ?></span>
 					<span class="aisales-preview__sale"><?php echo esc_html( $preview['sale'] ); ?></span>

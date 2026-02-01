@@ -64,13 +64,13 @@ class AISales_Chat_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager
+	 * Add submenu page under StackSuite Sales Manager
 	 */
 	public function add_submenu_page() {
 		add_submenu_page(
 			'ai-sales-manager',
-			__( 'AI Agent', 'ai-sales-manager-for-woocommerce' ),
-			__( 'AI Agent', 'ai-sales-manager-for-woocommerce' ),
+			__( 'AI Agent', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'AI Agent', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-agent',
 			array( $this, 'render_page' )
@@ -265,63 +265,63 @@ class AISales_Chat_Page {
 				'chatVisited'  => ! empty( $chat_visited ),
 				'i18n'         => array(
 					// General.
-					'sendMessage'         => __( 'Send', 'ai-sales-manager-for-woocommerce' ),
-					'typePlaceholder'     => __( 'Type your message...', 'ai-sales-manager-for-woocommerce' ),
-					'thinking'            => __( 'Thinking...', 'ai-sales-manager-for-woocommerce' ),
-					'apply'               => __( 'Apply', 'ai-sales-manager-for-woocommerce' ),
-					'discard'             => __( 'Discard', 'ai-sales-manager-for-woocommerce' ),
-					'applied'             => __( 'Applied', 'ai-sales-manager-for-woocommerce' ),
-					'discarded'           => __( 'Discarded', 'ai-sales-manager-for-woocommerce' ),
-					'errorOccurred'       => __( 'An error occurred. Please try again.', 'ai-sales-manager-for-woocommerce' ),
-					'insufficientBalance' => __( 'Insufficient balance. Please top up.', 'ai-sales-manager-for-woocommerce' ),
-					'connectionError'     => __( 'Connection error. Please check your internet.', 'ai-sales-manager-for-woocommerce' ),
-					'newChat'             => __( 'New Chat', 'ai-sales-manager-for-woocommerce' ),
-					'chatHistory'         => __( 'Chat History', 'ai-sales-manager-for-woocommerce' ),
-					'quickActions'        => __( 'Quick Actions', 'ai-sales-manager-for-woocommerce' ),
-					'tokensUsed'          => __( 'tokens used', 'ai-sales-manager-for-woocommerce' ),
-					'pendingChanges'      => __( 'Pending Changes', 'ai-sales-manager-for-woocommerce' ),
-					'acceptAll'           => __( 'Accept All', 'ai-sales-manager-for-woocommerce' ),
-					'discardAll'          => __( 'Discard All', 'ai-sales-manager-for-woocommerce' ),
+					'sendMessage'         => __( 'Send', 'stacksuite-sales-manager-for-woocommerce' ),
+					'typePlaceholder'     => __( 'Type your message...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'thinking'            => __( 'Thinking...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'apply'               => __( 'Apply', 'stacksuite-sales-manager-for-woocommerce' ),
+					'discard'             => __( 'Discard', 'stacksuite-sales-manager-for-woocommerce' ),
+					'applied'             => __( 'Applied', 'stacksuite-sales-manager-for-woocommerce' ),
+					'discarded'           => __( 'Discarded', 'stacksuite-sales-manager-for-woocommerce' ),
+					'errorOccurred'       => __( 'An error occurred. Please try again.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'insufficientBalance' => __( 'Insufficient balance. Please top up.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'connectionError'     => __( 'Connection error. Please check your internet.', 'stacksuite-sales-manager-for-woocommerce' ),
+					'newChat'             => __( 'New Chat', 'stacksuite-sales-manager-for-woocommerce' ),
+					'chatHistory'         => __( 'Chat History', 'stacksuite-sales-manager-for-woocommerce' ),
+					'quickActions'        => __( 'Quick Actions', 'stacksuite-sales-manager-for-woocommerce' ),
+					'tokensUsed'          => __( 'tokens used', 'stacksuite-sales-manager-for-woocommerce' ),
+					'pendingChanges'      => __( 'Pending Changes', 'stacksuite-sales-manager-for-woocommerce' ),
+					'acceptAll'           => __( 'Accept All', 'stacksuite-sales-manager-for-woocommerce' ),
+					'discardAll'          => __( 'Discard All', 'stacksuite-sales-manager-for-woocommerce' ),
 
 					// Products.
-					'selectProduct'       => __( 'Select a product...', 'ai-sales-manager-for-woocommerce' ),
-					'noProducts'          => __( 'No products found', 'ai-sales-manager-for-woocommerce' ),
-					'productInfo'         => __( 'Product Info', 'ai-sales-manager-for-woocommerce' ),
-					'editProduct'         => __( 'Edit Product', 'ai-sales-manager-for-woocommerce' ),
-					'viewProduct'         => __( 'View Product', 'ai-sales-manager-for-woocommerce' ),
-					'improveTitle'        => __( 'Improve Title', 'ai-sales-manager-for-woocommerce' ),
-					'improveDescription'  => __( 'Improve Description', 'ai-sales-manager-for-woocommerce' ),
-					'seoOptimize'         => __( 'SEO Optimize', 'ai-sales-manager-for-woocommerce' ),
-					'suggestTags'         => __( 'Suggest Tags', 'ai-sales-manager-for-woocommerce' ),
-					'suggestCategories'   => __( 'Suggest Categories', 'ai-sales-manager-for-woocommerce' ),
-					'generateContent'     => __( 'Generate Content', 'ai-sales-manager-for-woocommerce' ),
+					'selectProduct'       => __( 'Select a product...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'noProducts'          => __( 'No products found', 'stacksuite-sales-manager-for-woocommerce' ),
+					'productInfo'         => __( 'Product Info', 'stacksuite-sales-manager-for-woocommerce' ),
+					'editProduct'         => __( 'Edit Product', 'stacksuite-sales-manager-for-woocommerce' ),
+					'viewProduct'         => __( 'View Product', 'stacksuite-sales-manager-for-woocommerce' ),
+					'improveTitle'        => __( 'Improve Title', 'stacksuite-sales-manager-for-woocommerce' ),
+					'improveDescription'  => __( 'Improve Description', 'stacksuite-sales-manager-for-woocommerce' ),
+					'seoOptimize'         => __( 'SEO Optimize', 'stacksuite-sales-manager-for-woocommerce' ),
+					'suggestTags'         => __( 'Suggest Tags', 'stacksuite-sales-manager-for-woocommerce' ),
+					'suggestCategories'   => __( 'Suggest Categories', 'stacksuite-sales-manager-for-woocommerce' ),
+					'generateContent'     => __( 'Generate Content', 'stacksuite-sales-manager-for-woocommerce' ),
 
 					// Categories.
-					'selectCategory'      => __( 'Select a category...', 'ai-sales-manager-for-woocommerce' ),
-					'noCategories'        => __( 'No categories found', 'ai-sales-manager-for-woocommerce' ),
-					'categoryInfo'        => __( 'Category Info', 'ai-sales-manager-for-woocommerce' ),
-					'editCategory'        => __( 'Edit Category', 'ai-sales-manager-for-woocommerce' ),
-					'viewCategory'        => __( 'View Category', 'ai-sales-manager-for-woocommerce' ),
-					'improveCatName'      => __( 'Improve Name', 'ai-sales-manager-for-woocommerce' ),
-					'improveCatDesc'      => __( 'Improve Description', 'ai-sales-manager-for-woocommerce' ),
-					'catSeoOptimize'      => __( 'SEO Optimize', 'ai-sales-manager-for-woocommerce' ),
-					'generateCatContent'  => __( 'Generate Content', 'ai-sales-manager-for-woocommerce' ),
-					'subcategories'       => __( 'Subcategories', 'ai-sales-manager-for-woocommerce' ),
-					'parentCategory'      => __( 'Parent Category', 'ai-sales-manager-for-woocommerce' ),
-					'productCount'        => __( 'Products', 'ai-sales-manager-for-woocommerce' ),
+					'selectCategory'      => __( 'Select a category...', 'stacksuite-sales-manager-for-woocommerce' ),
+					'noCategories'        => __( 'No categories found', 'stacksuite-sales-manager-for-woocommerce' ),
+					'categoryInfo'        => __( 'Category Info', 'stacksuite-sales-manager-for-woocommerce' ),
+					'editCategory'        => __( 'Edit Category', 'stacksuite-sales-manager-for-woocommerce' ),
+					'viewCategory'        => __( 'View Category', 'stacksuite-sales-manager-for-woocommerce' ),
+					'improveCatName'      => __( 'Improve Name', 'stacksuite-sales-manager-for-woocommerce' ),
+					'improveCatDesc'      => __( 'Improve Description', 'stacksuite-sales-manager-for-woocommerce' ),
+					'catSeoOptimize'      => __( 'SEO Optimize', 'stacksuite-sales-manager-for-woocommerce' ),
+					'generateCatContent'  => __( 'Generate Content', 'stacksuite-sales-manager-for-woocommerce' ),
+					'subcategories'       => __( 'Subcategories', 'stacksuite-sales-manager-for-woocommerce' ),
+					'parentCategory'      => __( 'Parent Category', 'stacksuite-sales-manager-for-woocommerce' ),
+					'productCount'        => __( 'Products', 'stacksuite-sales-manager-for-woocommerce' ),
 
 					// Store context.
-					'storeContext'        => __( 'Store Context', 'ai-sales-manager-for-woocommerce' ),
-					'storeContextDesc'    => __( 'Help AI understand your store better', 'ai-sales-manager-for-woocommerce' ),
-					'saveContext'         => __( 'Save Context', 'ai-sales-manager-for-woocommerce' ),
-					'contextSaved'        => __( 'Store context saved successfully', 'ai-sales-manager-for-woocommerce' ),
-					'contextError'        => __( 'Failed to save store context', 'ai-sales-manager-for-woocommerce' ),
+					'storeContext'        => __( 'Store Context', 'stacksuite-sales-manager-for-woocommerce' ),
+					'storeContextDesc'    => __( 'Help AI understand your store better', 'stacksuite-sales-manager-for-woocommerce' ),
+					'saveContext'         => __( 'Save Context', 'stacksuite-sales-manager-for-woocommerce' ),
+					'contextSaved'        => __( 'Store context saved successfully', 'stacksuite-sales-manager-for-woocommerce' ),
+					'contextError'        => __( 'Failed to save store context', 'stacksuite-sales-manager-for-woocommerce' ),
 
 					// Onboarding.
-					'welcomeTitle'        => __( 'Welcome to AI Agent', 'ai-sales-manager-for-woocommerce' ),
-					'welcomeDesc'         => __( 'Select what you want to work on', 'ai-sales-manager-for-woocommerce' ),
-					'workOnProducts'      => __( 'Work on Products', 'ai-sales-manager-for-woocommerce' ),
-					'workOnCategories'    => __( 'Work on Categories', 'ai-sales-manager-for-woocommerce' ),
+					'welcomeTitle'        => __( 'Welcome to AI Agent', 'stacksuite-sales-manager-for-woocommerce' ),
+					'welcomeDesc'         => __( 'Select what you want to work on', 'stacksuite-sales-manager-for-woocommerce' ),
+					'workOnProducts'      => __( 'Work on Products', 'stacksuite-sales-manager-for-woocommerce' ),
+					'workOnCategories'    => __( 'Work on Categories', 'stacksuite-sales-manager-for-woocommerce' ),
 				),
 			)
 		);
@@ -636,17 +636,17 @@ class AISales_Chat_Page {
 		<div class="wrap aisales-admin-wrap">
 			<h1>
 				<span class="dashicons dashicons-format-chat"></span>
-				<?php esc_html_e( 'AI Agent', 'ai-sales-manager-for-woocommerce' ); ?>
+				<?php esc_html_e( 'AI Agent', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 			</h1>
 
 			<div class="aisales-connect-wrap">
 				<div class="aisales-card aisales-card--centered">
 					<div class="aisales-empty-state">
 						<span class="dashicons dashicons-admin-network"></span>
-						<h3><?php esc_html_e( 'Connect Your Account', 'ai-sales-manager-for-woocommerce' ); ?></h3>
-						<p><?php esc_html_e( 'Connect your AI Sales Manager account to start using the AI Agent.', 'ai-sales-manager-for-woocommerce' ); ?></p>
+						<h3><?php esc_html_e( 'Connect Your Account', 'stacksuite-sales-manager-for-woocommerce' ); ?></h3>
+						<p><?php esc_html_e( 'Connect your StackSuite Sales Manager account to start using the AI Agent.', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-manager' ) ); ?>" class="aisales-btn aisales-btn--primary">
-							<?php esc_html_e( 'Go to Settings', 'ai-sales-manager-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Go to Settings', 'stacksuite-sales-manager-for-woocommerce' ); ?>
 						</a>
 					</div>
 				</div>

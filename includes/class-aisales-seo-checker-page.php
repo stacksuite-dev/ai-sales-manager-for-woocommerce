@@ -103,13 +103,13 @@ class AISales_SEO_Checker_Page {
 	}
 
 	/**
-	 * Add submenu page under AI Sales Manager
+	 * Add submenu page under StackSuite Sales Manager
 	 */
 	public function add_submenu_page() {
 		add_submenu_page(
 			'ai-sales-manager',
-			__( 'SEO Checker', 'ai-sales-manager-for-woocommerce' ),
-			__( 'SEO Checker', 'ai-sales-manager-for-woocommerce' ),
+			__( 'SEO Checker', 'stacksuite-sales-manager-for-woocommerce' ),
+			__( 'SEO Checker', 'stacksuite-sales-manager-for-woocommerce' ),
 			'manage_woocommerce',
 			'ai-sales-seo-checker',
 			array( $this, 'render_page' )
@@ -221,27 +221,27 @@ class AISales_SEO_Checker_Page {
 	private function get_category_definitions() {
 		return array(
 			'products'       => array(
-				'label' => __( 'Products', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Products', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-cart',
 			),
 			'categories'     => array(
-				'label' => __( 'Categories', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Categories', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-category',
 			),
 			'pages'          => array(
-				'label' => __( 'Pages', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Pages', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-admin-page',
 			),
 			'posts'          => array(
-				'label' => __( 'Blog Posts', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Blog Posts', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-admin-post',
 			),
 			'store_settings' => array(
-				'label' => __( 'Store Settings', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Store Settings', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-admin-settings',
 			),
 			'homepage'       => array(
-				'label' => __( 'Homepage', 'ai-sales-manager-for-woocommerce' ),
+				'label' => __( 'Homepage', 'stacksuite-sales-manager-for-woocommerce' ),
 				'icon'  => 'dashicons-admin-home',
 			),
 		);
@@ -255,64 +255,64 @@ class AISales_SEO_Checker_Page {
 	private function get_i18n_strings() {
 		return array(
 			// General.
-			'loading'           => __( 'Loading...', 'ai-sales-manager-for-woocommerce' ),
-			'error'             => __( 'Error', 'ai-sales-manager-for-woocommerce' ),
-			'success'           => __( 'Success', 'ai-sales-manager-for-woocommerce' ),
-			'cancel'            => __( 'Cancel', 'ai-sales-manager-for-woocommerce' ),
+			'loading'           => __( 'Loading...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'error'             => __( 'Error', 'stacksuite-sales-manager-for-woocommerce' ),
+			'success'           => __( 'Success', 'stacksuite-sales-manager-for-woocommerce' ),
+			'cancel'            => __( 'Cancel', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Scan states.
-			'scanning'          => __( 'Scanning...', 'ai-sales-manager-for-woocommerce' ),
-			'scanComplete'      => __( 'Scan Complete!', 'ai-sales-manager-for-woocommerce' ),
-			'scanError'         => __( 'Scan failed. Please try again.', 'ai-sales-manager-for-woocommerce' ),
-			'noResults'         => __( 'No scan results yet. Click "Run Scan" to analyze your store.', 'ai-sales-manager-for-woocommerce' ),
+			'scanning'          => __( 'Scanning...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'scanComplete'      => __( 'Scan Complete!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'scanError'         => __( 'Scan failed. Please try again.', 'stacksuite-sales-manager-for-woocommerce' ),
+			'noResults'         => __( 'No scan results yet. Click "Run Scan" to analyze your store.', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Score labels.
-			'excellent'         => __( 'Excellent', 'ai-sales-manager-for-woocommerce' ),
-			'good'              => __( 'Good', 'ai-sales-manager-for-woocommerce' ),
-			'needsWork'         => __( 'Needs Work', 'ai-sales-manager-for-woocommerce' ),
-			'critical'          => __( 'Critical', 'ai-sales-manager-for-woocommerce' ),
+			'excellent'         => __( 'Excellent', 'stacksuite-sales-manager-for-woocommerce' ),
+			'good'              => __( 'Good', 'stacksuite-sales-manager-for-woocommerce' ),
+			'needsWork'         => __( 'Needs Work', 'stacksuite-sales-manager-for-woocommerce' ),
+			'critical'          => __( 'Critical', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Issue types.
-			'criticalIssues'    => __( 'Critical', 'ai-sales-manager-for-woocommerce' ),
-			'warnings'          => __( 'Warnings', 'ai-sales-manager-for-woocommerce' ),
-			'passed'            => __( 'Passed', 'ai-sales-manager-for-woocommerce' ),
+			'criticalIssues'    => __( 'Critical', 'stacksuite-sales-manager-for-woocommerce' ),
+			'warnings'          => __( 'Warnings', 'stacksuite-sales-manager-for-woocommerce' ),
+			'passed'            => __( 'Passed', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Categories.
-			'products'          => __( 'Products', 'ai-sales-manager-for-woocommerce' ),
-			'categories'        => __( 'Categories', 'ai-sales-manager-for-woocommerce' ),
-			'pages'             => __( 'Pages', 'ai-sales-manager-for-woocommerce' ),
-			'posts'             => __( 'Blog Posts', 'ai-sales-manager-for-woocommerce' ),
-			'storeSettings'     => __( 'Store Settings', 'ai-sales-manager-for-woocommerce' ),
-			'homepage'          => __( 'Homepage', 'ai-sales-manager-for-woocommerce' ),
+			'products'          => __( 'Products', 'stacksuite-sales-manager-for-woocommerce' ),
+			'categories'        => __( 'Categories', 'stacksuite-sales-manager-for-woocommerce' ),
+			'pages'             => __( 'Pages', 'stacksuite-sales-manager-for-woocommerce' ),
+			'posts'             => __( 'Blog Posts', 'stacksuite-sales-manager-for-woocommerce' ),
+			'storeSettings'     => __( 'Store Settings', 'stacksuite-sales-manager-for-woocommerce' ),
+			'homepage'          => __( 'Homepage', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Actions.
-			'fix'               => __( 'Fix', 'ai-sales-manager-for-woocommerce' ),
-			'fixAll'            => __( 'Fix All', 'ai-sales-manager-for-woocommerce' ),
-			'dismiss'           => __( 'Dismiss', 'ai-sales-manager-for-woocommerce' ),
-			'view'              => __( 'View', 'ai-sales-manager-for-woocommerce' ),
-			'edit'              => __( 'Edit', 'ai-sales-manager-for-woocommerce' ),
-			'fixing'            => __( 'Fixing...', 'ai-sales-manager-for-woocommerce' ),
-			'fixed'             => __( 'Fixed!', 'ai-sales-manager-for-woocommerce' ),
-			'allFixed'          => __( 'All issues fixed. Great job!', 'ai-sales-manager-for-woocommerce' ),
-			'applyFix'          => __( 'Apply Fix', 'ai-sales-manager-for-woocommerce' ),
-			'previewFix'        => __( 'Preview Fix', 'ai-sales-manager-for-woocommerce' ),
+			'fix'               => __( 'Fix', 'stacksuite-sales-manager-for-woocommerce' ),
+			'fixAll'            => __( 'Fix All', 'stacksuite-sales-manager-for-woocommerce' ),
+			'dismiss'           => __( 'Dismiss', 'stacksuite-sales-manager-for-woocommerce' ),
+			'view'              => __( 'View', 'stacksuite-sales-manager-for-woocommerce' ),
+			'edit'              => __( 'Edit', 'stacksuite-sales-manager-for-woocommerce' ),
+			'fixing'            => __( 'Fixing...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'fixed'             => __( 'Fixed!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'allFixed'          => __( 'All issues fixed. Great job!', 'stacksuite-sales-manager-for-woocommerce' ),
+			'applyFix'          => __( 'Apply Fix', 'stacksuite-sales-manager-for-woocommerce' ),
+			'previewFix'        => __( 'Preview Fix', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Fix modal.
-			'fixModalTitle'     => __( 'Fix SEO Issue', 'ai-sales-manager-for-woocommerce' ),
-			'bulkFixModalTitle' => __( 'Bulk Fix SEO Issues', 'ai-sales-manager-for-woocommerce' ),
-			'estimatedCost'     => __( 'Estimated Cost', 'ai-sales-manager-for-woocommerce' ),
-			'tokens'            => __( 'tokens', 'ai-sales-manager-for-woocommerce' ),
-			'generating'        => __( 'Generating fix...', 'ai-sales-manager-for-woocommerce' ),
-			'applying'          => __( 'Applying fix...', 'ai-sales-manager-for-woocommerce' ),
+			'fixModalTitle'     => __( 'Fix SEO Issue', 'stacksuite-sales-manager-for-woocommerce' ),
+			'bulkFixModalTitle' => __( 'Bulk Fix SEO Issues', 'stacksuite-sales-manager-for-woocommerce' ),
+			'estimatedCost'     => __( 'Estimated Cost', 'stacksuite-sales-manager-for-woocommerce' ),
+			'tokens'            => __( 'tokens', 'stacksuite-sales-manager-for-woocommerce' ),
+			'generating'        => __( 'Generating fix...', 'stacksuite-sales-manager-for-woocommerce' ),
+			'applying'          => __( 'Applying fix...', 'stacksuite-sales-manager-for-woocommerce' ),
 
 			// Checks.
-			'titleLength'       => __( 'Title length', 'ai-sales-manager-for-woocommerce' ),
-			'metaDescription'   => __( 'Meta description', 'ai-sales-manager-for-woocommerce' ),
-			'imageAltTags'      => __( 'Image alt tags', 'ai-sales-manager-for-woocommerce' ),
-			'contentLength'     => __( 'Content length', 'ai-sales-manager-for-woocommerce' ),
-			'headingStructure'  => __( 'Heading structure', 'ai-sales-manager-for-woocommerce' ),
-			'internalLinks'     => __( 'Internal links', 'ai-sales-manager-for-woocommerce' ),
-			'focusKeyword'      => __( 'Focus keyword', 'ai-sales-manager-for-woocommerce' ),
+			'titleLength'       => __( 'Title length', 'stacksuite-sales-manager-for-woocommerce' ),
+			'metaDescription'   => __( 'Meta description', 'stacksuite-sales-manager-for-woocommerce' ),
+			'imageAltTags'      => __( 'Image alt tags', 'stacksuite-sales-manager-for-woocommerce' ),
+			'contentLength'     => __( 'Content length', 'stacksuite-sales-manager-for-woocommerce' ),
+			'headingStructure'  => __( 'Heading structure', 'stacksuite-sales-manager-for-woocommerce' ),
+			'internalLinks'     => __( 'Internal links', 'stacksuite-sales-manager-for-woocommerce' ),
+			'focusKeyword'      => __( 'Focus keyword', 'stacksuite-sales-manager-for-woocommerce' ),
 		);
 	}
 
@@ -342,13 +342,13 @@ class AISales_SEO_Checker_Page {
 	 */
 	public static function get_score_label( $score ) {
 		if ( $score >= 90 ) {
-			return __( 'Excellent', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Excellent', 'stacksuite-sales-manager-for-woocommerce' );
 		} elseif ( $score >= 70 ) {
-			return __( 'Good', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Good', 'stacksuite-sales-manager-for-woocommerce' );
 		} elseif ( $score >= 50 ) {
-			return __( 'Needs Work', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Needs Work', 'stacksuite-sales-manager-for-woocommerce' );
 		} else {
-			return __( 'Critical', 'ai-sales-manager-for-woocommerce' );
+			return __( 'Critical', 'stacksuite-sales-manager-for-woocommerce' );
 		}
 	}
 
@@ -378,10 +378,10 @@ class AISales_SEO_Checker_Page {
 		if ( ! empty( $debug_success ) ) {
 			switch ( $debug_success ) {
 				case 'cleared':
-					return __( 'All SEO scan data has been cleared (option + post/term meta).', 'ai-sales-manager-for-woocommerce' );
+					return __( 'All SEO scan data has been cleared (option + post/term meta).', 'stacksuite-sales-manager-for-woocommerce' );
 
 				case 'meta_cleared':
-					return __( 'Per-item SEO meta has been cleared. Main scan results preserved.', 'ai-sales-manager-for-woocommerce' );
+					return __( 'Per-item SEO meta has been cleared. Main scan results preserved.', 'stacksuite-sales-manager-for-woocommerce' );
 			}
 		}
 
@@ -413,7 +413,7 @@ class AISales_SEO_Checker_Page {
 		// Translators: %d is the number of items cleared.
 		return sprintf(
 			/* translators: Debug action result message */
-			__( 'Debug: Cleared all SEO scan data (option + post/term meta).', 'ai-sales-manager-for-woocommerce' )
+			__( 'Debug: Cleared all SEO scan data (option + post/term meta).', 'stacksuite-sales-manager-for-woocommerce' )
 		);
 	}
 
@@ -442,7 +442,7 @@ class AISales_SEO_Checker_Page {
 
 		return sprintf(
 			/* translators: %1$d is posts meta count, %2$d is terms meta count */
-			__( 'Debug: Cleared per-item SEO meta (%1$d post meta rows, %2$d term meta rows).', 'ai-sales-manager-for-woocommerce' ),
+			__( 'Debug: Cleared per-item SEO meta (%1$d post meta rows, %2$d term meta rows).', 'stacksuite-sales-manager-for-woocommerce' ),
 			$posts_deleted,
 			$terms_deleted
 		);

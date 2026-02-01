@@ -476,7 +476,7 @@ class AISales_SEO_Analyzer {
 				'id'         => $issue_id,
 				'item_type'  => 'store_settings',
 				'item_id'    => 0,
-				'item_name'  => __( 'Store Settings', 'ai-sales-manager-for-woocommerce' ),
+				'item_name'  => __( 'Store Settings', 'stacksuite-sales-manager-for-woocommerce' ),
 				'edit_url'   => admin_url( 'options-general.php' ),
 				'fixable'    => false,
 			) );
@@ -514,7 +514,7 @@ class AISales_SEO_Analyzer {
 				'id'         => $issue_id,
 				'item_type'  => 'homepage',
 				'item_id'    => get_option( 'page_on_front', 0 ),
-				'item_name'  => __( 'Homepage', 'ai-sales-manager-for-woocommerce' ),
+				'item_name'  => __( 'Homepage', 'stacksuite-sales-manager-for-woocommerce' ),
 				'edit_url'   => admin_url( 'options-reading.php' ),
 				'fixable'    => $this->is_issue_fixable( $issue['check'] ),
 			) );

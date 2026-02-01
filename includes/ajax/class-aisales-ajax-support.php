@@ -47,7 +47,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 		$attachments = $this->parse_attachments();
 
 		if ( empty( $title ) || empty( $description ) ) {
-			$this->error( __( 'Title and description are required.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Title and description are required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$result = $this->handle_api_result(
@@ -68,7 +68,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 	public function handle_support_clarify() {
 		$this->verify_request();
 
-		$draft_id    = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$draft_id    = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		$answers_raw = $this->get_post( 'answers', 'raw' );
 		$answers     = is_array( $answers_raw ) ? $answers_raw : array();
 
@@ -83,7 +83,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 	public function handle_support_submit() {
 		$this->verify_request();
 
-		$draft_id = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'ai-sales-manager-for-woocommerce' ) );
+		$draft_id = $this->require_post( 'draft_id', 'text', __( 'Draft ID is required.', 'stacksuite-sales-manager-for-woocommerce' ) );
 
 		$result = $this->handle_api_result( $this->api()->submit_support_ticket( $draft_id ) );
 
@@ -136,7 +136,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 		wp_verify_nonce( $nonce_value, $this->nonce_action );
 
 		if ( empty( $_FILES['attachment'] ) ) {
-			$this->error( __( 'No file uploaded.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'No file uploaded.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -146,7 +146,7 @@ class AISales_Ajax_Support extends AISales_Ajax_Base {
 		$file_size = isset( $_FILES['attachment']['size'] ) ? absint( $_FILES['attachment']['size'] ) : 0;
 
 		if ( $file_size > $this->max_attachment_size ) {
-			$this->error( __( 'File exceeds 7MB limit.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'File exceeds 7MB limit.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$attachment_id = media_handle_upload( 'attachment', 0 );

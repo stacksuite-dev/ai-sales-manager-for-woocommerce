@@ -48,7 +48,7 @@ class AISales_SEO_Checks_API {
 	 */
 	public function analyze_keyword_density( $content, $focus_keyword = '' ) {
 		if ( ! $this->is_available() ) {
-			return new WP_Error( 'insufficient_balance', __( 'Insufficient token balance for API checks.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'insufficient_balance', __( 'Insufficient token balance for API checks.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$prompt = "Analyze the keyword density and SEO optimization of this content.\n\n";
@@ -91,7 +91,7 @@ class AISales_SEO_Checks_API {
 	 */
 	public function check_content_quality( $content, $type = 'content' ) {
 		if ( ! $this->is_available() ) {
-			return new WP_Error( 'insufficient_balance', __( 'Insufficient token balance for API checks.', 'ai-sales-manager-for-woocommerce' ) );
+			return new WP_Error( 'insufficient_balance', __( 'Insufficient token balance for API checks.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$prompt = "Analyze the quality and readability of this {$type} content for e-commerce SEO.\n\n";
@@ -183,7 +183,7 @@ class AISales_SEO_Checks_API {
 		if ( 'product' === $item_type ) {
 			$product = wc_get_product( $item_id );
 			if ( ! $product ) {
-				return new WP_Error( 'product_not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'product_not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 			}
 
 			// Check for required schema properties.
@@ -191,7 +191,7 @@ class AISales_SEO_Checks_API {
 				$issues[] = array(
 					'field'    => 'name',
 					'severity' => 'critical',
-					'message'  => __( 'Product name is required for schema.', 'ai-sales-manager-for-woocommerce' ),
+					'message'  => __( 'Product name is required for schema.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 
@@ -199,7 +199,7 @@ class AISales_SEO_Checks_API {
 				$issues[] = array(
 					'field'    => 'price',
 					'severity' => 'critical',
-					'message'  => __( 'Product price is required for schema.', 'ai-sales-manager-for-woocommerce' ),
+					'message'  => __( 'Product price is required for schema.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 
@@ -207,7 +207,7 @@ class AISales_SEO_Checks_API {
 				$issues[] = array(
 					'field'    => 'image',
 					'severity' => 'warning',
-					'message'  => __( 'Product image improves schema display.', 'ai-sales-manager-for-woocommerce' ),
+					'message'  => __( 'Product image improves schema display.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 
@@ -215,7 +215,7 @@ class AISales_SEO_Checks_API {
 				$issues[] = array(
 					'field'    => 'description',
 					'severity' => 'warning',
-					'message'  => __( 'Product description improves schema display.', 'ai-sales-manager-for-woocommerce' ),
+					'message'  => __( 'Product description improves schema display.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 
@@ -225,7 +225,7 @@ class AISales_SEO_Checks_API {
 				$issues[] = array(
 					'field'    => 'availability',
 					'severity' => 'warning',
-					'message'  => __( 'Stock status should be set for schema.', 'ai-sales-manager-for-woocommerce' ),
+					'message'  => __( 'Stock status should be set for schema.', 'stacksuite-sales-manager-for-woocommerce' ),
 				);
 			}
 		}
@@ -253,7 +253,7 @@ class AISales_SEO_Checks_API {
 		if ( 'product' === $item_type ) {
 			$product = wc_get_product( $item_id );
 			if ( ! $product ) {
-				return new WP_Error( 'product_not_found', __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+				return new WP_Error( 'product_not_found', __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 			}
 
 			// Get related products.
@@ -266,7 +266,7 @@ class AISales_SEO_Checks_API {
 						'id'     => $related_id,
 						'title'  => $related->get_name(),
 						'url'    => $related->get_permalink(),
-						'reason' => __( 'Related product', 'ai-sales-manager-for-woocommerce' ),
+						'reason' => __( 'Related product', 'stacksuite-sales-manager-for-woocommerce' ),
 					);
 				}
 			}
@@ -281,7 +281,7 @@ class AISales_SEO_Checks_API {
 						'id'     => $cat_id,
 						'title'  => $term->name,
 						'url'    => get_term_link( $term ),
-						'reason' => __( 'Product category', 'ai-sales-manager-for-woocommerce' ),
+						'reason' => __( 'Product category', 'stacksuite-sales-manager-for-woocommerce' ),
 					);
 				}
 			}
@@ -296,7 +296,7 @@ class AISales_SEO_Checks_API {
 						'id'     => $upsell_id,
 						'title'  => $upsell->get_name(),
 						'url'    => $upsell->get_permalink(),
-						'reason' => __( 'Upsell product', 'ai-sales-manager-for-woocommerce' ),
+						'reason' => __( 'Upsell product', 'stacksuite-sales-manager-for-woocommerce' ),
 					);
 				}
 			}

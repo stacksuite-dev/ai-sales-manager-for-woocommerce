@@ -67,7 +67,7 @@ abstract class AISales_Ajax_Base {
 		$cap = $capability ?? $this->required_capability;
 		if ( ! current_user_can( $cap ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'Permission denied.', 'ai-sales-manager-for-woocommerce' ),
+				'message' => __( 'Permission denied.', 'stacksuite-sales-manager-for-woocommerce' ),
 			) );
 		}
 	}
@@ -139,7 +139,7 @@ abstract class AISales_Ajax_Base {
 		if ( empty( $value ) && 0 !== $value && '0' !== $value ) {
 			$error_message = $message ?: sprintf(
 				/* translators: %s: field name */
-				__( '%s is required.', 'ai-sales-manager-for-woocommerce' ),
+				__( '%s is required.', 'stacksuite-sales-manager-for-woocommerce' ),
 				ucfirst( str_replace( '_', ' ', $key ) )
 			);
 			wp_send_json_error( array( 'message' => $error_message ) );
@@ -224,13 +224,13 @@ abstract class AISales_Ajax_Base {
 	 */
 	protected function get_validated_product( $product_id ) {
 		if ( ! $product_id ) {
-			$this->error( __( 'Invalid product.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid product.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$product = wc_get_product( $product_id );
 
 		if ( ! $product ) {
-			$this->error( __( 'Product not found.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Product not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		return $product;
@@ -244,13 +244,13 @@ abstract class AISales_Ajax_Base {
 	 */
 	protected function get_validated_category( $term_id ) {
 		if ( ! $term_id ) {
-			$this->error( __( 'Invalid category.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Invalid category.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		$term = get_term( $term_id, 'product_cat' );
 
 		if ( ! $term || is_wp_error( $term ) ) {
-			$this->error( __( 'Category not found.', 'ai-sales-manager-for-woocommerce' ) );
+			$this->error( __( 'Category not found.', 'stacksuite-sales-manager-for-woocommerce' ) );
 		}
 
 		return $term;
