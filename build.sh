@@ -66,8 +66,9 @@ find "${BUILD_DIR}" -name ".DS_Store" -type f -delete 2>/dev/null || true
 find "${BUILD_DIR}" -name "Thumbs.db" -type f -delete 2>/dev/null || true
 find "${BUILD_DIR}" -name ".gitkeep" -type f -delete 2>/dev/null || true
 find "${BUILD_DIR}" -name ".gitignore" -type f -delete 2>/dev/null || true
+find "${BUILD_DIR}" -name "*.deprecated" -type f -delete 2>/dev/null || true
 
-echo "  ✓ Removed source maps, SCSS, and OS files"
+echo "  ✓ Removed source maps, SCSS, deprecated, and OS files"
 
 # Step 4: Validate build
 echo -e "${YELLOW}[4/5]${NC} Validating build..."
@@ -112,11 +113,11 @@ fi
 echo -e "${YELLOW}[5/5]${NC} Creating distribution ZIP..."
 
 cd "${BUILD_DIR}"
-zip -r "../${DIST_DIR}/${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip" "${PLUGIN_SLUG}" -x "*.git*"
+zip -r "../${DIST_DIR}/${PLUGIN_SLUG}.zip" "${PLUGIN_SLUG}" -x "*.git*"
 cd ..
 
 # Calculate ZIP size
-ZIP_SIZE=$(du -h "${DIST_DIR}/${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip" | cut -f1)
+ZIP_SIZE=$(du -h "${DIST_DIR}/${PLUGIN_SLUG}.zip" | cut -f1)
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
@@ -125,13 +126,13 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "  Plugin:  ${PLUGIN_SLUG}"
 echo -e "  Version: ${PLUGIN_VERSION}"
-echo -e "  Output:  ${DIST_DIR}/${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip"
+echo -e "  Output:  ${DIST_DIR}/${PLUGIN_SLUG}.zip"
 echo -e "  Size:    ${ZIP_SIZE}"
 echo ""
 
 # List contents
 echo "ZIP Contents:"
-unzip -l "${DIST_DIR}/${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip" | tail -n +4 | head -n -2 | awk '{print "  " $4}'
+unzip -l "${DIST_DIR}/${PLUGIN_SLUG}.zip" | tail -n +4 | head -n -2 | awk '{print "  " $4}'
 
 echo ""
 echo -e "${GREEN}Ready for distribution!${NC}"
