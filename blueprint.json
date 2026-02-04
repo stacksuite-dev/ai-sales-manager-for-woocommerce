@@ -1,0 +1,33 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/wp-admin/admin.php?page=ai-sales-manager",
+	"preferredVersions": {
+		"php": "8.1",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "woocommerce"
+			}
+		},
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/mu-plugins/suppress-wc-wizard.php",
+			"data": "<?php\nadd_filter( 'woocommerce_enable_setup_wizard', '__return_false' );\nadd_filter( 'woocommerce_show_admin_notice', '__return_false', 10, 2 );"
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "stacksuite-sales-manager-for-woocommerce"
+			}
+		}
+	]
+}

@@ -39,6 +39,7 @@ INCLUDE_FILES=(
     "stacksuite-sales-manager-for-woocommerce.php"
     "uninstall.php"
     "readme.txt"
+    "blueprint.json"
     "license.txt"
     "assets"
     "includes"
