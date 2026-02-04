@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
@@ -113,6 +113,11 @@ By using the AI features, you agree to these terms.
 7. Store context configuration
 
 == Changelog ==
+
+= 1.5.2 =
+* Added: WordPress Playground blueprint for live preview
+* Added: Plugin icon and banner assets for WordPress.org listing
+* Added: GitHub Actions workflow for SVN deployment
 
 = 1.5.1 =
 * Fixed: Removed non-permitted .deprecated file flagged by WordPress Plugin Check

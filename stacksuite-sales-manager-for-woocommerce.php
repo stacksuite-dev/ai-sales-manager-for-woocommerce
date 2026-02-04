@@ -3,7 +3,7 @@
  * Plugin Name: StackSuite Sales Manager for WooCommerce
  * Plugin URI: https://github.com/stacksuite-dev/woo-ai-sales-manager
  * Description: AI-powered product catalog management for WooCommerce. Generate content, suggest tags/categories, and create/improve product images using Google Gemini.
- * Version: 1.5.1
+ * Version: 1.5.2
  * Author: StackSuite
  * Author URI: https://stacksuite.dev
  * License: GPL v2 or later
