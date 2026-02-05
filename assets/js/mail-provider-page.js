@@ -254,7 +254,8 @@
 	};
 
 	$(document).ready(function() {
-		if ($('.aisales-mail-provider-page').length) {
+		// Initialize on both standalone page and embedded settings panel
+		if ($('.aisales-mail-provider-page').length || $('.aisales-email-settings-panel').length) {
 			MailProvider.init();
 		}
 	});
