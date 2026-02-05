@@ -498,20 +498,8 @@ class AISales_Admin_Settings {
 				</h3>
 			</div>
 			<div class="aisales-feature-grid">
-				<!-- AI Agent Chat -->
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-chat' ) ); ?>" class="aisales-feature-card">
-					<div class="aisales-feature-card__icon aisales-feature-card__icon--chat">
-						<span class="dashicons dashicons-format-chat"></span>
-					</div>
-					<div class="aisales-feature-card__content">
-						<h4 class="aisales-feature-card__title"><?php esc_html_e( 'AI Agent', 'stacksuite-sales-manager-for-woocommerce' ); ?></h4>
-						<p class="aisales-feature-card__desc"><?php esc_html_e( 'Chat with AI about your store', 'stacksuite-sales-manager-for-woocommerce' ); ?></p>
-					</div>
-					<span class="dashicons dashicons-arrow-right-alt2 aisales-feature-card__arrow"></span>
-				</a>
-
 				<!-- Email Templates -->
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-email' ) ); ?>" class="aisales-feature-card">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ai-sales-emails' ) ); ?>" class="aisales-feature-card">
 					<div class="aisales-feature-card__icon aisales-feature-card__icon--email">
 						<span class="dashicons dashicons-email-alt"></span>
 					</div>
