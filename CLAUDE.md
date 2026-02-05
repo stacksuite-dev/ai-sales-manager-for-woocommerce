@@ -60,6 +60,43 @@ Git is initialized in the `plugin/` subfolder, not the project root.
 cd plugin && git status
 ```
 
+### Tagging Convention
+
+Tags use bare version numbers without a `v` prefix: `1.5.5`, not `v1.5.5`.
+
+### Publishing to WordPress.org
+
+The plugin is deployed to WordPress.org SVN via GitHub Actions when a tag is pushed.
+
+**Release Checklist:**
+
+1. **Update version in 3 places** (must all match):
+   - `stacksuite-sales-manager-for-woocommerce.php` header: `Version: X.Y.Z`
+   - `stacksuite-sales-manager-for-woocommerce.php` constant: `AISALES_VERSION`
+   - `readme.txt`: `Stable tag: X.Y.Z`
+
+2. **Add changelog entry** in `readme.txt` under `== Changelog ==`
+
+3. **Commit and tag:**
+   ```bash
+   git add -A && git commit -m "release(X.Y.Z): description"
+   git tag X.Y.Z
+   git push origin main --tags
+   ```
+
+4. **Monitor deployment** at: https://github.com/stacksuite-dev/ai-sales-manager-for-woocommerce/actions
+
+**Important:** WordPress.org uses `Stable tag` in `readme.txt` to determine which version to serve. If the tag exists but `Stable tag` doesn't match, the update won't appear in the directory.
+
+**Fixing a failed release** (if you forgot to update readme.txt):
+```bash
+# Delete and recreate the tag
+git tag -d X.Y.Z
+git push origin :refs/tags/X.Y.Z
+git tag X.Y.Z
+git push origin X.Y.Z
+```
+
 ## Widgets System Architecture
 
 ### Widget Types
