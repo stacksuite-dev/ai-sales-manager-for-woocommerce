@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.8
+Stable tag: 1.5.9
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
@@ -113,6 +113,9 @@ By using the AI features, you agree to these terms.
 7. Store context configuration
 
 == Changelog ==
+
+= 1.5.9 =
+* Fixed: JSON parsing in batch apply now handles HTML content with escaped quotes correctly
 
 = 1.5.8 =
 * Fixed: Batch page AJAX nonce mismatch causing 403 errors when applying changes

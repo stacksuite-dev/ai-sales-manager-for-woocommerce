@@ -151,13 +151,29 @@ abstract class AISales_Ajax_Base {
 	/**
 	 * Get JSON decoded POST value
 	 *
-	 * @param string $key     POST key.
-	 * @param bool   $assoc   Return associative array.
-	 * @param mixed  $default Default value if not set or invalid JSON.
+	 * Decodes JSON first, then sanitizes HTML content within the decoded data.
+	 * This prevents wp_kses_post from corrupting JSON structure (escaped quotes, etc).
+	 *
+	 * @param string $key      POST key.
+	 * @param bool   $assoc    Return associative array.
+	 * @param mixed  $default  Default value if not set or invalid JSON.
+	 * @param bool   $sanitize Whether to sanitize HTML content in decoded values.
 	 * @return mixed Decoded JSON value.
 	 */
-	protected function get_json_post( $key, $assoc = true, $default = array() ) {
-		$raw = $this->get_post( $key, 'raw' );
+	protected function get_json_post( $key, $assoc = true, $default = array(), $sanitize = true ) {
+		$nonce_value = isset( $_POST[ $this->nonce_field ] )
+			? sanitize_text_field( wp_unslash( $_POST[ $this->nonce_field ] ) )
+			: '';
+		if ( ! wp_verify_nonce( $nonce_value, $this->nonce_action ) ) {
+			return $default;
+		}
+
+		if ( ! isset( $_POST[ $key ] ) ) {
+			return $default;
+		}
+
+		// Get raw value without wp_kses_post to preserve JSON structure.
+		$raw = wp_unslash( $_POST[ $key ] );
 
 		if ( empty( $raw ) ) {
 			return $default;
@@ -165,7 +181,37 @@ abstract class AISales_Ajax_Base {
 
 		$decoded = json_decode( $raw, $assoc );
 
-		return ( null === $decoded ) ? $default : $decoded;
+		if ( null === $decoded ) {
+			return $default;
+		}
+
+		// Sanitize HTML content after JSON decoding.
+		if ( $sanitize ) {
+			$decoded = $this->sanitize_json_values( $decoded );
+		}
+
+		return $decoded;
+	}
+
+	/**
+	 * Recursively sanitize HTML content in decoded JSON values
+	 *
+	 * @param mixed $data Decoded JSON data.
+	 * @return mixed Sanitized data.
+	 */
+	private function sanitize_json_values( $data ) {
+		if ( is_array( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				$data[ $key ] = $this->sanitize_json_values( $value );
+			}
+			return $data;
+		}
+
+		if ( is_string( $data ) ) {
+			return wp_kses_post( $data );
+		}
+
+		return $data;
 	}
 
 	/**
