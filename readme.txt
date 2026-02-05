@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product management, content generation, image generation
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 WC requires at least: 8.0
 WC tested up to: 9.0
 License: GPLv2 or later
@@ -113,6 +113,9 @@ By using the AI features, you agree to these terms.
 7. Store context configuration
 
 == Changelog ==
+
+= 1.5.5 =
+* Fixed: CSS not loading on submenu admin pages
 
 = 1.5.4 =
 * Fixed: Connect flow now redirects to dashboard after successful registration
