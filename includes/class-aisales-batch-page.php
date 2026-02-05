@@ -112,7 +112,7 @@ class AISales_Batch_Page {
 			'aisalesBatch',
 			array(
 				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
-				'nonce'        => wp_create_nonce( 'aisales_batch_nonce' ),
+				'nonce'        => wp_create_nonce( 'aisales_nonce' ),
 				'apiBaseUrl'   => apply_filters( 'aisales_api_url_client', AISALES_API_URL_CLIENT ),
 				'apiKey'       => $api_key,
 				'balance'      => get_option( 'aisales_balance', 0 ),
